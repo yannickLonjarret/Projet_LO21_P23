@@ -15,13 +15,13 @@ class Tuile
 private:
 	int nbCarteMax;
 
-	vector<Carte_c> carteC_j1;
-	vector<Carte_t> carteT_j1;
-	int nbCarteJoue_J1;
+	vector<Carte_c> cartesC_j1;
+	vector<Carte_t> cartesT_j1;
+	int nbCartesJoue_J1;
 
-	vector<Carte_c> carteC_j2;
-	vector<Carte_t> carteT_j2;
-	int nbCarteJoue_J2;
+	vector<Carte_c> cartesC_j2;
+	vector<Carte_t> cartesT_j2;
+	int nbCarteJoues_J2;
 
 	vector<int* []> hist; //pas sur pour le tableau de pointeur sur des int pour l'historique mais à changer
 
