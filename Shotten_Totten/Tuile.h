@@ -94,6 +94,10 @@ public:
 	void setClaim(int winner) {
 		this->claim = winner;
 	}
+
+	int getClaim() {
+		return this->claim;
+	}
 };
 
 #endif // !TUILE_H
