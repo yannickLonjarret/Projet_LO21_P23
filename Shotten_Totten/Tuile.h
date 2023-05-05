@@ -30,7 +30,21 @@ private:
 	int claim;
 
 public:
-	Tuile() {
+	Tuile(int nb_cartes, vector<Combinaison> vicPoss) {
+		this->nbCarteMax = nb_cartes;
+		this->victoirePossible = vector<Combinaison>(vicPoss);
+
+		this->nbCarteJoues_J2 = 0;
+		this->nbCartesJoue_J1 = 0;
+		
+		this->claim = 0;
+
+		this->cartesC_j1 = vector<Carte_c>();
+		this->cartesC_j2 = vector<Carte_c>();
+
+		this->cartesT_j1 = vector<Carte_t>();
+		this->cartesT_j2 = vector<Carte_t>();
+
 	};
 
 };
