@@ -53,6 +53,7 @@ public:
 	}
 
 
+
 	bool isClaimable() {
 		int nb_c1, nb_c2, nb_cMax;
 
@@ -88,6 +89,10 @@ public:
 
 	void setNbCartes_J2(int newNb) {
 		this->nbCartes_J2 = newNb;
+	}
+
+	void setClaim(int winner) {
+		this->claim = winner;
 	}
 };
 
