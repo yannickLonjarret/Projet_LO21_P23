@@ -2,6 +2,8 @@
 #ifndef TUILE_H
 #define TUILE_H
 #include "Carte.h"
+#include "Carte_c.h"
+#include "Carte_t.h"
 #include <vector>
 #include <list>
 #include "Combinaison.h"
@@ -11,16 +13,26 @@ using namespace std;
 class Tuile
 {
 private:
-	Carte* tab1;
-	Carte* tab2;
+	int nbCarteMax;
+
+	vector<Carte_c> carteC_j1;
+	vector<Carte_t> carteT_j1;
+	int nbCarteJoue_J1;
+
+	vector<Carte_c> carteC_j2;
+	vector<Carte_t> carteT_j2;
+	int nbCarteJoue_J2;
+
 	vector<int* []> hist; //pas sur pour le tableau de pointeur sur des int pour l'historique mais à changer
-	//list<Combinaison> ? ou tableau ?
-	//Combinaison* list;
+
+	vector<Combinaison> victoirePossible;
 
 	int claim;
 
 public:
-	Tuile();
+	Tuile() {
+	};
+
 };
 
 #endif // !TUILE_H
