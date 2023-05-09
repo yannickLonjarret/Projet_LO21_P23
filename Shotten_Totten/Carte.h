@@ -1,4 +1,6 @@
 #pragma once
+#ifndef CARTE_H
+#define CARTE_H
 class Carte
 {
 	private:
@@ -7,3 +9,4 @@ class Carte
 	public:
 };
 
+#endif
