@@ -37,9 +37,7 @@ public:
 	/// <param name="col"> color of the card : Couleur </param>
 	/// <param name="vmin"> optionnal, minimal value of the card </param>
 	/// <param name="vmax"> optionnal, maximal value of the card </param>
-	Carte_c(int val, Couleur col, int vmin = 0, int vmax = 0) :couleur(col), valeur(val) {
-		val_min = vmin;
-		val_max = vmax;
+	Carte_c(int val, Couleur col) :couleur(col), valeur(val) {
 	}
 
 	///FUNCTIONS
