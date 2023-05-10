@@ -4,6 +4,7 @@
 
 #include "Carte.h"
 #include <ostream>
+#include <string>
 
 /// <summary>
 /// Enumerates the possible color a card can have.
@@ -50,14 +51,31 @@ public:
 	Couleur getCouleur() const;
 	int getValeur() const;
 
-
 	/// <summary>
 	/// Default Destructor 
 	/// </summary>
 	~Carte_c() = default;
 
+	friend std::ostream& operator<<(std::ostream& os, const Carte_c& cc);
+	friend const char* Col2String(Couleur c);
 
 };
+
+
+/// <summary>
+/// Allows to retrieve the string value of the color
+/// </summary>
+const char* Col2String(Couleur c) {
+	switch (c) {
+	case Couleur::Bleu: return "Bleu";
+	case Couleur::Rouge: return "Rouge";
+	case Couleur::Gris: return "Gris";
+	case Couleur::Jaune: return "Jaune";
+	case Couleur::Noir: return "Noir";
+	case Couleur::Vert: return "Vert";
+	default: throw std::invalid_argument("Unimplemented color");
+	}
+}
 
 /// <summary>
 /// Print ooperator overload to display the card and it's caracteristics
@@ -66,10 +84,8 @@ public:
 /// <param name="cc"> the card to display</param>
 /// <returns> the output stream with the card's information</returns>
 std::ostream& operator<<(std::ostream& os, const Carte_c& cc) {
-	os << "+------CARTE_C------+\n"
-		<< "|   Valeur :" << cc.getValeur() << "    \n"
-		<< "|   Couleur:" << cc.getCouleur() << "    \n"
-		<< "+-------------------+" << std::endl;
+	os << "Carte_c : \n\t Couleur : " << Col2String(cc.getCouleur()) << "\n\t "
+		<< "Valeur : " << cc.getValeur() << std::endl;
 	return os;
 }
 

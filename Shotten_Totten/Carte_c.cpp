@@ -24,6 +24,7 @@ int Carte_c::getValeur() const {
 	return this->valeur;
 }
 
+
 /// <summary>
 /// Getter for the color of the card
 /// </summary>
@@ -70,3 +71,4 @@ void Carte_c::setValeur(int val) {
 void Carte_c::setCouleur(Couleur col) {
 	this->couleur = col;
 }
+
