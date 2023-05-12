@@ -29,7 +29,7 @@ int Carte_c::getValeur() const {
 /// Getter for the color of the card
 /// </summary>
 /// <returns> couleur : Couleur </returns>
-Couleur Carte_c::getCouleur() const {
+const string& Carte_c::getCouleur() const {
 	return this->couleur;
 }
 
@@ -37,7 +37,7 @@ Couleur Carte_c::getCouleur() const {
 /// Sets the value of val_min.
 /// </summary>
 /// <param name="vmin"> new value to be assigned to val_min </param>
-void Carte_c::setValMin(int vmin) {
+void Carte_c::setValMin(int vmin) const {
 	if (vmin > 0) {
 		val_min = vmin;
 	}
@@ -47,7 +47,7 @@ void Carte_c::setValMin(int vmin) {
 /// Sets the value of val_min.
 /// </summary>
 /// <param name="vmax"> new value to be assigned to val_max </param>
-void Carte_c::setValMax(int vmax) {
+void Carte_c::setValMax(int vmax) const {
 	if (vmax > 0) {
 		val_max = vmax;
 	}
@@ -68,7 +68,7 @@ void Carte_c::setValeur(int val) {
 /// Sets the value of the color of the card
 /// </summary>
 /// <param name="col"> the color to be assigned to the card</param>
-void Carte_c::setCouleur(Couleur col) {
+void Carte_c::setCouleur(const string& col) {
 	this->couleur = col;
 }
 
