@@ -26,6 +26,13 @@ public:
 	/// <param name="c">the collection of cards to be set as the attribute</param>
 	Pioche_c(std::vector<Carte_c> const& c) :cartes(c) {};
 
+	int getSize() const {
+		return this->cartes.size();
+	}
+
+	std::vector<Carte_c> getCartes() const {
+		return this->cartes;
+	}
 
 	/// <summary>
 	/// Allows the user to insert a card at the end of the vector
@@ -59,11 +66,11 @@ public:
 /// <param name="os"> the output stream</param>
 /// <param name="cc"> the card to display</param>
 /// <returns> the output stream with the card's information</returns>
-std::ostream& operator<<(std::ostream& os, const std::vector<Carte_c>& pioche) {
+std::ostream& operator<<(std::ostream& os, const Pioche_c& p) {
 	os << "[";
-	for (int i = 0; i < pioche.size(); i++) {
-		os << pioche[i];
-		if (i != pioche.size() - 1)
+	for (int i = 0; i < p.getSize(); i++) {
+		os << p.getCartes()[i];
+		if (i != p.getSize() - 1)
 			os << ", ";
 	}
 	os << "]\n";

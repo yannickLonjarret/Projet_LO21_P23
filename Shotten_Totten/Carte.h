@@ -3,10 +3,10 @@
 #define CARTE_H
 class Carte
 {
-	private:
+private:
 
 
-	public:
+public:
 };
 
 #endif
