@@ -1,7 +1,7 @@
 #ifndef DEFAUSSE_H
 #define DEFAUSSE_H
 
-#include "Carte_c.h"
+#include "Carte.h"
 #include <vector>
 #include <ostream>
 using namespace std;
@@ -10,38 +10,38 @@ class Defausse {
 private:
 	static int nb_cartesMax;
 	int nb_cartes;
-	vector<Carte_c> cartes;
+	vector<Carte> cartes;
 
 public:
 
-	explicit Defausse(const vector<Carte_c>& cartes) : nb_cartes((int)cartes.size()), cartes(cartes) {
+	explicit Defausse(const vector<Carte>& cartes) : nb_cartes((int)cartes.size()), cartes(cartes) {
 		nb_cartesMax = (int)cartes.size();
 	}
 
 	//FUNCTIONS
-	Carte_c pop() const {
+	Carte pop() const {
 		return cartes.back();
 	}
 
-	void push(const Carte_c& c) {
+	void push(const Carte& c) {
 		this->cartes.push_back(c);
 
 	}
 
-	vector<Carte_c*> getXFirstCard(int x) {
-		std::vector<Carte_c*> ret;
+	vector<Carte*> getXFirstCard(int x) {
+		std::vector<Carte*> ret;
 
 		for (int i = 0; i < x; i++) {
 			ret.push_back(&this->cartes[i]);
 		}
-		return std::vector<Carte_c*>();
+		return std::vector<Carte*>();
 	}
 
 	int getSize() const {
 		return nb_cartes;
 	}
 
-	vector<Carte_c> getCartes() const {
+	vector<Carte> getCartes() const {
 		return this->cartes;
 	}
 
