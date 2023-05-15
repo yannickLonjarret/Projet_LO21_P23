@@ -5,6 +5,7 @@
 #include "Carte_c.h"
 #include "Carte_t.h"
 #include "Combinaison.h"
+#include "Cote.h"
 
 #include <vector>
 #include <algorithm>
@@ -34,54 +35,46 @@ class Tuile
 private:
 	int nbCarteMax;
 
-	vector<Carte_c *> cartesC_j1;
-	vector<Carte_t *> cartesT_j1;
-	int nbCartes_J1;
-
-	vector<Carte_c *> cartesC_j2;
-	vector<Carte_t *> cartesT_j2;
-	int nbCartes_J2;
+	vector<Cote*> joueurs;
 
 	vector<nodeHist_c *> hist_c;
-
 	vector<Combinaison *> victoirePossible;
 
 	int claim;
 
 public:
-	Tuile(int nb_cartes, vector<Combinaison *> vicPoss) {
+	Tuile(int nb_cartes, vector<Combinaison *> vicPoss, int nbJoueur) {
 		nbCarteMax = nb_cartes;
 
 		for (size_t i = 0; i < vicPoss.size(); i++)
 			victoirePossible.push_back(vicPoss[i]);
 
-		nbCartes_J2 = 0;
-		nbCartes_J1 = 0;
+		for (size_t i = 0; i < nbJoueur; i++)
+			joueurs.push_back(new Cote(i));
 		
+
 		claim = 0;
 
-		cartesC_j1 = vector<Carte_c *>();
-		cartesC_j2 = vector<Carte_c *>();
 
-		cartesT_j1 = vector<Carte_t *>();
-		cartesT_j2 = vector<Carte_t *>();
 
 	};
 
 	void ajout_c(Carte_c* c, int idJoueur){
 		
+		Cote* coteJoueur = getCotes()[idJoueur];
+
 		if (idJoueur == 1) {
 			
-			if (getNbCartes_J1() <= getNbCartesMax()) {
+			if (coteJoueur->getNbCartes() <= getNbCartesMax()) {
 			
-				getCartesJ1().push_back(c);
-				setNbCartes_J1(getNbCartes_J1() + 1);
+				coteJoueur->getCartesC().push_back(c);
+				coteJoueur->setNbCartes(coteJoueur->getNbCartes() + 1);
 				
-				std::sort(getCartesJ1().begin(), getCartesJ1().end(), [](Carte_c* c1, Carte_c* c2) {
+				std::sort(coteJoueur->getCartesC().begin(), coteJoueur->getCartesC().end(), [](Carte_c* c1, Carte_c* c2) {
 					return c1->getValeur() < c2->getValeur();
 					});
 
-				hist_c.push_back(new nodeHist_c(idJoueur, getNbCartes_J1()));
+				hist_c.push_back(new nodeHist_c(idJoueur, coteJoueur->getNbCartes()));
 			}
 			else {
 				std::cout << "Tuile pleine pour vous" << std::endl;
@@ -89,22 +82,7 @@ public:
 				
 		}
 		
-		if (idJoueur == 2) {
-			if (getNbCartes_J2() <= getNbCartesMax()) {
-				getCartesJ2().push_back(c);
-				setNbCartes_J2(getNbCartes_J2() + 1);
-
-				
-				std::sort(getCartesJ2().begin(), getCartesJ2().end(), [](Carte_c* c1, Carte_c* c2) {
-					return c1->getValeur() < c2->getValeur();
-					});
-
-				hist_c.push_back(new nodeHist_c(idJoueur, getNbCartes_J2()));
-			}
-			else {
-				std::cout << "Tuile pleine pour vous" << std::endl;
-			}
-		}
+		
 
 	}
 
@@ -112,12 +90,9 @@ public:
 
 		vector<Carte_t *> checkTroupeElite;
 		vector<Carte_c *> allCards;
-		if (joueur == 1) {
-			checkTroupeElite = getCartesT_J1();
-		}
-		else {
-			checkTroupeElite = getCartesT_J2();
-		}
+		
+		checkTroupeElite = getCotes()[joueur]->getCartesT();
+		
 		//TODO
 		//Parcourir vector et set valeurs cartes Troupe d'elite
 
@@ -159,19 +134,16 @@ public:
 	bool isCardOnTuile(Carte_c* c) {
 		vector<Carte_c*> vect;
 
-		vect = this->getCartesJ1();
+		for (size_t i = 0; i < getCotes().size(); i++) {
+			
+			vect = getCotes()[i]->getCartesC();
 
-		for (auto i = 0; i < vect.size(); i++) {
-			if (vect[i]->getCouleur() == c->getCouleur() && vect[i]->getValeur() == c->getValeur())
-				return true;
+			for (auto j = 0; j < vect.size(); j++) {
+				if (vect[j]->getCouleur() == c->getCouleur() && vect[j]->getValeur() == c->getValeur())
+					return true;
+			}
 		}
 
-		vect = this->getCartesJ2();
-
-		for (auto i = 0; i < vect.size(); i++) {
-			if (vect[i]->getCouleur() == c->getCouleur() && vect[i]->getValeur() == c->getValeur())
-				return true;
-		}
 
 		return false;
 
@@ -220,17 +192,12 @@ public:
 
 		vector<Carte_t*> checkTroupeElite;
 
-		if (joueur == 1) {
-			checkTroupeElite = getCartesT_J1();
-		}
-		else {
-			checkTroupeElite = getCartesT_J2();
-		}
+		checkTroupeElite = getCotes()[joueur]->getCartesT();
 		//TODO
 		//Parcourir vector et set valeurs cartes Troupe d'elite
 
 
-		Combinaison combiJ1(getCartesJ1()), combiJ2(getCartesJ2());
+		Combinaison combiJ1(getCotes()[0]->getCartesC()), combiJ2(getCotes()[1]->getCartesC());
 
 		
 		if (combiJ1 > combiJ2)
@@ -256,7 +223,7 @@ public:
 			i++;
 		}
 
-		if (idJoueur == 0) cout << "Priblème cas Egalité" << endl;
+		if (idJoueur == 0) cout << "Problème cas Egalité" << endl;
 
 		setClaim(idJoueur);
 		
@@ -266,14 +233,11 @@ public:
 
 
 	bool canPlayerClaim(int idJoueur) {
-		if (idJoueur == 1)
-			return getNbCartes_J1() == getNbCartesMax();
-		else
-			return getNbCartes_J2() == getNbCartesMax();
+			return getCotes()[idJoueur]->getNbCartes() == getNbCartesMax();
 	}
 
 	bool isClaimProof() {
-		return ((getNbCartes_J1() - getNbCartes_J2()) != 0);
+		return ((getCotes()[0]->getNbCartes() - getCotes()[1]->getNbCartes()) != 0);
 	}
 
 	bool isClaimable(){
@@ -286,25 +250,14 @@ public:
 
 			int nb_c1, nb_c2, nb_cMax;
 
-
-
-			nb_c1 = getNbCartes_J1();
-			nb_c2 = getNbCartes_J2();
+			nb_c1 = getCotes()[0]->getNbCartes();
+			nb_c2 = getCotes()[1]->getNbCartes();
 			nb_cMax = getNbCartesMax();
 
 			return (nb_c1 == nb_cMax) || (nb_c2 == nb_cMax);
 		}
 	}
 
-
-
-	void setNbCartes_J1(int newNb){
-		nbCartes_J1 = newNb;
-	}
-
-	void setNbCartes_J2(int newNb) {
-		nbCartes_J2 = newNb;
-	}
 
 	void setClaim(int winner) {
 		claim = winner;
@@ -314,38 +267,20 @@ public:
 		return claim;
 	}
 
-	int getNbCartes_J1() {
-		return nbCartes_J1;
-	}
 
-	int getNbCartes_J2() {
-		return nbCartes_J2;
-	}
 
 	int getNbCartesMax() {
 		return nbCarteMax;
 	}
 
-	vector<Carte_c*>& getCartesJ1() {
-		
-		return cartesC_j1;
-	}
-
-	vector<Carte_c*>& getCartesJ2() {
-		return cartesC_j2;
-	}
-
-	vector<Carte_t*>& getCartesT_J1() {
-
-		return cartesT_j1;
-	}
-
-	vector<Carte_t*>& getCartesT_J2() {
-		return cartesT_j2;
-	}
 
 	vector<nodeHist_c *>& getHist_c() {
 		return hist_c;
+	}
+
+	vector<Cote *>& getCotes() {
+
+		return joueurs;
 	}
 
 
