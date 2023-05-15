@@ -6,14 +6,7 @@
 #include <ostream>
 #include <string>
 
-/// <summary>
-/// Enumerates the possible color a card can have.
-/// The color defines the clan to which it belongs.
-/// </summary>
-enum Couleur {
-	Rouge, Vert, Bleu, Jaune, Noir, Gris
-};
-
+using namespace std;
 
 /// <summary>
 /// Carte_c represents the classical cards (the ones that are not special in any way).
@@ -24,7 +17,7 @@ private:
 	static int val_max; //maximum value
 	static int val_min; //minimum value
 
-	Couleur couleur; //color of the card
+	string couleur; //color of the card
 	int valeur; // value of the card ranging number [val_min, val_max]
 
 public:
@@ -38,17 +31,19 @@ public:
 	/// <param name="col"> color of the card : Couleur </param>
 	/// <param name="vmin"> optionnal, minimal value of the card </param>
 	/// <param name="vmax"> optionnal, maximal value of the card </param>
-	Carte_c(int val, Couleur col) :couleur(col), valeur(val) {
+	Carte_c(int val, const string& col) :couleur(col), valeur(val) {
+		val_min = 0;
+		val_max = 0;
 	}
 
 	///FUNCTIONS
 	void setValeur(int val);
-	void setCouleur(Couleur col);
+	void setCouleur(const string& col);
 	static int getValMax();
 	static int getValMin();
-	void setValMax(int vmax);
-	void setValMin(int vmin);
-	Couleur getCouleur() const;
+	void setValMax(int vmax) const;
+	void setValMin(int vmin) const;
+	const string& getCouleur() const;
 	int getValeur() const;
 
 	/// <summary>
@@ -57,25 +52,7 @@ public:
 	~Carte_c() = default;
 
 	friend std::ostream& operator<<(std::ostream& os, const Carte_c& cc);
-	friend const char* Col2String(Couleur c);
-
 };
-
-
-/// <summary>
-/// Allows to retrieve the string value of the color
-/// </summary>
-const char* Col2String(Couleur c) {
-	switch (c) {
-	case Couleur::Bleu: return "Bleu";
-	case Couleur::Rouge: return "Rouge";
-	case Couleur::Gris: return "Gris";
-	case Couleur::Jaune: return "Jaune";
-	case Couleur::Noir: return "Noir";
-	case Couleur::Vert: return "Vert";
-	default: throw std::invalid_argument("Unimplemented color");
-	}
-}
 
 /// <summary>
 /// Print ooperator overload to display the card and it's caracteristics
@@ -84,7 +61,7 @@ const char* Col2String(Couleur c) {
 /// <param name="cc"> the card to display</param>
 /// <returns> the output stream with the card's information</returns>
 std::ostream& operator<<(std::ostream& os, const Carte_c& cc) {
-	os << "Carte_c : \n\t Couleur : " << Col2String(cc.getCouleur()) << "\n\t "
+	os << "Carte_c : \n\t Couleur : " << cc.getCouleur() << "\n\t "
 		<< "Valeur : " << cc.getValeur() << std::endl;
 	return os;
 }

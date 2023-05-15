@@ -132,6 +132,7 @@
     <ClInclude Include="Carte_c.h" />
     <ClInclude Include="Carte_t.h" />
     <ClInclude Include="Combinaison.h" />
+    <ClInclude Include="Defausse.h" />
     <ClInclude Include="Jeu.h" />
     <ClInclude Include="Joueur.h" />
     <ClInclude Include="Pioche_c.h" />
