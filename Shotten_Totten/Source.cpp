@@ -10,6 +10,8 @@ int main() {
 	vector<Combinaison*> vic;
 
 	vector<Carte_c*> cards;
+	vector<Tuile*> tuile;
+
 
 	vic.push_back(new Combinaison(false, false, false));
 	vic.push_back(new Combinaison(true, false, false));
@@ -19,19 +21,34 @@ int main() {
 
 	Tuile* t = new Tuile(3, vic);
 
-	t->ajout_c(new Carte_c(1, Couleur::Rouge), 1);
-	t->ajout_c(new Carte_c(2, Couleur::Bleu), 1);
-	t->ajout_c(new Carte_c(4, Couleur::Rouge), 1);
+	tuile.push_back(t);
 
-	t->claimTuile(1);
+	t->ajout_c(new Carte_c(9, Couleur::Rouge), 2);
+	t->ajout_c(new Carte_c(8, Couleur::Rouge), 2);
+	t->ajout_c(new Carte_c(7, Couleur::Rouge), 2);
 	
-	t->ajout_c(new Carte_c(1, Couleur::Rouge), 2);
-	t->ajout_c(new Carte_c(2, Couleur::Rouge), 2);
-	t->ajout_c(new Carte_c(3, Couleur::Rouge), 2);
+	cards = t->getCartesJ1();
+	cout << "Nb cartes J1: " << t->getCartesJ1().size() << endl;
 
-	t->claimTuile(1);
+	for (int i = 0; i < cards.size(); i++) {
+		cout << cards[i]->getValeur() << endl;
+	}
+	cout << "Nb cartes J2: "<<t->getCartesJ2().size() << endl;
+	//t->claimTuile(1);
+	
+	t->ajout_c(new Carte_c(9, Couleur::Bleu), 1);
+	t->ajout_c(new Carte_c(8, Couleur::Bleu), 1);
+	//t->ajout_c(new Carte_c(7, Couleur::Bleu), 1);
+	
+	cout << "Nb cartes J2: " << t->getCartesJ2().size() << endl;
+	
+	cards = t->getCartesJ2();
 
-	t->claimTuile(2);
+	for (int i = 0; i < cards.size(); i++) {
+		cout << cards[i]->getValeur() << endl;
+	}
+
+	t->claimTuile(2, tuile);
 
 	cout << "gagnant: " << t->getClaim() << endl;
 
