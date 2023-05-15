@@ -163,6 +163,8 @@ public:
 		return;
 	}
 
+
+	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité ou de revendication par preuve
 	void claimTuile(int idJoueur, vector<Tuile *> plateau){
 		if (!isClaimable()) {
 			std::cout << "Tuile non revendicable" << std::endl;
@@ -196,7 +198,7 @@ public:
 		//TODO
 		//Parcourir vector et set valeurs cartes Troupe d'elite
 
-
+		//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité
 		Combinaison combiJ1(getCotes()[0]->getCartesC()), combiJ2(getCotes()[1]->getCartesC());
 
 		
