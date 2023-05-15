@@ -14,7 +14,7 @@ class Combinaison
 private:
 	int taille_combi;
 	int scoreCombi;
-	int val_somme;
+	int valSumCartes;
 	bool is_suite;
 	bool is_couleur;
 	bool is_brelan;
@@ -27,7 +27,7 @@ public:
 		is_couleur = isCouleur(combi);
 		is_brelan = isBrelan(combi);
 
-		val_somme = calculSumCombi(combi);
+		valSumCartes = calculSumCombi(combi);
 		scoreCombi = calculScoreCombi(this);
 	}
 
@@ -37,7 +37,7 @@ public:
 		is_couleur = couleur;
 		is_brelan = brelan;
 
-		val_somme = -1;
+		valSumCartes = -1;
 		scoreCombi = calculScoreCombi(this);
 	}
 
@@ -124,7 +124,7 @@ public:
 	}
 
 	void setSumCombi(int s) {
-		val_somme = s;
+		valSumCartes = s;
 	}
 
 	int getScoreCombi() {
@@ -132,7 +132,7 @@ public:
 	}
 
 	int getSumCombi() {
-		return val_somme;
+		return valSumCartes;
 	}
 
 	bool getBrelan() {

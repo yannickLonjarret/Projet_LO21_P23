@@ -46,10 +46,10 @@ public:
 	Tuile(int nb_cartes, vector<Combinaison *> vicPoss, int nbJoueur) {
 		nbCarteMax = nb_cartes;
 
-		for (size_t i = 0; i < vicPoss.size(); i++)
+		for (int i = 0; i < vicPoss.size(); i++)
 			victoirePossible.push_back(vicPoss[i]);
 
-		for (size_t i = 0; i < nbJoueur; i++)
+		for (int i = 0; i < nbJoueur; i++)
 			joueurs.push_back(new Cote(i));
 		
 
