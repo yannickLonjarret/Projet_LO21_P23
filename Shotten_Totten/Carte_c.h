@@ -14,11 +14,12 @@ using namespace std;
 class Carte_c : Carte
 {
 private:
-	static int val_max; //maximum value
-	static int val_min; //minimum value
+	static int val_max;
+	static int val_min;
+	static vector<string> couleurs;
 
-	string couleur; //color of the card
-	int valeur; // value of the card ranging number [val_min, val_max]
+	int valeur;
+	string couleur;
 
 public:
 
@@ -31,9 +32,16 @@ public:
 	/// <param name="col"> color of the card : Couleur </param>
 	/// <param name="vmin"> optionnal, minimal value of the card </param>
 	/// <param name="vmax"> optionnal, maximal value of the card </param>
-	Carte_c(int val, const string& col) :couleur(col), valeur(val) {
+	Carte_c(int val, const string& col) :valeur(val), couleur(col) {
 		val_min = 0;
 		val_max = 0;
+		couleurs.push_back("Bleu");
+		couleurs.push_back("Rouge");
+		couleurs.push_back("Vert");
+		couleurs.push_back("Jaune");
+		couleurs.push_back("Noir");
+		couleurs.push_back("Gris");
+
 	}
 
 	///FUNCTIONS
