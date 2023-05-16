@@ -265,6 +265,9 @@ public:
 		claim = winner;
 	}
 
+
+
+
 	int getClaim() {
 		return claim;
 	}
@@ -283,6 +286,10 @@ public:
 	vector<Cote *>& getCotes() {
 
 		return joueurs;
+	}
+
+	vector<Combinaison*>& getVictoires() {
+		return victoirePossible;
 	}
 
 
