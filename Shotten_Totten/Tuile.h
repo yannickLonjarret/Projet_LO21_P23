@@ -278,7 +278,15 @@ public:
 		claim = winner;
 	}
 
+	void setVictoires(vector<Combinaison*> newVict) {
+		vector<Combinaison*> toChng = getVictoires();
+		
+		clearVictoires();
 
+		for (auto i = 0; i < newVict.size(); i++)
+			toChng.push_back(newVict[i]);
+
+	}
 
 
 	int getClaim() {
