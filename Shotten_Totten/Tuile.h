@@ -113,8 +113,11 @@ public:
 	bool proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete) {
 
 		if (combiIncompl.size() < complete->getTailleCombi()) {
-			if (combiIncompl[0]->getValeur() == -1) {
-
+			if (combiIncompl.size() != 0 && combiIncompl[0]->getValeur() == -1) {
+				return computeProofCarteT((TroupeElite*)combiIncompl[0], combiIncompl, cardsToTest, complete);
+			}
+			else {
+				return computeProofCarteC(combiIncompl, cardsToTest, complete);
 			}
 		}
 
@@ -123,7 +126,7 @@ public:
 	}
 
 
-
+	//To finish and test
 	bool computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete) {
 		int lowB, hiB;
 		
@@ -136,6 +139,8 @@ public:
 			for (int j = 0; j < Carte_c::getCouleurs.size() - 1; j++) {
 				//toSet->setCouleur();
 				//toSet->setValeur();
+
+				//sort combiIncompl
 				combiGagne = proofComputer(combiIncompl, cardsToTest, complete);
 
 				if (combiGagne) return combiGagne;
@@ -145,6 +150,31 @@ public:
 
 		return combiGagne;
 	}
+
+	bool computeProofCarteC(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete) {
+
+		bool combiGagne;
+
+
+		//toSet->setCouleur();
+		//toSet->setValeur();
+
+		//sort combiIncompl
+
+		for (int i = 0; i < cardsToTest.size(); i++) {
+
+			//insert cardsToTest inside combiIncompl
+			combiGagne = proofComputer(combiIncompl, cardsToTest, complete);
+			if (combiGagne) return combiGagne;
+
+			//if here erase last inserted element
+			//compare on pointer
+
+		}
+		return combiGagne;
+	}
+
+
 
 	void cardSubstractor(vector<Carte_c*>& toSub, vector<Tuile*> plateau) {
 		int i = 0;
