@@ -33,13 +33,13 @@ public:
     void setNom(string name){nom = name;}
 };
 
-class TroupeElite : public Carte_t
+class TroupeElite : public Carte_t, public Carte_c
 {
 private:
     int val_deb;
     int val_fin;
 public:
-    TroupeElite(types t, string n, int vd, int vf):Carte_t(t, n), val_deb(vd), val_fin(vf){}
+    TroupeElite(types t, string n, int v, const string& c, int vd, int vf):Carte_t(t, n), Carte_c(v, c), val_deb(vd), val_fin(vf){}
     ~TroupeElite() = default;
     int getDebut() const {return val_deb;}
     int getFin() const {return val_fin;}
