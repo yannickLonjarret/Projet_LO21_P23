@@ -11,35 +11,35 @@ using namespace std;
 
 enum types {elite, combat, ruse};
 
-class CarteTactiqueException {
+class Carte_tException {
 	string info;
 public:
-	CarteTactiqueException(const string str) { info = str; }
+	Carte_tException(const string str) { info = str; }
 	const string getInfo() const { return info; }
 };
 
 
-class CarteTactique : public Carte
+class Carte_t : public Carte
 {
 protected:
     types type;
     string nom;
 public:
-    CarteTactique(types t, string n):type(t), nom(n){}
-    ~CarteTactique() = default;
+    Carte_t(types t, string n):type(t), nom(n){}
+    ~Carte_t() = default;
     types getType() const {return type;}
     string getNom() const {return nom;}
     void setType(types valeur){type = valeur;}
     void setNom(string name){nom = name;}
 };
 
-class TroupeElite : public CarteTactique
+class TroupeElite : public Carte_t
 {
 private:
     int val_deb;
     int val_fin;
 public:
-    TroupeElite(types t, string n, int vd, int vf):CarteTactique(t, n), val_deb(vd), val_fin(vf){}
+    TroupeElite(types t, string n, int vd, int vf):Carte_t(t, n), val_deb(vd), val_fin(vf){}
     ~TroupeElite() = default;
     int getDebut() const {return val_deb;}
     int getFin() const {return val_fin;}
@@ -51,14 +51,14 @@ public:
 
 ostream& operator<<(ostream& f, const TroupeElite& c);
 
-class ModeCombat : public CarteTactique
+class ModeCombat : public Carte_t
 {
 private:
     int nb_cartes;
 	vector<Combinaison*> victoirePossible;
 
 public:
-    ModeCombat(types t, string n, int nb, vector<Combinaison*> combi) : CarteTactique(t, n), nb_cartes(nb), victoirePossible(combi){}
+    ModeCombat(types t, string n, int nb, vector<Combinaison*> combi) : Carte_t(t, n), nb_cartes(nb), victoirePossible(combi){}
     ~ModeCombat() = default;
     int getNbCartes() const {
         return nb_cartes;
@@ -68,12 +68,12 @@ public:
     }
 };
 
-class Ruse : CarteTactique
+class Ruse : Carte_t
 {
 private:
     vector<int> actions;
 public:
-    Ruse(types t, string n, vector<int> suite_actions) : CarteTactique(t, n), actions(suite_actions){}
+    Ruse(types t, string n, vector<int> suite_actions) : Carte_t(t, n), actions(suite_actions){}
     ~Ruse() = default;
     const vector<int>& getActions() const{
         return actions;
