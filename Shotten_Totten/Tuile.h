@@ -261,6 +261,19 @@ public:
 	}
 
 
+	void clearVictoires() {
+		vector<Combinaison*> toClr = getVictoires();
+		Combinaison* tmp;
+
+		while (toClr.size() != 0) {
+			tmp = toClr[0];
+			toClr.erase(toClr.begin());
+			delete tmp;
+		}
+
+	}
+
+
 	void setClaim(int winner) {
 		claim = winner;
 	}
