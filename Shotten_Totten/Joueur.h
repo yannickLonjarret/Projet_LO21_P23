@@ -14,7 +14,11 @@
 class Joueur
 {
 private:
+
 	string nom;
+	//test pour donner un identifiant unique
+	static int prochain_id;
+	int id_joueur;
 	int nb_cartes;
 	int score;
 	std::vector<Carte_c> cartes_c;
@@ -33,10 +37,19 @@ public:
 
 	Joueur(string const &n) : nom(n)
 	{
+		id_joueur = prochain_id; //Attribuer l'id unique a l'instance actuelle
+		prochain_id++;//Incrémenter l'id unique pour la prochaine instance
 		nb_cartes = 0;
 		score = 0;
 	}
 
+	int setNb_cartes(){
+		nb_cartes= cartes_c.size() + carte_t.size();
+	}
+
+	int setScore(int s){
+		score += s;
+	}
 	/// <summary>
 	/// Default Destructor
 	/// </summary>
@@ -77,7 +90,6 @@ public:
 		}
 		else
 		{
-			main.Pioche_c::pop();
 		}
 	}
 
@@ -88,16 +100,17 @@ public:
 		}
 		else
 		{
-			main.Pioche_t::pop();
 		}
 	}
 
-	void Poser_carte_c(Carte_c c);
-	void Poser_carte_t(Carte_t c);
+	void Poser_carte_c(Carte_c c,id_joueur id);
+	void Poser_carte_t(Carte_t c,id_joueur id);
 	void surrender();
 	void to_claim();
 	void look_graveyard();
 };
+
+int Joueur::prochain_id = 0; // Initialisation de la variable statique
 
 /// <summary>
 /// Print ooperator overload to display the player and it's caracteristics
