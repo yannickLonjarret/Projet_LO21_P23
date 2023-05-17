@@ -26,7 +26,7 @@ public:
 	/// <param name="c">the collection of cards to be set as the attribute</param>
 	Pioche_t(std::vector<Carte_t> const& c) :cartes(c) {};
 
-	int getSize() const {
+	size_t getSize() const {
 		return this->cartes.size();
 	}
 

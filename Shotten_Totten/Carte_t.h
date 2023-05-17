@@ -59,6 +59,7 @@ public:
     /// @brief Allows the user to change the name of the card
     /// @param name : the desired name of the card
     void setNom(string name){nom = name;}
+    friend std::ostream& operator<<(std::ostream& os, const Carte_t& cc);
 };
 
 /// @brief TroupeElite represents cards which correspond to Troupe d'Elite cards (playable as clan cards)
@@ -115,7 +116,7 @@ public:
 /// @param f : the output stream
 /// @param c : the card to display
 /// @return the output stream with the card displayed
-ostream& operator<<(ostream& f, const TroupeElite& c);
+std::ostream& operator<<(std::ostream& f, const TroupeElite& c);
 
 /// @brief ModeCombat represents cards 'Mode de Combat' (playable on a Tuile)
 class ModeCombat : public Carte_t
