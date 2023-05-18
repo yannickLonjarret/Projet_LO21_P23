@@ -5,6 +5,7 @@
 #include "Carte.h"
 #include <ostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -53,6 +54,13 @@ public:
 	void setValMin(int vmin) const;
 	const string& getCouleur() const;
 	int getValeur() const;
+
+
+	//overriding the print function
+	void print(std::ostream& os) const override {
+		os << "Carte_c : \n\t Couleur : " << this->getCouleur() << "\n\t "
+			<< "Valeur : " << this->getValeur() << std::endl;
+	}
 
 	/// <summary>
 	/// Default Destructor 

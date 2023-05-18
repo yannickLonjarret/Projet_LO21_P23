@@ -37,13 +37,13 @@ private:
 
 	vector<Cote*> joueurs;
 
-	vector<nodeHist_c *> hist_c;
-	vector<Combinaison *> victoirePossible;
+	vector<nodeHist_c*> hist_c;
+	vector<Combinaison*> victoirePossible;
 
 	int claim;
 
 public:
-	Tuile(int nb_cartes, vector<Combinaison *> vicPoss, int nbJoueur) {
+	Tuile(int nb_cartes, vector<Combinaison*> vicPoss, int nbJoueur) {
 		nbCarteMax = nb_cartes;
 
 		for (int i = 0; i < vicPoss.size(); i++)
@@ -51,7 +51,7 @@ public:
 
 		for (int i = 0; i < nbJoueur; i++)
 			joueurs.push_back(new Cote(i));
-		
+
 
 		claim = 0;
 
@@ -79,26 +79,26 @@ public:
 		}
 
 	}
-		
-		
+
+
 
 
 
 	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité ou de revendication par preuve
 	void claimProof(int joueur, vector<Tuile*> plateau) {
 
-		vector<Carte_t *> checkTroupeElite;
-		vector<Carte_c *> allCards;
-		
+		vector<Carte_t*> checkTroupeElite;
+		vector<Carte_c*> allCards;
+
 		checkTroupeElite = getCotes()[joueur]->getCartesT();
 
-		
+
 		//TODO
 		//Parcourir vector et set valeurs cartes Troupe d'elite
 
 		proofCardGenerator(allCards);
 
-	
+
 		cardSubstractor(allCards, plateau);
 
 		for (auto i = 0; i < allCards.size(); i++) {
@@ -106,7 +106,7 @@ public:
 		}
 
 
-		
+
 		return;
 	}
 
@@ -129,14 +129,14 @@ public:
 	//To finish and test
 	bool computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete) {
 		int lowB, hiB;
-		
+
 		bool combiGagne;
 
 		lowB = toSet->getDebut();
 		hiB = toSet->getFin();
 
 		for (int i = lowB; i < hiB; i++) {
-			for (int j = 0; j < Carte_c::getCouleurs.size() - 1; j++) {
+			for (int j = 0; j < Carte_c::getCouleur().size() - 1; j++) {
 				//toSet->setCouleur();
 				//toSet->setValeur();
 
@@ -201,7 +201,7 @@ public:
 		vector<Carte_c*> vect;
 
 		for (size_t i = 0; i < getCotes().size(); i++) {
-			
+
 			vect = getCotes()[i]->getCartesC();
 
 			for (auto j = 0; j < vect.size(); j++) {
@@ -215,7 +215,7 @@ public:
 
 	}
 
-	void proofCardGenerator(vector<Carte_c *> & gen) {
+	void proofCardGenerator(vector<Carte_c*>& gen) {
 
 		int min, max;
 		min = Carte_c::getValMin();
@@ -231,12 +231,12 @@ public:
 
 
 	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité ou de revendication par preuve
-	void claimTuile(int idJoueur, vector<Tuile *> plateau){
+	void claimTuile(int idJoueur, vector<Tuile*> plateau) {
 		if (!isClaimable()) {
 			std::cout << "Tuile non revendicable" << std::endl;
 			return;
 		}
-			
+
 
 		if (!canPlayerClaim(idJoueur)) {
 			std::cout << "Tuile non revendicable par vous" << std::endl;
@@ -267,7 +267,7 @@ public:
 		//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité
 		Combinaison combiJ1(getCotes()[0]->getCartesC()), combiJ2(getCotes()[1]->getCartesC());
 
-		
+
 		if (combiJ1 > combiJ2)
 			setClaim(1);
 
@@ -275,11 +275,11 @@ public:
 			setClaim(2);
 		else
 			casEgalite(getHist_c());
-		
+
 	}
 
-	void casEgalite(vector<nodeHist_c *> hist_c) {
-		
+	void casEgalite(vector<nodeHist_c*> hist_c) {
+
 		int idJoueur = 0;
 		size_t i = 0;
 
@@ -294,21 +294,21 @@ public:
 		if (idJoueur == 0) cout << "Problème cas Egalité" << endl;
 
 		setClaim(idJoueur);
-		
+
 		return;
 	}
 
 
 
 	bool canPlayerClaim(int idJoueur) {
-			return getCotes()[idJoueur]->getNbCartes() == getNbCartesMax();
+		return getCotes()[idJoueur]->getNbCartes() == getNbCartesMax();
 	}
 
 	bool isClaimProof() {
 		return ((getCotes()[0]->getNbCartes() - getCotes()[1]->getNbCartes()) != 0);
 	}
 
-	bool isClaimable(){
+	bool isClaimable() {
 
 		if (getClaim() != 0) {
 			cout << "Deja revencdique" << endl;
@@ -346,7 +346,7 @@ public:
 
 	void setVictoires(vector<Combinaison*> newVict) {
 		vector<Combinaison*> toChng = getVictoires();
-		
+
 		clearVictoires();
 
 		for (auto i = 0; i < newVict.size(); i++)
@@ -365,11 +365,11 @@ public:
 	}
 
 
-	vector<nodeHist_c *>& getHist_c() {
+	vector<nodeHist_c*>& getHist_c() {
 		return hist_c;
 	}
 
-	vector<Cote *>& getCotes() {
+	vector<Cote*>& getCotes() {
 
 		return joueurs;
 	}

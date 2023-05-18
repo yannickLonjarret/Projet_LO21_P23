@@ -144,6 +144,7 @@
     <ClCompile Include="Carte_c.cpp" />
     <ClCompile Include="Carte_t.cpp" />
     <ClCompile Include="Combinaison.cpp" />
+    <ClCompile Include="Defausse.cpp" />
     <ClCompile Include="Jeu.cpp" />
     <ClCompile Include="Joueur.cpp" />
     <ClCompile Include="Pioche_c.cpp" />
