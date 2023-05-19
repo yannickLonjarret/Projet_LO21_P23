@@ -52,5 +52,5 @@ int main() {
 
 	cout << "gagnant: " << t->getClaim() << endl;
 
-	
+	return 0;
 }

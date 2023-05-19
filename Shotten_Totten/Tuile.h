@@ -1,15 +1,10 @@
 #pragma once
-#ifndef TUILE_H
-#define TUILE_H
 
-#include "Carte_c.h"
 #include "Carte_t.h"
-#include "Combinaison.h"
 #include "Cote.h"
 
-#include <vector>
-#include <algorithm>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -114,7 +109,7 @@ public:
 
 		if (combiIncompl.size() < complete->getTailleCombi()) {
 			if (combiIncompl.size() != 0 && combiIncompl[0]->getValeur() == -1) {
-				return computeProofCarteT((TroupeElite*)combiIncompl[0], combiIncompl, cardsToTest, complete);
+				//return computeProofCarteT((TroupeElite*)combiIncompl[0], combiIncompl, cardsToTest, complete);
 			}
 			else {
 				return computeProofCarteC(combiIncompl, cardsToTest, complete);
@@ -125,18 +120,18 @@ public:
 
 	}
 
-
+	/*
 	//To finish and test
 	bool computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete) {
 		int lowB, hiB;
 
-		bool combiGagne;
+		bool combiGagne = false;
 
 		lowB = toSet->getDebut();
 		hiB = toSet->getFin();
 
 		for (int i = lowB; i < hiB; i++) {
-			for (int j = 0; j < Carte_c::getCouleur().size() - 1; j++) {
+			for (int j = 0; j < Carte_c::getCouleurs().size() - 1; j++) {
 				//toSet->setCouleur();
 				//toSet->setValeur();
 
@@ -151,9 +146,11 @@ public:
 		return combiGagne;
 	}
 
+	*/
+
 	bool computeProofCarteC(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete) {
 
-		bool combiGagne;
+		bool combiGagne = false;
 
 
 		//toSet->setCouleur();
@@ -220,10 +217,11 @@ public:
 		int min, max;
 		min = Carte_c::getValMin();
 		max = Carte_c::getValMax();
+		vector<string> couleurs = Carte_c::getCouleurs();
 
-		for (int color = (int)Couleur::Rouge; color < (int)Couleur::Gris; color++) {
+		for (int color = 1; color < couleurs.size(); color++) {
 			for (int i = min; i <= max; i++)
-				gen.push_back(new Carte_c(i, (Couleur)color));
+				gen.push_back(new Carte_c(i,couleurs[color]));
 		}
 
 		return;
@@ -380,8 +378,6 @@ public:
 
 
 };
-
-#endif // !TUILE_H
 
 
 
