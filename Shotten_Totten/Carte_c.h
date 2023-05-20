@@ -62,6 +62,11 @@ public:
 			<< "Valeur : " << this->getValeur() << std::endl;
 	}
 
+	/*
+	static vector<string>& getCouleurs() {
+		return couleurs;
+	}*/
+
 	/// <summary>
 	/// Default Destructor 
 	/// </summary>

@@ -154,6 +154,13 @@ public:
 		return (getScoreCombi() > other.getScoreCombi());
 	}
 
+	static bool cmpSup(Combinaison* c1, Combinaison* c2) {
+		if (c1->getScoreCombi() == c2->getScoreCombi())
+			return c1->getSumCombi() > c2->getSumCombi();
+
+		return (c1->getScoreCombi() > c2->getScoreCombi());
+	}
+
 };
 
 

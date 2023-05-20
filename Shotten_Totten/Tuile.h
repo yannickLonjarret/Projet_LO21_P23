@@ -48,7 +48,7 @@ public:
 			joueurs.push_back(new Cote(i));
 
 
-		claim = 0;
+		claim = -1;
 
 
 
@@ -82,37 +82,57 @@ public:
 	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité ou de revendication par preuve
 	void claimProof(int joueur, vector<Tuile*> plateau) {
 
-		vector<Carte_t*> checkTroupeElite;
+		//vector<Carte_t*> checkTroupeElite;
 		vector<Carte_c*> allCards;
 
-		checkTroupeElite = getCotes()[joueur]->getCartesT();
+		//checkTroupeElite = getCotes()[joueur]->getCartesT();
 
-
+		Combinaison* complete = new Combinaison(getCotes()[joueur]->getCartesC());
 		//TODO
 		//Parcourir vector et set valeurs cartes Troupe d'elite
 
 		proofCardGenerator(allCards);
 
-
 		cardSubstractor(allCards, plateau);
+		vector<Carte_c*> mem = vector<Carte_c*>();
+		if (!proofComputer(getCotes()[(joueur + 1) % 2]->getCartesC(), allCards, complete, mem))
+			setClaim(joueur);
 
-		for (auto i = 0; i < allCards.size(); i++) {
-			cout << "Valeur: " << allCards[i]->getValeur() << " Couleur: " << allCards[i]->getCouleur() << endl;
-		}
-
-
-
+		std::for_each(allCards.begin(), allCards.end(), [](Carte_c* c) {delete c; });
+		delete complete;
+		std::for_each(mem.begin(), mem.end(), [](Carte_c* c) {delete c; });
 		return;
 	}
 
-	bool proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete) {
+	bool proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated) {
+		
 
-		if (combiIncompl.size() < complete->getTailleCombi()) {
+
+		if(combiIncompl.size() < complete->getTailleCombi()) {
 			if (combiIncompl.size() != 0 && combiIncompl[0]->getValeur() == -1) {
 				//return computeProofCarteT((TroupeElite*)combiIncompl[0], combiIncompl, cardsToTest, complete);
 			}
 			else {
-				return computeProofCarteC(combiIncompl, cardsToTest, complete);
+				return computeProofCarteC(combiIncompl, cardsToTest, complete, prevEvaluated);
+			}
+		}
+		else {
+
+			//Trie par valeur croissante pour la combinaison
+			std::sort(combiIncompl.begin(), combiIncompl.end(), [](Carte_c* c1, Carte_c* c2) {
+				return c1->getValeur() < c2->getValeur();
+			});
+
+			//2 pointeurs, pour la comparaison
+			//operator> n'apprecie pas un type différent
+			Combinaison* incompl = new Combinaison(combiIncompl);
+
+			if (Combinaison::cmpSup(incompl, complete)){
+				delete incompl;
+				return true;
+			}
+			else {
+				return false;
 			}
 		}
 
@@ -148,25 +168,39 @@ public:
 
 	*/
 
-	bool computeProofCarteC(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete) {
+	bool computeProofCarteC(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated) {
 
 		bool combiGagne = false;
 
-
-		//toSet->setCouleur();
-		//toSet->setValeur();
-
-		//sort combiIncompl
-
 		for (int i = 0; i < cardsToTest.size(); i++) {
+			
+			//Evaluation sans répétition des cartes par consultation d'un hist
+			for (int j = 0; j < prevEvaluated.size(); j++) {
+				if (cardsToTest[i] == prevEvaluated[j])
+					i++;
+						
+			}
+			
+			if (i < cardsToTest.size()) {
 
-			//insert cardsToTest inside combiIncompl
-			combiGagne = proofComputer(combiIncompl, cardsToTest, complete);
-			if (combiGagne) return combiGagne;
+				combiIncompl.push_back(cardsToTest[i]);
 
-			//if here erase last inserted element
-			//compare on pointer
+				//Maj de l'hist
+				prevEvaluated.push_back(cardsToTest[i]);
+				
+				combiGagne = proofComputer(combiIncompl, cardsToTest, complete, prevEvaluated);
+				if (combiGagne) return combiGagne;
 
+
+				for (int del = 0; del < combiIncompl.size(); del++) {
+
+					if (combiIncompl[del] == cardsToTest[i]) {
+						combiIncompl.erase(combiIncompl.begin() + del);
+
+					}
+				}
+			}
+			
 		}
 		return combiGagne;
 	}
@@ -221,7 +255,7 @@ public:
 
 		for (int color = 1; color < couleurs.size(); color++) {
 			for (int i = min; i <= max; i++)
-				gen.push_back(new Carte_c(i,couleurs[color]));
+				gen.push_back(new Carte_c(i, couleurs[color]));
 		}
 
 		return;
@@ -242,9 +276,9 @@ public:
 		}
 
 		if (isClaimProof()) {
-			std::cout << "ça marche" << std::endl;
+			std::cout << "ca marche" << std::endl;
 			claimProof(idJoueur, plateau);
-			std::cout << "ça marche toujour" << std::endl;
+			std::cout << "ca marche toujour" << std::endl;
 		}
 		else {
 			claimClassic(idJoueur);
@@ -256,9 +290,9 @@ public:
 
 	void claimClassic(int joueur) {
 
-		vector<Carte_t*> checkTroupeElite;
+		//vector<Carte_t*> checkTroupeElite;
 
-		checkTroupeElite = getCotes()[joueur]->getCartesT();
+		//checkTroupeElite = getCotes()[joueur]->getCartesT();
 		//TODO
 		//Parcourir vector et set valeurs cartes Troupe d'elite
 
@@ -267,10 +301,10 @@ public:
 
 
 		if (combiJ1 > combiJ2)
-			setClaim(1);
+			setClaim(joueur);
 
 		else if (combiJ2 > combiJ1)
-			setClaim(2);
+			setClaim(joueur);
 		else
 			casEgalite(getHist_c());
 
@@ -281,7 +315,7 @@ public:
 		int idJoueur = 0;
 		size_t i = 0;
 
-		while (idJoueur == 0 && i < hist_c.size()) {
+		while (idJoueur == -1 && i < hist_c.size()) {
 
 			if (hist_c[i]->getPositionCarte() == getNbCartesMax()) {
 				idJoueur = hist_c[i]->getJoueur();
@@ -289,7 +323,7 @@ public:
 			i++;
 		}
 
-		if (idJoueur == 0) cout << "Problème cas Egalité" << endl;
+		if (idJoueur == -1) cout << "Problème cas Egalité" << endl;
 
 		setClaim(idJoueur);
 
@@ -308,7 +342,7 @@ public:
 
 	bool isClaimable() {
 
-		if (getClaim() != 0) {
+		if (getClaim() != -1) {
 			cout << "Deja revencdique" << endl;
 			return false;
 		}
@@ -375,6 +409,8 @@ public:
 	vector<Combinaison*>& getVictoires() {
 		return victoirePossible;
 	}
+
+
 
 
 };
