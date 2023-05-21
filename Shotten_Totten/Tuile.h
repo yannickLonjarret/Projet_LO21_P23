@@ -106,7 +106,7 @@ public:
 	void claimTuile(int idJoueur, vector<Tuile*> plateau);
 	void claimClassic(int joueur);
 
-	void casEgalite(vector<nodeHist_c*> hist_c);
+	void casEgalite();
 
 
 

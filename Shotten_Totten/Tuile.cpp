@@ -218,10 +218,11 @@ void Tuile::claimClassic(int joueur) {
 
 }
 
-void Tuile::casEgalite(vector<nodeHist_c*> hist_c) {
+void Tuile::casEgalite() {
 
 	int idJoueur = 0;
 	size_t i = 0;
+	vector<nodeHist_c *> hist_c = getHist_c();
 
 	while (idJoueur == -1 && i < hist_c.size()) {
 
