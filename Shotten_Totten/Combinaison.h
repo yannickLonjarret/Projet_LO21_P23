@@ -1,9 +1,6 @@
 #pragma once
-#ifndef COMBINAISON_H
-#define COMBINAISON_H
 #include <vector>
 #include <iostream>
-//#include "Tuile.h"
 
 #include "Carte_c.h"
 using namespace std;
@@ -21,14 +18,17 @@ private:
 
 public:
 
-	Combinaison(vector<Carte_c*> & combi, int szCombi = 3): taille_combi(szCombi){
-		
+	Combinaison(vector<Carte_c*>& combi, int szCombi = 3) : taille_combi(szCombi) {
+
 		is_suite = isSuite(combi);
 		is_couleur = isCouleur(combi);
 		is_brelan = isBrelan(combi);
 
 		valSumCartes = calculSumCombi(combi);
 		scoreCombi = calculScoreCombi(this);
+
+		for (int i = 0; i < 3; i++)
+			cout << combi[i]->getValeur() << " " << combi[i]->getCouleur() << endl;
 	}
 
 	Combinaison(bool suite, bool couleur, bool brelan, int szCombi = 3) : taille_combi(szCombi) {
@@ -46,8 +46,8 @@ public:
 
 		size_t i = 1;
 
-		while(res && i < getTailleCombi()) {
-			
+		while (res && i < getTailleCombi()) {
+
 			if (combi[i - 1]->getValeur() != combi[i]->getValeur() - 1)
 				res = false;
 
@@ -93,9 +93,10 @@ public:
 	int calculSumCombi(vector<Carte_c*> combi) {
 		int s = 0;
 
-		for (size_t i = 0; i < getTailleCombi(); i++)
+		for (size_t i = 0; i < getTailleCombi(); i++) {
 			s += combi[i]->getValeur();
-
+			cout << "Val sum: " << s << endl;
+		}
 		return s;
 	}
 
@@ -113,6 +114,98 @@ public:
 			return 2;
 
 		return 1;
+	}
+
+	void dropDown(vector<Combinaison*> lstCombi) {
+		cout << "Sum combi dropDown " << getSumCombi() << endl;
+		switch (getScoreCombi())
+		{
+		case 5:
+			if (isCombiInLst(3, lstCombi)) {
+				setDefault();
+				convertToCouleur();
+			}
+			else if (isCombiInLst(2, lstCombi)) {
+				setDefault();
+				convertToSuite();
+			}
+			else {
+				setDefault();
+				convertToSomme();
+			}
+			return;
+
+		case 4:
+			if (isCombiInLst(3, lstCombi)) {
+				setDefault();
+				convertToCouleur();
+			}
+			else {
+				setDefault();
+				convertToSomme();
+			}
+			return;
+
+		case 3:
+			setDefault();
+			convertToSomme();
+
+			return;
+
+		case 2:
+			setDefault();
+			convertToSomme();
+
+			return;
+
+		default:
+			cout << "Erreur Dropdown combi: score inexistant" << endl;
+			break;
+		}
+
+		return;
+	}
+
+
+	bool isCombiInLst(int scoreCombi, vector<Combinaison*> lstCombi) {
+		for (int i = 0; i < lstCombi.size(); i++) {
+			if (lstCombi[i]->getScoreCombi() == scoreCombi)
+				return true;
+		}
+
+		return false;
+	}
+
+
+	void setDefault() {
+		is_brelan = false;
+		is_couleur = false;
+		is_suite = false;
+		scoreCombi = 1;
+	}
+
+	void convertToCouleur() {
+		setCouleur(true);
+		setScoreCombi(calculScoreCombi(this));
+	}
+
+	void convertToSuite() {
+		setSuite(true);
+		setScoreCombi(calculScoreCombi(this));
+	}
+
+	void convertToSomme() {
+
+		setScoreCombi(calculScoreCombi(this));
+		cout << "Sum combi toSomme " << getSumCombi() << endl;
+	}
+
+	void setSuite(bool s) {
+		is_suite = s;
+	}
+
+	void setCouleur(bool s) {
+		is_couleur = s;
 	}
 
 	int getTailleCombi() {
@@ -154,16 +247,11 @@ public:
 		return (getScoreCombi() > other.getScoreCombi());
 	}
 
-	static bool cmpSup(Combinaison* c1, Combinaison* c2) {
-		if (c1->getScoreCombi() == c2->getScoreCombi())
-			return c1->getSumCombi() > c2->getSumCombi();
+	static bool cmpSup(Combinaison* combi1, Combinaison* combi2) {
+		if (combi1->getScoreCombi() == combi2->getScoreCombi())
+			return combi1->getSumCombi() > combi2->getSumCombi();
 
-		return (c1->getScoreCombi() > c2->getScoreCombi());
+		return (combi1->getScoreCombi() > combi2->getScoreCombi());
 	}
 
 };
-
-
-#endif // !COMBINAISON_H
-
-
