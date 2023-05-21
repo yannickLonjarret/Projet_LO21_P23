@@ -3,19 +3,14 @@
 #define CARTE_H
 
 #include <ostream>
+
 class Carte
 {
-
-protected:
-
-	virtual void print(ostream& where) const;
-
 public:
-	friend ostream& operator<< (ostream& out, const Carte& mc) {
-		mc.print(out);
-		return out;
-	}
-
+	virtual ~Carte() {}
+	virtual void print(std::ostream& os) const = 0;
 };
+
+
 
 #endif

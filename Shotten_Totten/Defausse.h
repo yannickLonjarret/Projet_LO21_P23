@@ -6,57 +6,100 @@
 #include <ostream>
 using namespace std;
 
+/// <summary>
+/// This class stores cards that are discarded during the game
+/// </summary>
 class Defausse {
 private:
-	static int nb_cartesMax;
-	int nb_cartes;
-	vector<Carte> cartes;
+
+	static int nb_cartesMax; //maximum number of cards
+	int nb_cartes = 0; // number of cards at a given time
+	vector<Carte*> cartes; // the cards that are stored
 
 public:
 
-	explicit Defausse(const vector<Carte>& cartes) : nb_cartes((int)cartes.size()), cartes(cartes) {
-		nb_cartesMax = (int)cartes.size();
+	/// <summary>
+	/// Constructor for the Defausse , initialy the defausse is empty, so is the number of cards.
+	///
+	Defausse() {
+		nb_cartesMax = (int)cartes.size(); //change maybe ?
 	}
 
 	//FUNCTIONS
-	Carte pop() const {
+
+	/// <summary>
+	/// Retrives the last card on the defausse. Decreases the number of cards in the defausse
+	/// </summary>
+	/// <returns>the last card on the defausse</returns>
+	Carte* pop() {
+		this->nb_cartes--;
 		return cartes.back();
 	}
 
-	void push(const Carte& c) {
+	/// <summary>
+	/// Adds a card to the defausse.
+	/// Increases the number of cards
+	/// </summary>
+	/// <param name="c">the card to add</param>
+	void push(Carte* c) {
 		this->cartes.push_back(c);
+		this->nb_cartes++;
 
 	}
 
+	/// <summary>
+	/// retreieves the X first card of the defausse for visualization.
+	/// </summary>
+	/// <param name="x">x first cards to retrieve</param>
+	/// <returns>a vector of the x first cards</returns>
 	vector<Carte*> getXFirstCard(int x) {
 		std::vector<Carte*> ret;
 
 		for (int i = 0; i < x; i++) {
-			ret.push_back(&this->cartes[i]);
+			ret.push_back(cartes[i]);
 		}
-		return std::vector<Carte*>();
+		return ret;
 	}
 
+	/// <summary>
+	/// returns thr size of the defausse. number of cards
+	/// </summary>
+	/// <returns>the number of cards</returns>
 	int getSize() const {
 		return nb_cartes;
 	}
 
-	vector<Carte> getCartes() const {
+	/// <summary>
+	/// Retirveves the whole defausse.
+	/// </summary>
+	/// <returns>the cards in the defausse</returns>
+	vector<Carte*> getCartes() const {
 		return this->cartes;
 	}
 
 
+	/// <summary>
+	/// default destructor
+	/// </summary>
 	~Defausse() = default;
 
+
+	friend std::ostream& operator<<(std::ostream& os, const Defausse& d);
 
 
 
 };
 
+/// <summary>
+/// Allows to print out the defausse.
+/// </summary>
+/// <param name="os">the output stream to print the defausse on</param>
+/// <param name="d">the defausse</param>
+/// <returns>the output stream with the defausse displayed on</returns>
 std::ostream& operator<<(std::ostream& os, const Defausse& d) {
 	os << "[";
 	for (int i = 0; i < d.getSize(); i++) {
-		os << d.getCartes()[i];
+		d.getCartes()[i]->print(os); //particularité de l'appel de print -> permet de print n'importe quelle sous classe de Carte.
 		if (i != d.getSize() - 1)
 			os << ", ";
 	}

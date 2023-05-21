@@ -1,15 +1,10 @@
 #pragma once
-#ifndef TUILE_H
-#define TUILE_H
 
-#include "Carte_c.h"
 #include "Carte_t.h"
-#include "Combinaison.h"
 #include "Cote.h"
 
-#include <vector>
-#include <algorithm>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -37,13 +32,14 @@ private:
 
 	vector<Cote*> joueurs;
 
-	vector<nodeHist_c *> hist_c;
-	vector<Combinaison *> victoirePossible;
+	vector<nodeHist_c*> hist_c;
+	vector<Combinaison*> victoirePossible;
 
 	int claim;
 
 public:
-	Tuile(int nb_cartes, vector<Combinaison *> vicPoss, int nbJoueur) {
+
+	Tuile(int nb_cartes, vector<Combinaison*> vicPoss, int nbJoueur) {
 		nbCarteMax = nb_cartes;
 
 		for (int i = 0; i < vicPoss.size(); i++)
@@ -51,92 +47,32 @@ public:
 
 		for (int i = 0; i < nbJoueur; i++)
 			joueurs.push_back(new Cote(i));
-		
-
-		claim = 0;
 
 
+		claim = -1;
 
 	};
 
-	void ajout_c(Carte_c* c, int idJoueur) {
-
-		Cote* coteJoueur = getCotes()[idJoueur];
-
-		if (coteJoueur->getNbCartes() <= getNbCartesMax()) {
-
-			coteJoueur->getCartesC().push_back(c);
-			coteJoueur->setNbCartes(coteJoueur->getNbCartes() + 1);
-
-			std::sort(coteJoueur->getCartesC().begin(), coteJoueur->getCartesC().end(), [](Carte_c* c1, Carte_c* c2) {
-				return c1->getValeur() < c2->getValeur();
-				});
-
-			hist_c.push_back(new nodeHist_c(idJoueur, coteJoueur->getNbCartes()));
-		}
-		else {
-			std::cout << "Tuile pleine pour vous" << std::endl;
-		}
-
-	}
-		
-		
-
+	void ajout_c(Carte_c* c, int idJoueur);
 
 
 	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité ou de revendication par preuve
-	void claimProof(int joueur, vector<Tuile*> plateau) {
+	void claimProof(int joueur, vector<Tuile*> plateau);
 
-		vector<Carte_t *> checkTroupeElite;
-		vector<Carte_c *> allCards;
-		
-		checkTroupeElite = getCotes()[joueur]->getCartesT();
+	bool proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated); 
 
-		
-		//TODO
-		//Parcourir vector et set valeurs cartes Troupe d'elite
-
-		proofCardGenerator(allCards);
-
-	
-		cardSubstractor(allCards, plateau);
-
-		for (auto i = 0; i < allCards.size(); i++) {
-			cout << "Valeur: " << allCards[i]->getValeur() << " Couleur: " << allCards[i]->getCouleur() << endl;
-		}
-
-
-		
-		return;
-	}
-
-	bool proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete) {
-
-		if (combiIncompl.size() < complete->getTailleCombi()) {
-			if (combiIncompl.size() != 0 && combiIncompl[0]->getValeur() == -1) {
-				return computeProofCarteT((TroupeElite*)combiIncompl[0], combiIncompl, cardsToTest, complete);
-			}
-			else {
-				return computeProofCarteC(combiIncompl, cardsToTest, complete);
-			}
-		}
-
-
-
-	}
-
-
+	/*
 	//To finish and test
 	bool computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete) {
 		int lowB, hiB;
-		
-		bool combiGagne;
+
+		bool combiGagne = false;
 
 		lowB = toSet->getDebut();
 		hiB = toSet->getFin();
 
 		for (int i = lowB; i < hiB; i++) {
-			for (int j = 0; j < Carte_c::getCouleurs.size() - 1; j++) {
+			for (int j = 0; j < Carte_c::getCouleurs().size() - 1; j++) {
 				//toSet->setCouleur();
 				//toSet->setValeur();
 
@@ -151,208 +87,50 @@ public:
 		return combiGagne;
 	}
 
-	bool computeProofCarteC(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete) {
+	*/
 
-		bool combiGagne;
-
-
-		//toSet->setCouleur();
-		//toSet->setValeur();
-
-		//sort combiIncompl
-
-		for (int i = 0; i < cardsToTest.size(); i++) {
-
-			//insert cardsToTest inside combiIncompl
-			combiGagne = proofComputer(combiIncompl, cardsToTest, complete);
-			if (combiGagne) return combiGagne;
-
-			//if here erase last inserted element
-			//compare on pointer
-
-		}
-		return combiGagne;
-	}
+	bool computeProofCarteC(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated);
 
 
 
-	void cardSubstractor(vector<Carte_c*>& toSub, vector<Tuile*> plateau) {
-		int i = 0;
+	void cardSubstractor(vector<Carte_c*>& toSub, vector<Tuile*> plateau);
 
-		while (i < toSub.size()) {
-			if (isCardOnBoard(toSub[i], plateau))
-				toSub.erase(toSub.begin() + i);
-			else
-				i++;
-		}
-	}
+	bool isCardOnBoard(Carte_c* c, vector<Tuile*> plateau);
 
-	bool isCardOnBoard(Carte_c* c, vector<Tuile*> plateau) {
+	bool isCardOnTuile(Carte_c* c);
 
-		for (auto i = 0; i < plateau.size(); i++) {
-			if (plateau[i]->isCardOnTuile(c)) return true;
-		}
-
-		return false;
-
-	}
-
-	bool isCardOnTuile(Carte_c* c) {
-		vector<Carte_c*> vect;
-
-		for (size_t i = 0; i < getCotes().size(); i++) {
-			
-			vect = getCotes()[i]->getCartesC();
-
-			for (auto j = 0; j < vect.size(); j++) {
-				if (vect[j]->getCouleur() == c->getCouleur() && vect[j]->getValeur() == c->getValeur())
-					return true;
-			}
-		}
-
-
-		return false;
-
-	}
-
-	void proofCardGenerator(vector<Carte_c *> & gen) {
-
-		int min, max;
-		min = Carte_c::getValMin();
-		max = Carte_c::getValMax();
-
-		for (int color = (int)Couleur::Rouge; color < (int)Couleur::Gris; color++) {
-			for (int i = min; i <= max; i++)
-				gen.push_back(new Carte_c(i, (Couleur)color));
-		}
-
-		return;
-	}
+	void proofCardGenerator(vector<Carte_c*>& gen); 
 
 
 	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité ou de revendication par preuve
-	void claimTuile(int idJoueur, vector<Tuile *> plateau){
-		if (!isClaimable()) {
-			std::cout << "Tuile non revendicable" << std::endl;
-			return;
-		}
-			
+	void claimTuile(int idJoueur, vector<Tuile*> plateau);
+	void claimClassic(int joueur);
 
-		if (!canPlayerClaim(idJoueur)) {
-			std::cout << "Tuile non revendicable par vous" << std::endl;
-			return;
-		}
-
-		if (isClaimProof()) {
-			std::cout << "ça marche" << std::endl;
-			claimProof(idJoueur, plateau);
-			std::cout << "ça marche toujour" << std::endl;
-		}
-		else {
-			claimClassic(idJoueur);
-		}
-
-		return;
-
-	}
-
-	void claimClassic(int joueur) {
-
-		vector<Carte_t*> checkTroupeElite;
-
-		checkTroupeElite = getCotes()[joueur]->getCartesT();
-		//TODO
-		//Parcourir vector et set valeurs cartes Troupe d'elite
-
-		//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité
-		Combinaison combiJ1(getCotes()[0]->getCartesC()), combiJ2(getCotes()[1]->getCartesC());
-
-		
-		if (combiJ1 > combiJ2)
-			setClaim(1);
-
-		else if (combiJ2 > combiJ1)
-			setClaim(2);
-		else
-			casEgalite(getHist_c());
-		
-	}
-
-	void casEgalite(vector<nodeHist_c *> hist_c) {
-		
-		int idJoueur = 0;
-		size_t i = 0;
-
-		while (idJoueur == 0 && i < hist_c.size()) {
-
-			if (hist_c[i]->getPositionCarte() == getNbCartesMax()) {
-				idJoueur = hist_c[i]->getJoueur();
-			}
-			i++;
-		}
-
-		if (idJoueur == 0) cout << "Problème cas Egalité" << endl;
-
-		setClaim(idJoueur);
-		
-		return;
-	}
+	void casEgalite(vector<nodeHist_c*> hist_c);
 
 
 
 	bool canPlayerClaim(int idJoueur) {
-			return getCotes()[idJoueur]->getNbCartes() == getNbCartesMax();
+		return getCotes()[idJoueur]->getNbCartes() == getNbCartesMax();
 	}
 
 	bool isClaimProof() {
 		return ((getCotes()[0]->getNbCartes() - getCotes()[1]->getNbCartes()) != 0);
 	}
 
-	bool isClaimable(){
-
-		if (getClaim() != 0) {
-			cout << "Deja revencdique" << endl;
-			return false;
-		}
-		else {
-
-			int nb_c1, nb_c2, nb_cMax;
-
-			nb_c1 = getCotes()[0]->getNbCartes();
-			nb_c2 = getCotes()[1]->getNbCartes();
-			nb_cMax = getNbCartesMax();
-
-			return (nb_c1 == nb_cMax) || (nb_c2 == nb_cMax);
-		}
-	}
+	bool isClaimable();
 
 
-	void clearVictoires() {
-		vector<Combinaison*> toClr = getVictoires();
-		Combinaison* tmp;
+	void clearVictoires();
 
-		while (toClr.size() != 0) {
-			tmp = toClr[0];
-			toClr.erase(toClr.begin());
-			delete tmp;
-		}
-
-	}
-
+	
+	void setVictoires(vector<Combinaison*> newVict);
 
 	void setClaim(int winner) {
 		claim = winner;
 	}
 
-	void setVictoires(vector<Combinaison*> newVict) {
-		vector<Combinaison*> toChng = getVictoires();
-		
-		clearVictoires();
-
-		for (auto i = 0; i < newVict.size(); i++)
-			toChng.push_back(newVict[i]);
-
-	}
+	
 
 
 	int getClaim() {
@@ -365,11 +143,11 @@ public:
 	}
 
 
-	vector<nodeHist_c *>& getHist_c() {
+	vector<nodeHist_c*>& getHist_c() {
 		return hist_c;
 	}
 
-	vector<Cote *>& getCotes() {
+	vector<Cote*>& getCotes() {
 
 		return joueurs;
 	}
@@ -378,10 +156,7 @@ public:
 		return victoirePossible;
 	}
 
-
 };
-
-#endif // !TUILE_H
 
 
 
