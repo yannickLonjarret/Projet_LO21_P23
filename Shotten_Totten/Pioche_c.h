@@ -57,6 +57,7 @@ public:
 	/// <param name="x">the number of cards to retrieve of the collection</param>
 	/// <returns>a vector of the X first cards</returns>
 	std::vector<Carte_c*> getXFirstCard(int x);
+
 };
 
 

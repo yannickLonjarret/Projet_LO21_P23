@@ -1,6 +1,6 @@
 #include "Tuile.h"
 
-void Tuile::ajout_c(Carte_c* c, int idJoueur){
+void Tuile::ajout_c(Carte_c* c, int idJoueur) {
 
 	Cote* coteJoueur = getCotes()[idJoueur];
 
@@ -136,7 +136,7 @@ bool Tuile::isCardOnBoard(Carte_c* c, vector<Tuile*> plateau) {
 
 }
 
-bool Tuile::isCardOnTuile(Carte_c* c){
+bool Tuile::isCardOnTuile(Carte_c* c) {
 	vector<Carte_c*> vect;
 
 	for (size_t i = 0; i < getCotes().size(); i++) {
@@ -222,7 +222,7 @@ void Tuile::casEgalite() {
 
 	int idJoueur = 0;
 	size_t i = 0;
-	vector<nodeHist_c *> hist_c = getHist_c();
+	vector<nodeHist_c*> hist_c = getHist_c();
 
 	while (idJoueur == -1 && i < hist_c.size()) {
 

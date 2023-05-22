@@ -55,6 +55,11 @@ public:
 	const string& getCouleur() const;
 	int getValeur() const;
 
+	static vector<string> getCouleurs() {
+		return couleurs;
+	}
+
+
 
 	//overriding the print function
 	void print(std::ostream& os) const override {
