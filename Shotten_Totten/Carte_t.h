@@ -108,8 +108,16 @@ public:
 
 	/// @brief Allows the user to change both the minimum and the maximum values takeable
 	/// @param vd : minimum value
-	/// @param vf : maximum value
+	/// @param vf : maximum value	
 	void setAll(int vd, int vf) { val_deb = vd; val_fin = vf; }
+
+	/// <summary>
+	/// Sets a elite troop to default settings using the class casting.
+	/// </summary>
+	void setDefault() {
+		this->setValeur(-1);
+		this->setCouleur("Non Couleur");
+	}
 
 	/// @brief Allows the user to define the TroupeElite card to a Carte_c card (to claim)
 	/// @param v : the value the card has to take

@@ -54,6 +54,7 @@ public:
 	void setValMin(int vmin) const;
 	const string& getCouleur() const;
 	int getValeur() const;
+	virtual void setDefault() = 0;
 
 	static vector<string> getCouleurs() {
 		return couleurs;
