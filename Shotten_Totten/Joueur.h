@@ -43,13 +43,25 @@ public:
 		score = 0;
 	}
 
-	int setNb_cartes(){
+	//FUNCTIONS
+
+	/// <summary>
+	/// Set the value of nb_cartes
+	/// </summary>
+	
+
+	void setNb_cartes(){
 		nb_cartes= cartes_c.size() + carte_t.size();
 	}
 
-	int setScore(int s){
+	/// <summary>
+	/// Set the value of score
+	/// </summary>
+
+	void setScore(int s){
 		score += s;
 	}
+
 	/// <summary>
 	/// Default Destructor
 	/// </summary>
@@ -58,37 +70,84 @@ public:
 
 	friend std::ostream &operator<<(std::ostream &os, const Joueur &j);
 
+	/// <summary>
+	/// Return player's name
+	/// </summary>
+
 	const std::string getNom()
 	{
 		return this->nom;
 	}
+
+	/// <summary>
+	/// Return player's nb_cartes
+	/// </summary>
 
 	const int getNbCartes()
 	{
 		return this->nb_cartes;
 	}
 
+	/// <summary>
+	/// Return player's score
+	/// </summary>
+
 	const int getScore()
 	{
 		return this->score;
 	}
+
+	/// <summary>
+	/// Return player's classic card
+	/// </summary>
 
 	const std::vector<Carte_c> getCarteC()
 	{
 		return this->cartes_c;
 	}
 
+	/// <summary>
+	/// Return player's tactic card
+	/// </summary>
+
 	const std::vector<Carte_t> getCarteT()
 	{
 		return this->cartes_t;
 	}
 
+	/// <summary>
+	/// Allows the player to draw a classic card
+	/// </summary>
+	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
+
 	Carte_c Pioche_c(Jeu& jeu);
 
-	Carte_t Pioche_t();
+	/// <summary>
+	/// Allows the player to draw a tactic card
+	/// </summary>
+	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	void Poser_carte_c(Carte_c c,id_joueur id, Jeu& jeu);
-	void Poser_carte_t(Carte_t c,id_joueur id);
+	Carte_t Pioche_t(Jeu& jeu);
+
+	/// <summary>
+	/// Allowss the player to place a classic card
+	/// </summary>
+	/// <param name="c"> classic card to place : Carte_c </param>
+	///<param name="id"> Player's id : int </param>
+	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
+	
+	void Poser_carte_c(Carte_c c,int id, Jeu& jeu);
+
+	/// <summary>
+	/// Allowss the player to place a tactic card
+	/// </summary>
+	/// <param name="c"> tactic card to place : Carte_t </param>
+	/// <param name="id"> Player's id : int </param>
+	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
+
+	void Poser_carte_t(Carte_t c,int id, Jeu& jeu);
+
+
 	void surrender();
 	void to_claim();
 	void look_graveyard();
@@ -101,14 +160,25 @@ int Joueur::prochain_id = 0; // Initialisation de la variable statique
 /// </summary>
 /// <param name="os"> the output stream</param>
 /// <param name="j"> the player to display</param>
-/// <returns> the output stream with the card's information</returns>
+/// <returns> the output stream with the players's information</returns>
 std::ostream &operator<<(std::ostream &os, const Joueur &j)
 {
 	os << "Joueur : \n\t Name : " << j.getNom() << "\n\t "
-	   << "Nombre cartes : " << j.getNbCartes() << "\n\t "
-	   << "Score : " << j.getScore() << "\n\t "
-	   << "Main : " << j.getCarteC() << j.getCarteT() << "\n\t "
-	   << std::endl;
+		<< "Nombre cartes : " << j.getNbCartes() << "\n\t "
+		<< "Score : " << j.getScore() << "\n\t "
+		<< "Main (Cartes_c) : ";
+	
+	for (const auto& carteC : j.getCarteC()) {
+		os << carteC << " ";
+	}
+
+	os << "\n\t Main (Cartes T) :";
+
+	for (const auto& carteT : j.getCarteT()) {
+		os << carteT << " ";
+	}
+
+	os << "\n";
 	return os;
 }
 
