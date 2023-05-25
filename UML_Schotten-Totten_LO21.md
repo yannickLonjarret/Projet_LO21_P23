@@ -43,14 +43,14 @@ classDiagram
     }
     
     class Schotten1_tact{
-        - Pioche_t: Pioche_tact
-        - defausse: Defausse
+        - Pioche_t: pioche_tact
+        - defausse: defausse
         + jouer() : void 
         + piocher_t() : void
         + checkCarteT_joue()
         + defausse()
         + execRuse() : void
-        + choixCarteTuile : Carte
+        + choixCarteTuile() : Carte
     }
     
     class Tuiles{
