@@ -5,7 +5,10 @@
 #include <string>
 #include <vector>
 #include <ostream>
-#include "Jeu.h"
+#include "Carte_c.h"
+#include "Carte_t.h"
+
+class Jeu;
 
 /// <summary>
 /// Joueur represents the players.
@@ -15,7 +18,7 @@ class Joueur
 {
 protected:
 
-	string nom;
+	std::string nom;
 	//test pour donner un identifiant unique
 	static int prochain_id;
 	int id_joueur;
@@ -35,7 +38,7 @@ public:
 	/// <param name="cartes_c"> optionnal, player classic card vector : vector<cartes_c> </param>
 	/// <param name="cartes_t"> optionnal, player tactic card vector : vector<cartes_t> </param>
 
-	Joueur(string const &n) : nom(n)
+	Joueur(std::string const& n) : nom(n)
 	{
 		id_joueur = prochain_id; //Attribuer l'id unique a l'instance actuelle
 		prochain_id++;//Incrémenter l'id unique pour la prochaine instance
@@ -51,7 +54,7 @@ public:
 	
 
 	void setNb_cartes(){
-		nb_cartes= cartes_c.size() + carte_t.size();
+		nb_cartes= cartes_c.size() + cartes_t.size();
 	}
 
 	/// <summary>
@@ -74,7 +77,7 @@ public:
 	/// Return player's name
 	/// </summary>
 
-	const std::string getNom()
+	std::string getNom() const
 	{
 		return this->nom;
 	}
@@ -83,7 +86,7 @@ public:
 	/// Return player's nb_cartes
 	/// </summary>
 
-	const int getNbCartes()
+	int getNbCartes() const
 	{
 		return this->nb_cartes;
 	}
@@ -92,7 +95,7 @@ public:
 	/// Return player's score
 	/// </summary>
 
-	const int getScore()
+	int getScore() const
 	{
 		return this->score;
 	}
@@ -101,7 +104,7 @@ public:
 	/// Return player's classic card
 	/// </summary>
 
-	const std::vector<Carte_c> getCarteC()
+	std::vector<Carte_c> getCarteC() const
 	{
 		return this->cartes_c;
 	}
@@ -110,7 +113,7 @@ public:
 	/// Return player's tactic card
 	/// </summary>
 
-	const std::vector<Carte_t> getCarteT()
+	std::vector<Carte_t> getCarteT() const
 	{
 		return this->cartes_t;
 	}
@@ -120,14 +123,14 @@ public:
 	/// </summary>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	Carte_c Pioche_c(Jeu& jeu);
+	Carte_c* Pioche_c(Jeu& jeu);
 
 	/// <summary>
 	/// Allows the player to draw a tactic card
 	/// </summary>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	Carte_t Pioche_t(Jeu& jeu);
+	Carte_t* Pioche_t(Jeu& jeu);
 
 	/// <summary>
 	/// Allowss the player to place a classic card
@@ -136,7 +139,7 @@ public:
 	///<param name="id"> Player's id : int </param>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 	
-	void Poser_carte_c(Carte_c c,int id, Jeu& jeu);
+	void Poser_carte_c(Carte_c& c,int id, Jeu& jeu);
 
 	/// <summary>
 	/// Allowss the player to place a tactic card
@@ -145,7 +148,7 @@ public:
 	/// <param name="id"> Player's id : int </param>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	void Poser_carte_t(Carte_t c,int id, Jeu& jeu);
+	void Poser_carte_t(Carte_t& c,int id, Jeu& jeu);
 
 
 	void surrender();
