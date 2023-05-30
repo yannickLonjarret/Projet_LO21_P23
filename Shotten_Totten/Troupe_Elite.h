@@ -20,7 +20,7 @@ public:
 	/// @param c : color of the card
 	/// @param vd : minimum value
 	/// @param vf : maximum value
-	TroupeElite(types t, string n, int v, const string& c, int vd, int vf) :Carte_t(t, n), Carte_c(v, c), val_deb(vd), val_fin(vf) {}
+	TroupeElite(types t, const string& n, int v, const string& c, int vd, int vf) :Carte_t(t, n), Carte_c(v, c), val_deb(vd), val_fin(vf) {}
 
 	/// @brief Default destructor
 	~TroupeElite() = default;
@@ -49,9 +49,9 @@ public:
 	/// <summary>
 	/// Sets a elite troop to default settings using the class casting.
 	/// </summary>
-	void setDefault() {
+	void setDefault() override {
 		this->setValeur(-1);
-		this->setCouleur("Non Couleur");
+		this->setCouleur(getCouleurs()[0]);
 	}
 
 	/// @brief Allows the user to define the TroupeElite card to a Carte_c card (to claim)

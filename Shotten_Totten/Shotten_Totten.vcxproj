@@ -130,25 +130,34 @@
   <ItemGroup>
     <ClInclude Include="Carte.h" />
     <ClInclude Include="Carte_c.h" />
+    <ClInclude Include="Carte_Ruse.h" />
     <ClInclude Include="Carte_t.h" />
     <ClInclude Include="Combinaison.h" />
+    <ClInclude Include="Cote.h" />
     <ClInclude Include="Defausse.h" />
     <ClInclude Include="Jeu.h" />
     <ClInclude Include="Joueur.h" />
+    <ClInclude Include="Mode_Combat.h" />
     <ClInclude Include="Pioche_c.h" />
     <ClInclude Include="Pioche_t.h" />
+    <ClInclude Include="Troupe_Elite.h" />
     <ClInclude Include="Tuile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Carte.cpp" />
     <ClCompile Include="Carte_c.cpp" />
+    <ClCompile Include="Carte_Ruse.cpp" />
     <ClCompile Include="Carte_t.cpp" />
     <ClCompile Include="Combinaison.cpp" />
+    <ClCompile Include="Cote.cpp" />
     <ClCompile Include="Defausse.cpp" />
     <ClCompile Include="Jeu.cpp" />
     <ClCompile Include="Joueur.cpp" />
+    <ClCompile Include="Mode_Combat.cpp" />
     <ClCompile Include="Pioche_c.cpp" />
     <ClCompile Include="Pioche_t.cpp" />
+    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Troupe_Elite.cpp" />
     <ClCompile Include="Tuile.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

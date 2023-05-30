@@ -17,11 +17,13 @@ private:
 	Pioche_c pioche_c;
 	Pioche_t pioche_t;
 
+
 	//defausse ? classe à part ?
 	Tuile* plateau;
 
 public:
 	Jeu();
+
 
 };
 

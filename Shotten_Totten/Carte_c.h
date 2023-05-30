@@ -36,6 +36,7 @@ public:
 	Carte_c(int val, const string& col) :valeur(val), couleur(col) {
 		val_min = 0;
 		val_max = 0;
+		couleurs.push_back("Non Couleur");
 		couleurs.push_back("Bleu");
 		couleurs.push_back("Rouge");
 		couleurs.push_back("Vert");
@@ -54,7 +55,7 @@ public:
 	void setValMin(int vmin) const;
 	const string& getCouleur() const;
 	int getValeur() const;
-	virtual void setDefault() = 0;
+	virtual void setDefault();
 
 	static vector<string> getCouleurs() {
 		return couleurs;

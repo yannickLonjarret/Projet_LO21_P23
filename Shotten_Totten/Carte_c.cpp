@@ -72,11 +72,10 @@ void Carte_c::setCouleur(const string& col) {
 	this->couleur = col;
 }
 
-/*
+
 
 int Carte_c::val_min = 1;
 int Carte_c::val_max = 9;
 
 vector<string> Carte_c::couleurs(1, "NULL");
 
-*/

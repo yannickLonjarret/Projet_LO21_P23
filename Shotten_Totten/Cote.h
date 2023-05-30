@@ -18,15 +18,15 @@ public:
 
 
 
-	int getNbCartes() {
+	int getNbCartes() const {
 		return nbCartesJoue;
 	}
 
 	void setNbCartes(int newVal) {
-		 nbCartesJoue = newVal;
+		nbCartesJoue = newVal;
 	}
 
-	int getIdJoueur() {
+	int getIdJoueur() const {
 		return idJoueur;
 	}
 
@@ -39,6 +39,8 @@ public:
 
 		return cartesT;
 	}
-	
+
 };
+
+
 
