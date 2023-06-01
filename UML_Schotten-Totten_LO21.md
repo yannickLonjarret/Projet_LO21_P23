@@ -190,11 +190,15 @@ classDiagram
     class Carte_t{
         - type : enum
         - nom : string
+        - description : string
         + Carte_t(types t, string n)
         + const getType() : types
         + const getNom() : string
+        + const getDescription() : string
         + setType(types valeur) : void
         + setNom(string name) : void
+        + setDescription(string desc) : void
+        + const print(ostream& os) : void
     }
     
     class TroupeElite{
