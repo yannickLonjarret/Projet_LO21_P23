@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Shotten_Totten/Schotten1_tact.cpp
+/Shotten_Totten/Schotten1_tact.h
