@@ -5,10 +5,10 @@
 #include "Combinaison.h"
 #include "Tuile.h"
 #include <chrono>
-
+#include "Jeu.h"
 
 int main() {
-
+	/**
 	vector<Combinaison*> vic;
 
 	vector<Carte_c*> cards;
@@ -39,7 +39,7 @@ int main() {
 	cout << "Nb cartes J1: " << cards.size() << endl;
 
 	for (int i = 0; i < cards.size(); i++) {
-		cout << cards[i]->getValeur() <<" " << cards[i]->getCouleur() << endl;
+		cout << cards[i]->getValeur() << " " << cards[i]->getCouleur() << endl;
 	}
 	cout << "Nb cartes J2: " << t->getCotes()[1]->getCartesC().size() << endl;
 	auto startTime = std::chrono::high_resolution_clock::now();
@@ -47,7 +47,7 @@ int main() {
 	t->claimTuile(0, tuile);
 	auto endTime = std::chrono::high_resolution_clock::now();
 
-	
+
 	std::chrono::duration<double> duration = endTime - startTime;
 	double seconds = duration.count();
 
@@ -67,6 +67,17 @@ int main() {
 	cout << "gagnant: " << t->getClaim() << endl;
 
 	cout << "Temps de preuve: " << seconds << endl;
+	*/
+
+	Jeu* j{};
+
+	j->printTitles();
+	j->playGame();
 
 	return 0;
+}
+
+
+void printInterface() {
+
 }

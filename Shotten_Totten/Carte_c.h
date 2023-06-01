@@ -78,8 +78,6 @@ public:
 	/// Default Destructor 
 	/// </summary>
 	~Carte_c() = default;
-
-	friend std::ostream& operator<<(std::ostream& os, const Carte_c& cc);
 };
 
 /// <summary>
@@ -88,7 +86,10 @@ public:
 /// <param name="os"> the output stream</param>
 /// <param name="cc"> the card to display</param>
 /// <returns> the output stream with the card's information</returns>
-std::ostream& operator<<(std::ostream& os, const Carte_c& cc) {
+/// 
+/// 
+/// LE INLINE EST SUPER IMPORTANT POUR LA COMPREHENSION DU COMPILATEUR !!!
+inline std::ostream& operator<<(std::ostream& os, const Carte_c& cc) {
 	os << "Carte_c : \n\t Couleur : " << cc.getCouleur() << "\n\t "
 		<< "Valeur : " << cc.getValeur() << std::endl;
 	return os;

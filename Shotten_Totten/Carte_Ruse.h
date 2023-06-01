@@ -8,9 +8,10 @@
 using namespace std;
 #include "Combinaison.h"
 #include "Carte_c.h"
+#include "Carte_t.h"
 
 /// @brief Ruse represents cards Ruses (which add different actions to the player's turn)
-class Ruse : Carte_t
+class Ruse : public Carte_t
 {
 private:
 	/// @brief Represents a vector which contains all the permitted actions of the card

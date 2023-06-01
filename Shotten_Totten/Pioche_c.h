@@ -67,10 +67,10 @@ public:
 /// <param name="os"> the output stream</param>
 /// <param name="cc"> the card to display</param>
 /// <returns> the output stream with the card's information</returns>
-std::ostream& operator<<(std::ostream& os, const Pioche_c& p) {
+inline std::ostream& operator<<(std::ostream& os, const Pioche_c& p) {
 	os << "[";
 	for (int i = 0; i < p.getSize(); i++) {
-		os << p.getCartes()[i];
+		p.getCartes()[i].print(os);
 		if (i != p.getSize() - 1)
 			os << ", ";
 	}

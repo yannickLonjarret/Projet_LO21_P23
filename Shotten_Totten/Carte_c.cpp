@@ -24,6 +24,13 @@ int Carte_c::getValeur() const {
 	return this->valeur;
 }
 
+void Carte_c::setDefault()
+{
+	setCouleur(getCouleurs()[0]);
+	setValeur(-1);
+
+}
+
 
 /// <summary>
 /// Getter for the color of the card

@@ -59,7 +59,6 @@ public:
 	/// @brief Allows the user to change the name of the card
 	/// @param name : the desired name of the card
 	void setNom(string name) { nom = name; }
-	friend std::ostream& operator<<(std::ostream& os, const Carte_t& cc);
 
 	//overriding the print function 
 	void print(std::ostream& os) const override {
@@ -68,7 +67,20 @@ public:
 	}
 };
 
-#endif // !CARTES_T_H
+/// <summary>
+/// Print ooperator overload to display the card and it's caracteristics
+/// </summary>
+/// <param name="os"> the output stream</param>
+/// <param name="ct"> the card to display</param>
+/// <returns> the output stream with the card's information</returns>
+/// LE INLINE EST SUPER IMPORTANT POUR LA COMPREHENSION DU COMPILATEUR !!!
+inline std::ostream& operator<<(std::ostream& os, const Carte_t& ct) {
+	os << "Carte_t : \n\t Type : " << ct.getType() << "\n\t "
+		<< "Nom : " << ct.getNom() << std::endl;
+	return os;
+}
+
+#endif // !CARTES_T_H 
 
 
 

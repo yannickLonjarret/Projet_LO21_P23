@@ -51,17 +51,17 @@ public:
 	/// <summary>
 	/// Set the value of nb_cartes
 	/// </summary>
-	
 
-	void setNb_cartes(){
-		nb_cartes= cartes_c.size() + cartes_t.size();
+
+	void setNb_cartes() {
+		nb_cartes = cartes_c.size() + cartes_t.size();
 	}
 
 	/// <summary>
 	/// Set the value of score
 	/// </summary>
 
-	void setScore(int s){
+	void setScore(int s) {
 		score += s;
 	}
 
@@ -71,7 +71,7 @@ public:
 
 	~Joueur() = default;
 
-	friend std::ostream &operator<<(std::ostream &os, const Joueur &j);
+	friend std::ostream& operator<<(std::ostream& os, const Joueur& j);
 
 	/// <summary>
 	/// Return player's name
@@ -138,8 +138,8 @@ public:
 	/// <param name="c"> classic card to place : Carte_c </param>
 	///<param name="id"> Player's id : int </param>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
-	
-	void Poser_carte_c(Carte_c& c,int id, Jeu& jeu);
+
+	void Poser_carte_c(Carte_c& c, int id, Jeu& jeu);
 
 	/// <summary>
 	/// Allowss the player to place a tactic card
@@ -148,7 +148,7 @@ public:
 	/// <param name="id"> Player's id : int </param>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	void Poser_carte_t(Carte_t& c,int id, Jeu& jeu);
+	void Poser_carte_t(Carte_t& c, int id, Jeu& jeu);
 
 
 	void surrender();
@@ -156,21 +156,19 @@ public:
 	void look_graveyard();
 };
 
-int Joueur::prochain_id = 0; // Initialisation de la variable statique
-
 /// <summary>
 /// Print ooperator overload to display the player and it's caracteristics
 /// </summary>
 /// <param name="os"> the output stream</param>
 /// <param name="j"> the player to display</param>
 /// <returns> the output stream with the players's information</returns>
-std::ostream &operator<<(std::ostream &os, const Joueur &j)
+inline std::ostream& operator<<(std::ostream& os, const Joueur& j)
 {
 	os << "Joueur : \n\t Name : " << j.getNom() << "\n\t "
 		<< "Nombre cartes : " << j.getNbCartes() << "\n\t "
 		<< "Score : " << j.getScore() << "\n\t "
 		<< "Main (Cartes_c) : ";
-	
+
 	for (const auto& carteC : j.getCarteC()) {
 		os << carteC << " ";
 	}
