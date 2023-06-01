@@ -191,7 +191,7 @@ classDiagram
         - type : enum
         - nom : string
         - description : string
-        + Carte_t(types t, string n)
+        + Carte_t(types t, string n, string d)
         + const getType() : types
         + const getNom() : string
         + const getDescription() : string
@@ -204,7 +204,7 @@ classDiagram
     class TroupeElite{
         - val_deb: int
         - val_fin: int
-        + TroupeElite(types t, string n, int vd, int vf)
+        + TroupeElite(types t, string n, const string& d, int vd, int vf, )
         + const getDebut() : int
         + const getFin() : int
         + setDebut(int v) : void
@@ -216,14 +216,14 @@ classDiagram
     class ModeCombat{
         - nb_cartes : int
         - victoirePossible : vector<Combinaison*>
-        + ModeCombat(types t, string n, int nb, vector<Combinaison*> combi)
+        + ModeCombat(types t, string n, string d, int nb, vector<Combinaison*> combi)
         + const getNbCartes() : int
         + const getCombinaison() : const vector<Combinaison*>&
     }
     
     class Ruse{
         - actions : vector<int>
-        + Ruse(types t, string n, vector<int> suite_actions)
+        + Ruse(types t, string n, string d, vector<int> suite_actions)
         + const getActions() : const vector<int>&
         + addAction(int a) : void
     }
