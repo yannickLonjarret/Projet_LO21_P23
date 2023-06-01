@@ -6,8 +6,3 @@ Carte_c TroupeElite::definir_carte(int v, const string& c) {
 	//Carte_c carte = Carte_c(v, c);
 	return Carte_c(v, c);
 }
-
-std::ostream& operator<<(std::ostream& f, const TroupeElite& c) {
-	f << "Nom : " << c.getNom() << "\nDébut : " << c.getDebut() << "\nFin : " << c.getFin();
-	return f;
-}

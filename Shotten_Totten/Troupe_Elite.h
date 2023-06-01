@@ -20,7 +20,7 @@ public:
 	/// @param c : color of the card
 	/// @param vd : minimum value
 	/// @param vf : maximum value
-	TroupeElite(types t, const string& n, int v, const string& c, int vd, int vf) :Carte_t(t, n), Carte_c(v, c), val_deb(vd), val_fin(vf) {}
+	TroupeElite(types t, const string& n, const string& d, int v, const string& c, int vd, int vf) :Carte_t(t, n, d), Carte_c(v, c), val_deb(vd), val_fin(vf) {}
 
 	/// @brief Default destructor
 	~TroupeElite() = default;
@@ -60,11 +60,5 @@ public:
 	/// @return a Carte_c object 
 	Carte_c definir_carte(int v, const string& c);
 };
-
-/// @brief Print operator overload to display the card
-/// @param f : the output stream
-/// @param c : the card to display
-/// @return the output stream with the card displayed
-std::ostream& operator<<(std::ostream& f, const TroupeElite& c);
 
 #endif // !TROUPE_ELITE_H
