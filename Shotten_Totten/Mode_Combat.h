@@ -18,7 +18,7 @@ public:
 	/// @param n : the name of the card
 	/// @param nb : the number of cards (in order to claim the Tuile object)
 	/// @param combi : the vector of Combinaison objects accepted (in order to claim the Tuile object)
-	ModeCombat(types t, string n, int nb, vector<Combinaison*> combi) : Carte_t(t, n), nb_cartes(nb), victoirePossible(combi) {}
+	ModeCombat(types t, string n, string d, int nb, vector<Combinaison*> combi) : Carte_t(t, n, d), nb_cartes(nb), victoirePossible(combi) {}
 
 	/// @brief Default destructor
 	~ModeCombat() = default;

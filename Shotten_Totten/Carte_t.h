@@ -35,11 +35,16 @@ protected:
 
 	/// @brief The name of the card
 	string nom;
+
+	/// <summary>
+	/// The description of the card (the values possibles, how to use it, what it does, etc.)
+	/// </summary>
+	string description;
 public:
 	/// @brief Constructor which initializes a Carte_t object
 	/// @param t : type of the card
 	/// @param n : name of the card
-	Carte_t(types t, string n) :type(t), nom(n) {}
+	Carte_t(types t, string n, string d) :type(t), nom(n), description(d) {}
 
 	/// @brief Default destructor
 	~Carte_t() = default;
@@ -52,6 +57,11 @@ public:
 	/// @return the name of the card
 	string getNom() const { return nom; }
 
+	/// <summary>
+	/// Allows the user to get the description of the card
+	/// </summary>
+	string getDescription() const{ return description; }
+
 	/// @brief Allows the user to change the type of the card
 	/// @param valeur : the desired type of the card
 	void setType(types valeur) { type = valeur; }
@@ -60,23 +70,29 @@ public:
 	/// @param name : the desired name of the card
 	void setNom(string name) { nom = name; }
 
+	/// <summary>
+	/// Allows the user to change the description of the end
+	/// </summary>
+	/// <param name="desc">The description of the card</param>
+	void setDescription(string desc) { description = desc; }
+
 	//overriding the print function 
 	void print(std::ostream& os) const override {
-		os << "Carte_t : \n\t Type : " << this->getType() << "\n\t "
-			<< "Nom : " << this->getNom() << std::endl;
+		os << "Carte Tactique : \n\t Type : " << this->getType() << "\n\t "
+			<< "Nom : " << this->getNom() << "\n\t" << this->getDescription() << std::endl;
 	}
 };
 
 /// <summary>
-/// Print ooperator overload to display the card and it's caracteristics
+/// Print ooperator overload to display the card and its caracteristics
 /// </summary>
 /// <param name="os"> the output stream</param>
 /// <param name="ct"> the card to display</param>
 /// <returns> the output stream with the card's information</returns>
 /// LE INLINE EST SUPER IMPORTANT POUR LA COMPREHENSION DU COMPILATEUR !!!
 inline std::ostream& operator<<(std::ostream& os, const Carte_t& ct) {
-	os << "Carte_t : \n\t Type : " << ct.getType() << "\n\t "
-		<< "Nom : " << ct.getNom() << std::endl;
+	os << "Carte Tactique : \n\t Type : " << ct.getType() << "\n\t "
+		<< "Nom : " << ct.getNom() << "\n\t" << ct.getDescription() << std::endl;
 	return os;
 }
 
