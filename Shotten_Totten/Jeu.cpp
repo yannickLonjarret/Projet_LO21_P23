@@ -1,7 +1,7 @@
 #include "Jeu.h"
 #include <iostream>
 #include <stdexcept>
-
+#include <stdlib.h>
 
 void Jeu::printPlateau() const {
 
@@ -90,7 +90,7 @@ void Jeu::menu_selection() {
 
 
 
-bool Jeu::playerSelection() const {
+void Jeu::playerSelection() {
 	std::cout << R"(
 
    _____      _           _   _                    _                             
@@ -106,7 +106,6 @@ bool Jeu::playerSelection() const {
 
 )" << std::endl;
 
-	bool ready = false;
 	std::string player1, player2;
 
 	bool quit = false;
@@ -121,13 +120,15 @@ bool Jeu::playerSelection() const {
 
 			std::cout << "## Entrez le nom du joueur 1 : ";
 			std::cin >> player1;
+			setJoueur1(player1);
 
 			std::cout << "## Entrez le nom du joueur 2 : ";
 			std::cin >> player2;
+			setJoueur2(player2);
 
 			std::cout << "Le jeu commence ! " << player1 << " VERSUS " << player2 << std::endl;
-			ready = true;
 			quit = true;
+			startGame(j1, j2);
 			break;
 
 		case 2:
@@ -135,7 +136,6 @@ bool Jeu::playerSelection() const {
 			std::cout << "## Entrez le nom du joueur 1 : ";
 			std::cin >> player1;
 			std::cout << "Le jeu commence ! " << player1 << " VERSUS IA" << std::endl;
-			ready = true;
 			quit = true;
 			break;
 
@@ -144,7 +144,47 @@ bool Jeu::playerSelection() const {
 			displayMenu();
 		}
 	}
-	cout << "ready";
-	return ready;
+}
+
+
+void Jeu::startGame(const Joueur& jou1, const Joueur& jou2) {
+
+	system("CLS");
+	cout << R"(
+  _____           _   _                                              
+ |  __ \         | | (_)                                             
+ | |__) |_ _ _ __| |_ _  ___    ___ _ __     ___ ___  _   _ _ __ ___ 
+ |  ___/ _` | '__| __| |/ _ \  / _ \ '_ \   / __/ _ \| | | | '__/ __|
+ | |  | (_| | |  | |_| |  __/ |  __/ | | | | (_| (_) | |_| | |  \__ \
+ |_|   \__,_|_|   \__|_|\___|  \___|_| |_|  \___\___/ \__,_|_|  |___/
+                                                                     
+                                                                     
+)" << endl;
+
+	bool isOver = false;
+	vector<Joueur> joueurs;
+	joueurs.push_back(jou1);
+	joueurs.push_back(jou2);
+
+
+	//displayBoard(jou1, jou2);
+
+	while (isOver) {
+
+		for (unsigned int i = 0; i < joueurs.size(); i++) {
+
+			cout << " ## C'est au joueur " << joueurs[i].getNom() << " de jouer ## " << endl;
+			cout << " J" << i + 1 << " choisis une borne[chiffre entre 0 et 5] : ";
+			int id_tuile = getUserInput();
+			cout << " J" << i + 1 << " choisis sa carte à poser [chiffre entre 0 et " << joueurs[i].getNbCartes() << "] : ";
+			int choix_carte = getUserInput();
+			poser_carte_c(0, id_tuile, j1.getCarteC()[choix_carte]);
+			//j1.piocher_c();
+
+			//displayBoard(jou1, jou2);
+
+
+		}
+	}
 }
 

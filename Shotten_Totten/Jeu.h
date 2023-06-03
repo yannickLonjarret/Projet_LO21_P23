@@ -23,6 +23,9 @@ private:
 	//pour chaque tuile itérer sur les joueurs du vecteur
 	//il faut 9 tuile puis pour chaque joueur créer un côté (selon l'odre du vecteur)
 
+
+
+
 public:
 	Jeu();
 
@@ -54,10 +57,14 @@ public:
 	void printTitles() const;
 	void displayMenu() const;
 	int getUserInput() const;
+	void poser_carte_c(int id_j, int id_tuile, const Carte_c& c) {
+
+	}
+	void poser_carte_t(int id_j, int id_tuile, const Carte_t& ct);
 
 	void menu_selection();
-	bool playerSelection() const;
-	void playGame();
+	void playerSelection();
+	void startGame(const Joueur& j1, const Joueur& j2);
 };
 
 

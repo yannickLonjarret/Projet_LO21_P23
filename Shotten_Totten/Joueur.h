@@ -123,14 +123,14 @@ public:
 	/// </summary>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	Carte_c* Pioche_c(Jeu& jeu);
+	Carte_c* piocher_c(Jeu& jeu);
 
 	/// <summary>
 	/// Allows the player to draw a tactic card
 	/// </summary>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	Carte_t* Pioche_t(Jeu& jeu);
+	Carte_t* piocher_t(Jeu& jeu);
 
 	/// <summary>
 	/// Allowss the player to place a classic card

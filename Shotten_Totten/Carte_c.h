@@ -96,6 +96,21 @@ inline std::ostream& operator<<(std::ostream& os, const Carte_c& cc) {
 }
 
 
+/// <summary>
+/// Allows the comparison of two classic cards
+/// </summary>
+/// <param name="c1">the first card</param>
+/// <param name="c2">the second card to be compared to</param>
+/// <returns></returns>
+inline bool operator==(const Carte_c& c1, const Carte_c& c2) {
+	if (c1.getCouleur() == c2.getCouleur() && c1.getValeur() == c2.getValeur()) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 #endif // !CARTES_C_H
 
 

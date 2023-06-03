@@ -15,7 +15,7 @@ void Joueur::Poser_carte_c(Carte_c& c, int id, Jeu& jeu) {
 			break;
 		}*/
 	}
-	if (carteTrouvee) {
+	if (carteTrouvee == false) {
 		//jeu.Poser_carte_c(c,id);
 	}
 	else {
@@ -43,7 +43,7 @@ void Joueur::Poser_carte_t(Carte_t& c, int id, Jeu& jeu) {
 	}
 }
 
-Carte_c* Joueur::Pioche_c(Jeu& jeu) {
+Carte_c* Joueur::piocher_c(Jeu& jeu) {
 	//Logique de la pioche d'une carte classique
 	Carte_c* carte = nullptr;
 	/*if (!jeu.getPioche_c().estVide()) {
@@ -54,7 +54,7 @@ Carte_c* Joueur::Pioche_c(Jeu& jeu) {
 	return carte;
 }
 
-Carte_t* Joueur::Pioche_t(Jeu& jeu) {
+Carte_t* Joueur::piocher_t(Jeu& jeu) {
 	//Logique de la pioche d'une carte classique
 	Carte_t* carte = nullptr;
 	/*if (!jeu.getPioche_t().estVide()) {
