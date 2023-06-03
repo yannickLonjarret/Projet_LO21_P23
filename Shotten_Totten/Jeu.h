@@ -8,6 +8,7 @@
 #include "Tuile.h"
 
 
+// vecteur de joueurs et boucler sur le vecteur avec des fonctions pareilles pour chaque
 class Jeu
 {
 private:
@@ -15,14 +16,15 @@ private:
 	Joueur j2;
 
 	Pioche_c pioche_c;
-	Pioche_t pioche_t;
+	//Pioche_t pioche_t;
 
-
-	//defausse ? classe à part ?
-	Tuile* plateau;
+	vector<Tuile*> plateau;
+	//je dois initialiser les tuiles
+	//pour chaque tuile itérer sur les joueurs du vecteur
+	//il faut 9 tuile puis pour chaque joueur créer un côté (selon l'odre du vecteur)
 
 public:
-	Jeu() = default;
+	Jeu();
 
 	Joueur getJoueur1() const {
 		return j1;
@@ -36,9 +38,9 @@ public:
 		return pioche_c;
 	}
 
-	Pioche_t getPioche_t() const {
-		return pioche_t;
-	}
+	//Pioche_t getPioche_t() const {
+	//	return pioche_t;
+	//}
 
 	void setJoueur1(const string& s) {
 		j1 = Joueur(s);
@@ -53,8 +55,9 @@ public:
 	void displayMenu() const;
 	int getUserInput() const;
 
+	void menu_selection();
+	bool playerSelection() const;
 	void playGame();
-	bool playerSelection();
 };
 
 

@@ -63,7 +63,7 @@ int Jeu::getUserInput() const {
 
 
 
-void Jeu::playGame() {
+void Jeu::menu_selection() {
 	bool quit = false;
 
 	while (!quit) {
@@ -90,7 +90,7 @@ void Jeu::playGame() {
 
 
 
-bool Jeu::playerSelection() {
+bool Jeu::playerSelection() const {
 	std::cout << R"(
 
    _____      _           _   _                    _                             
@@ -121,11 +121,9 @@ bool Jeu::playerSelection() {
 
 			std::cout << "## Entrez le nom du joueur 1 : ";
 			std::cin >> player1;
-			//setJoueur1(player1);
 
 			std::cout << "## Entrez le nom du joueur 2 : ";
 			std::cin >> player2;
-			//setJoueur2(player2);
 
 			std::cout << "Le jeu commence ! " << player1 << " VERSUS " << player2 << std::endl;
 			ready = true;

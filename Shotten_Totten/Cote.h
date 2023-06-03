@@ -3,7 +3,7 @@ class Cote
 {
 
 private:
-	int idJoueur;
+	int idJoueur; //indice du vecteur du joueur
 	int nbCartesJoue;
 
 	vector<Carte_c*> cartesC;
