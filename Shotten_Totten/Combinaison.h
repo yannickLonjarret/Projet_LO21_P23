@@ -27,8 +27,7 @@ public:
 		valSumCartes = calculSumCombi(combi);
 		scoreCombi = calculScoreCombi(this);
 
-		for (int i = 0; i < 3; i++)
-			cout << combi[i]->getValeur() << " " << combi[i]->getCouleur() << endl;
+		
 	}
 
 	Combinaison(bool suite, bool couleur, bool brelan, int szCombi = 3) : taille_combi(szCombi) {
@@ -95,7 +94,6 @@ public:
 
 		for (size_t i = 0; i < getTailleCombi(); i++) {
 			s += combi[i]->getValeur();
-			cout << "Val sum: " << s << endl;
 		}
 		return s;
 	}
@@ -117,7 +115,6 @@ public:
 	}
 
 	void dropDown(vector<Combinaison*> lstCombi) {
-		cout << "Sum combi dropDown " << getSumCombi() << endl;
 		switch (getScoreCombi())
 		{
 		case 5:
@@ -197,7 +194,6 @@ public:
 	void convertToSomme() {
 
 		setScoreCombi(calculScoreCombi(this));
-		cout << "Sum combi toSomme " << getSumCombi() << endl;
 	}
 
 	void setSuite(bool s) {

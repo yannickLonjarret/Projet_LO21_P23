@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <ostream>
 
 using namespace std;
 
@@ -154,6 +155,8 @@ public:
 		return victoirePossible;
 	}
 
+
+	
 };
 
 

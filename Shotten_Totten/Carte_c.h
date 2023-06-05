@@ -34,6 +34,8 @@ public:
 	/// <param name="vmin"> optionnal, minimal value of the card </param>
 	/// <param name="vmax"> optionnal, maximal value of the card </param>
 	Carte_c(int val, const string& col) :valeur(val), couleur(col) {
+		/*
+		Pas de sens de remodifier les attributs static à chaque instanciation
 		val_min = 0;
 		val_max = 0;
 		couleurs.push_back("Non Couleur");
@@ -43,7 +45,7 @@ public:
 		couleurs.push_back("Jaune");
 		couleurs.push_back("Noir");
 		couleurs.push_back("Gris");
-
+		*/
 	}
 
 	///FUNCTIONS
@@ -57,9 +59,7 @@ public:
 	int getValeur() const;
 	virtual void setDefault();
 
-	static vector<string> getCouleurs() {
-		return couleurs;
-	}
+	
 
 
 
@@ -69,10 +69,10 @@ public:
 			<< "Valeur : " << this->getValeur() << std::endl;
 	}
 
-	/*
+	//Vector qu'on peut modifier ailleur
 	static vector<string>& getCouleurs() {
 		return couleurs;
-	}*/
+	}
 
 	/// <summary>
 	/// Default Destructor 

@@ -22,7 +22,6 @@ void Tuile::ajout_c(Carte_c* c, int idJoueur) {
 }
 
 void Tuile::claimProof(int joueur, vector<Tuile*> plateau) {
-
 	//vector<Carte_t*> checkTroupeElite;
 	vector<Carte_c*> allCards;
 
@@ -155,15 +154,14 @@ bool Tuile::isCardOnTuile(Carte_c* c) {
 }
 
 void Tuile::proofCardGenerator(vector<Carte_c*>& gen) {
-
 	int min, max;
 	min = Carte_c::getValMin();
 	max = Carte_c::getValMax();
 	vector<string> couleurs = Carte_c::getCouleurs();
-
 	for (int color = 1; color < couleurs.size(); color++) {
-		for (int i = min; i <= max; i++)
+		for (int i = min; i <= max; i++) {
 			gen.push_back(new Carte_c(i, couleurs[color]));
+		}
 	}
 
 	return;
