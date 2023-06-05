@@ -24,12 +24,8 @@ int Carte_c::getValeur() const {
 	return this->valeur;
 }
 
-void Carte_c::setDefault()
-{
-	setCouleur(getCouleurs()[0]);
-	setValeur(-1);
-
-}
+void Carte_c::setDefault(){}
+//Must do nothing in order to not rewrite classic cards (polymorph)
 
 
 /// <summary>
@@ -62,11 +58,13 @@ void Carte_c::setValMax(int vmax) const {
 
 /// <summary>
 /// Sets the value of valeur.
-/// Has to be in bounds of val_min and val_max.
+/// Has to be in bounds of val_min and val_max or be equal to -1.
 /// </summary>
 /// <param name="val"> new value to be assigned to valeur</param>
 void Carte_c::setValeur(int val) {
-	if (val >= val_min && val <= val_max) {
+	//Need to allow -1 as to let its affectation in Troupe Elite::setDefault()
+	//-1 is a control value
+	if (val >= val_min && val <= val_max || val == -1) {
 		this->valeur = val;
 	}
 }

@@ -1,6 +1,7 @@
-#pragma once
+ï»¿#pragma once
 
 #include "Carte_t.h"
+#include "Troupe_Elite.h"
 #include "Cote.h"
 
 #include <iostream>
@@ -57,38 +58,14 @@ public:
 	void ajout_c(Carte_c* c, int idJoueur);
 
 
-	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité ou de revendication par preuve
+	//ImplÃ©mentation pour 2 joueurs uniquement car aucune idÃ©es des rÃ¨gles Ã  ajouter en cas d'Ã©galitÃ© ou de revendication par preuve
 	void claimProof(int joueur, vector<Tuile*> plateau);
 
 	bool proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated); 
 
-	/*
-	//To finish and test
-	bool computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete) {
-		int lowB, hiB;
+	
 
-		bool combiGagne = false;
-
-		lowB = toSet->getDebut();
-		hiB = toSet->getFin();
-
-		for (int i = lowB; i < hiB; i++) {
-			for (int j = 0; j < Carte_c::getCouleurs().size() - 1; j++) {
-				//toSet->setCouleur();
-				//toSet->setValeur();
-
-				//sort combiIncompl
-				combiGagne = proofComputer(combiIncompl, cardsToTest, complete);
-
-				if (combiGagne) return combiGagne;
-			}
-
-		}
-
-		return combiGagne;
-	}
-
-	*/
+	bool computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated);
 
 	bool computeProofCarteC(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated);
 
@@ -103,7 +80,7 @@ public:
 	void proofCardGenerator(vector<Carte_c*>& gen); 
 
 
-	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité ou de revendication par preuve
+	//ImplÃ©mentation pour 2 joueurs uniquement car aucune idÃ©es des rÃ¨gles Ã  ajouter en cas d'Ã©galitÃ© ou de revendication par preuve
 	void claimTuile(int idJoueur, vector<Tuile*> plateau);
 	void claimClassic(int joueur);
 
@@ -155,9 +132,35 @@ public:
 		return victoirePossible;
 	}
 
-
+	inline friend ostream& operator<<(ostream& os, Tuile& t);
 	
 };
+
+ostream& operator<<(ostream& os, Tuile& t) {
+	for (int i = 0; i < t.getCotes()[0]->getNbCartes(); i++) {
+		os << " |" << *t.getCotes()[0]->getCartesC()[i] << "| ";
+	}
+
+	//os << "\t\u2591\u2591\u2591"<<t.getClaim()<< "\u2591\u2591\u2591\t";
+
+	for (int i = 0; i < t.getCotes()[1]->getNbCartes(); i++) {
+		os << " |" << *t.getCotes()[1]->getCartesC()[i] << "| ";
+	}
+
+	os << "\t";
+
+	for (int i = 0; i < t.getCotes()[0]->getCartesT().size(); i++) {
+		os << " " << *t.getCotes()[0]->getCartesT()[i] << " ";
+	}
+
+	for (int i = 0; i < t.getCotes()[1]->getCartesT().size(); i++) {
+		os << " " << *t.getCotes()[1]->getCartesT()[i] << " ";
+	}
+
+	os << endl;
+
+	return os;
+}
 
 
 

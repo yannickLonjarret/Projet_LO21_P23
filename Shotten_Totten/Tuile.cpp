@@ -21,22 +21,51 @@ void Tuile::ajout_c(Carte_c* c, int idJoueur) {
 
 }
 
+bool Tuile::computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated){
+	int lowB, hiB;
+
+	bool combiGagne = false;
+
+	lowB = toSet->getDebut();
+	hiB = toSet->getFin();
+
+	for (int i = lowB; i < hiB; i++) {
+		for (int j = 0; j < Carte_c::getCouleurs().size() - 1; j++) {
+			toSet->setCouleur(Carte_c::getCouleurs()[j]);
+			toSet->setValeur(i);
+
+			std::sort(combiIncompl.begin(), combiIncompl.end(), [](Carte_c* c1, Carte_c* c2) {
+				return c1->getValeur() < c2->getValeur();
+				});
+
+			combiGagne = proofComputer(combiIncompl, cardsToTest, complete, prevEvaluated);
+
+			if (combiGagne) return combiGagne;
+		}
+
+	}
+
+	return combiGagne;
+}
+
 void Tuile::claimProof(int joueur, vector<Tuile*> plateau) {
-	//vector<Carte_t*> checkTroupeElite;
 	vector<Carte_c*> allCards;
 
-	//checkTroupeElite = getCotes()[joueur]->getCartesT();
-
-	Combinaison* complete = new Combinaison(getCotes()[joueur]->getCartesC());
-	//TODO
-	//Parcourir vector et set valeurs cartes Troupe d'elite
+	Combinaison* complete = new Combinaison(getCotes()[joueur]->getCartesC(), getNbCartesMax());
 
 	proofCardGenerator(allCards);
-
 	cardSubstractor(allCards, plateau);
+
 	vector<Carte_c*> mem = vector<Carte_c*>();
+
 	if (!proofComputer(getCotes()[(joueur + 1) % 2]->getCartesC(), allCards, complete, mem))
 		setClaim(joueur);
+
+	//Remise à défaut de toutes les cartes TroupeElite
+	for (int i = 0; i < getCotes().size(); i++) {
+		for (int j = 0; j < getCotes()[i]->getCartesC().size(); j++)
+			getCotes()[i]->getCartesC()[j]->setDefault();
+	}
 
 	std::for_each(allCards.begin(), allCards.end(), [](Carte_c* c) {delete c; });
 	delete complete;
@@ -48,7 +77,7 @@ bool Tuile::proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsT
 
 	if (combiIncompl.size() < complete->getTailleCombi()) {
 		if (combiIncompl.size() != 0 && combiIncompl[0]->getValeur() == -1) {
-			//return computeProofCarteT((TroupeElite*)combiIncompl[0], combiIncompl, cardsToTest, complete);
+			return computeProofCarteT((TroupeElite*)combiIncompl[0], combiIncompl, cardsToTest, complete, prevEvaluated);
 		}
 		else {
 			return computeProofCarteC(combiIncompl, cardsToTest, complete, prevEvaluated);
@@ -63,7 +92,7 @@ bool Tuile::proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsT
 
 		//2 pointeurs, pour la comparaison
 		//operator> n'apprecie pas un type différent
-		Combinaison* incompl = new Combinaison(combiIncompl);
+		Combinaison* incompl = new Combinaison(combiIncompl, getNbCartesMax());
 
 		if (Combinaison::cmpSup(incompl, complete)) {
 			delete incompl;
@@ -202,7 +231,7 @@ void Tuile::claimClassic(int joueur) {
 	//Parcourir vector et set valeurs cartes Troupe d'elite
 
 	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité
-	Combinaison combiJ1(getCotes()[0]->getCartesC()), combiJ2(getCotes()[1]->getCartesC());
+	Combinaison combiJ1(getCotes()[0]->getCartesC(), getNbCartesMax()), combiJ2(getCotes()[1]->getCartesC(), getNbCartesMax());
 	combiJ1.dropDown(getVictoires());
 	combiJ2.dropDown(getVictoires());
 
@@ -241,7 +270,6 @@ void Tuile::casEgalite() {
 bool Tuile::isClaimable() {
 
 	if (getClaim() != -1) {
-		cout << "Deja revencdique" << endl;
 		return false;
 	}
 	else {

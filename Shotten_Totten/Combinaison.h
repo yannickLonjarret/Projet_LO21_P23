@@ -154,7 +154,10 @@ public:
 			convertToSomme();
 
 			return;
-
+			break;
+		case 1:
+			//Do nothing
+			break;
 		default:
 			cout << "Erreur Dropdown combi: score inexistant" << endl;
 			break;
