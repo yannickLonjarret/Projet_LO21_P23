@@ -222,13 +222,60 @@ void Tuile::claimTuile(int idJoueur, vector<Tuile*> plateau) {
 
 }
 
+void Tuile::claimTroupeE_CardSetter(vector<Carte_c*> v) {
+	int id_col, value;
+	TroupeElite* cast;
+	cout << "Here are the possible colors: " << endl;
+	for (int i = 1; i < Carte_c::getCouleurs().size(); i++)
+		cout << " Index " << i << ": " << Carte_c::getCouleurs()[i] << endl;
+
+	while (v[0]->getValeur() == -1) {
+
+		cast = (TroupeElite*)v[0];
+		cout << "Please type in the index of the color." << endl;
+		cin >> id_col;
+		if (id_col < 1 || id_col >= Carte_c::getCouleurs().size()) {
+			cout << "Invalid value for the color" << endl;
+			cout << "Please type in a value between " << 1 << " and " << Carte_c::getCouleurs().size() - 1 << endl;
+			continue;
+		}
+
+		cout << "Please type in the value of the card." << endl;
+		cout << "Here are the range for your card : " << cast->getDebut() << " : " << cast->getFin() << endl;
+		cin >> value;
+
+		if (id_col < cast->getDebut() || id_col > cast->getFin() ){
+			cout << "Invalid value for the card" << endl;
+			cout << "Please type in a value between " << cast->getDebut() << " and " << cast->getFin() << endl;
+			continue;
+		}
+
+		v[0]->setCouleur(Carte_c::getCouleurs()[id_col]);
+		v[0]->setValeur(value);
+
+		std::sort(v.begin(), v.end(), [](Carte_c* c1, Carte_c* c2) {
+			return c1->getValeur() < c2->getValeur();
+			});
+
+	}
+
+}
+
 void Tuile::claimClassic(int joueur) {
+	vector<Carte_c*> jCourant, jAdv;
 
-	//vector<Carte_t*> checkTroupeElite;
+	jCourant = getCotes()[joueur]->getCartesC();
+	jAdv = getCotes()[(joueur + 1)%2]->getCartesC();
 
-	//checkTroupeElite = getCotes()[joueur]->getCartesT();
-	//TODO
-	//Parcourir vector et set valeurs cartes Troupe d'elite
+	if (jCourant[0]->getValeur() == -1) {
+		cout << "Please set values and colors for your cards. " << endl;
+		claimTroupeE_CardSetter(jCourant);
+	}
+
+	if (jAdv[0]->getValeur() == -1) {
+		cout << "Please set values and colors for your opponent. (do not cheat plz) " << endl;
+		claimTroupeE_CardSetter(jAdv);
+	}
 
 	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité
 	Combinaison combiJ1(getCotes()[0]->getCartesC(), getNbCartesMax()), combiJ2(getCotes()[1]->getCartesC(), getNbCartesMax());

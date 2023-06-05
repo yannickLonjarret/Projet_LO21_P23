@@ -69,7 +69,7 @@ public:
 
 	bool computeProofCarteC(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated);
 
-
+	void claimTroupeE_CardSetter(vector<Carte_c*> v);
 
 	void cardSubstractor(vector<Carte_c*>& toSub, vector<Tuile*> plateau);
 
