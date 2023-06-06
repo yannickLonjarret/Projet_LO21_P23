@@ -22,7 +22,7 @@ public:
 	/// @param t : the type of the card
 	/// @param n : the name of the card
 	/// @param suite_actions : a vector of the different actions permitted by this card
-	Ruse(types t, string n, string d, vector<int> suite_actions) : Carte_t(t, n, d), actions(suite_actions) {}
+	Ruse(types t, string n, vector<int> suite_actions) : Carte_t(t, n), actions(suite_actions) {}
 
 	/// @brief Default destructor
 	~Ruse() = default;

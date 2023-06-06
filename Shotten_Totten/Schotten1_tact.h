@@ -3,6 +3,7 @@
 #include "Jeu.h"
 #include "Carte_t.h"
 #include "Carte_Ruse.h"
+#include "Pioche_c.h"
 #include "Pioche_t.h"
 #include "Troupe_Elite.h"
 #include "Mode_Combat.h"

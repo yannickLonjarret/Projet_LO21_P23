@@ -35,11 +35,16 @@ protected:
 
 	/// @brief The name of the card
 	string nom;
+
+	/// <summary>
+	/// The description of the card (the values possibles, how to use it, what it does, etc.)
+	/// </summary>
+	string description;
 public:
 	/// @brief Constructor which initializes a Carte_t object
 	/// @param t : type of the card
 	/// @param n : name of the card
-	Carte_t(types t, string n) :type(t), nom(n) {}
+	Carte_t(types t, string n, string d) :type(t), nom(n), description(d) {}
 
 	/// @brief Default destructor
 	~Carte_t() = default;
@@ -52,6 +57,11 @@ public:
 	/// @return the name of the card
 	string getNom() const { return nom; }
 
+	/// <summary>
+	/// Allows the user to get the description of the card
+	/// </summary>
+	string getDescription() const{ return description; }
+
 	/// @brief Allows the user to change the type of the card
 	/// @param valeur : the desired type of the card
 	void setType(types valeur) { type = valeur; }
@@ -60,10 +70,16 @@ public:
 	/// @param name : the desired name of the card
 	void setNom(string name) { nom = name; }
 
+	/// <summary>
+	/// Allows the user to change the description of the end
+	/// </summary>
+	/// <param name="desc">The description of the card</param>
+	void setDescription(string desc) { description = desc; }
+
 	//overriding the print function 
 	void print(std::ostream& os) const override {
 		os << "Carte Tactique : \n\t Type : " << this->getType() << "\n\t "
-			<< "Nom : " << this->getNom() << std::endl;
+			<< "Nom : " << this->getNom() << "\n\t" << this->getDescription() << std::endl;
 	}
 };
 
@@ -76,7 +92,7 @@ public:
 /// LE INLINE EST SUPER IMPORTANT POUR LA COMPREHENSION DU COMPILATEUR !!!
 inline std::ostream& operator<<(std::ostream& os, const Carte_t& ct) {
 	os << "Carte Tactique : \n\t Type : " << ct.getType() << "\n\t "
-		<< "Nom : " << ct.getNom() << std::endl;
+		<< "Nom : " << ct.getNom() << "\n\t" << ct.getDescription() << std::endl;
 	return os;
 }
 
@@ -87,7 +103,7 @@ inline std::ostream& operator<<(std::ostream& os, const Carte_t& ct) {
 /// <returns></returns>
 
 inline bool operator==(const Carte_t& c1, const Carte_t& c2) {
-	if (c1.getType() == c2.getType() && c1.getNom() == c2.getNom()) {
+	if (c1.getType() == c2.getType() && c1.getNom() == c2.getNom() && c1.getDescription() == c1.getDescription()) {
 		return true;
 	}
 	else {
