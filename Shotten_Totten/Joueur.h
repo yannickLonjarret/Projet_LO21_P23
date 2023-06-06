@@ -101,6 +101,15 @@ public:
 	}
 
 	/// <summary>
+	/// Return player's id
+	/// </summary>
+
+	int getId() const
+	{
+		return this->id_joueur;
+	}
+
+	/// <summary>
 	/// Return player's classic card
 	/// </summary>
 
@@ -118,37 +127,33 @@ public:
 		return this->cartes_t;
 	}
 
-	/// <summary>
-	/// Allows the player to draw a classic card
-	/// </summary>
-	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	Carte_c* piocher_c(Jeu& jeu);
 
 	/// <summary>
-	/// Allows the player to draw a tactic card
+	/// Allows the user to insert a card at the end of the hand
 	/// </summary>
-	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
-
-	Carte_t* piocher_t(Jeu& jeu);
+	/// <param name="c">the card to insert</param>
+	void push(const Carte_c& c);
 
 	/// <summary>
-	/// Allowss the player to place a classic card
+	/// Allows the user to insert a card at the end of the hand
 	/// </summary>
-	/// <param name="c"> classic card to place : Carte_c </param>
-	///<param name="id"> Player's id : int </param>
-	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
-
-	void Poser_carte_c(Carte_c& c, int id, Jeu& jeu);
+	/// <param name="c">the card to insert</param>
+	void push(const Carte_t& c);
 
 	/// <summary>
-	/// Allowss the player to place a tactic card
+	/// Allows the user to retrieve a classic card of the hand
 	/// </summary>
-	/// <param name="c"> tactic card to place : Carte_t </param>
-	/// <param name="id"> Player's id : int </param>
-	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
+	/// <param name="c">the card to retrieve</param>
+	void pop(const Carte_c& c);
 
-	void Poser_carte_t(Carte_t& c, int id, Jeu& jeu);
+	/// <summary>
+	/// Allows the user to retrieve a tactical card of the hand
+	/// </summary>
+	/// <param name="c">the card to retrieve</param>
+	void pop(const Carte_t& c);
+
+	void DisplayHand();
 
 
 	void surrender();
