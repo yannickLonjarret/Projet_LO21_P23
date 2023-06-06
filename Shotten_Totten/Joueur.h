@@ -7,6 +7,9 @@
 #include <ostream>
 #include "Carte_c.h"
 #include "Carte_t.h"
+#include "Pioche_c.h"
+#include "Pioche_t.h"
+#include "Tuile.h"
 
 class Jeu;
 
@@ -24,8 +27,8 @@ protected:
 	int id_joueur;
 	int nb_cartes;
 	int score;
-	std::vector<Carte_c> cartes_c;
-	std::vector<Carte_t> cartes_t;
+	std::vector<Carte_c*> cartes_c; //main du joueur en bas du plateau.
+	std::vector<Carte_t*> cartes_t;
 
 public:
 	/// <summary>
@@ -38,13 +41,15 @@ public:
 	/// <param name="cartes_c"> optionnal, player classic card vector : vector<cartes_c> </param>
 	/// <param name="cartes_t"> optionnal, player tactic card vector : vector<cartes_t> </param>
 
-	Joueur(std::string const& n) : nom(n)
+	Joueur(string const& n) : nom(n)
 	{
 		id_joueur = prochain_id; //Attribuer l'id unique a l'instance actuelle
 		prochain_id++;//Incrémenter l'id unique pour la prochaine instance
 		nb_cartes = 0;
 		score = 0;
 	}
+
+	Joueur() = default;
 
 	//FUNCTIONS
 
@@ -54,7 +59,19 @@ public:
 
 
 	void setNb_cartes() {
-		nb_cartes = cartes_c.size() + cartes_t.size();
+		//vérifier que le nb de cartes est positif (if)
+		if (cartes_c.size() + cartes_t.size() >= 0) {
+			nb_cartes = cartes_c.size() + cartes_t.size();
+		}
+		else {
+			cout << "Joueur::setNbCartes() -> le nombre de cartes n'est pas >= 0" << endl;
+		}
+	}
+
+
+	void ajouter_Carte_c(Carte_c* c) {
+		this->cartes_c.push_back(c);
+		setNb_cartes();
 	}
 
 	/// <summary>
@@ -72,7 +89,7 @@ public:
 	~Joueur() = default;
 
 	friend std::ostream& operator<<(std::ostream& os, const Joueur& j);
-
+	friend bool operator==(const Joueur& j1, const Joueur& j2);
 	/// <summary>
 	/// Return player's name
 	/// </summary>
@@ -80,6 +97,14 @@ public:
 	std::string getNom() const
 	{
 		return this->nom;
+	}
+
+	/// <summary>
+	/// return's the players id
+	/// </summary>
+	/// <returns>id</returns>
+	int getJId() const {
+		return this->id_joueur;
 	}
 
 	/// <summary>
@@ -104,7 +129,7 @@ public:
 	/// Return player's classic card
 	/// </summary>
 
-	std::vector<Carte_c> getCarteC() const
+	std::vector<Carte_c*> getCarteC() const
 	{
 		return this->cartes_c;
 	}
@@ -113,7 +138,7 @@ public:
 	/// Return player's tactic card
 	/// </summary>
 
-	std::vector<Carte_t> getCarteT() const
+	std::vector<Carte_t*> getCarteT() const
 	{
 		return this->cartes_t;
 	}
@@ -123,14 +148,14 @@ public:
 	/// </summary>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	Carte_c* piocher_c(Jeu& jeu);
+	Carte_c* piocher_c(Pioche_c& pc); //mettre pioche_c à la place de jeu et reafctor dans .cpp
 
 	/// <summary>
 	/// Allows the player to draw a tactic card
 	/// </summary>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	Carte_t* piocher_t(Jeu& jeu);
+	Carte_t* piocher_t(Pioche_t& pt); //pareil pour pioche_t
 
 	/// <summary>
 	/// Allowss the player to place a classic card
@@ -139,7 +164,7 @@ public:
 	///<param name="id"> Player's id : int </param>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	void Poser_carte_c(Carte_c& c, int id, Jeu& jeu);
+	void poser_carte(Carte_c* c, int id, Tuile* t); // ######### juste poser carte Tuile gère cc ou ct
 
 	/// <summary>
 	/// Allowss the player to place a tactic card
@@ -148,12 +173,9 @@ public:
 	/// <param name="id"> Player's id : int </param>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	void Poser_carte_t(Carte_t& c, int id, Jeu& jeu);
-
-
 	void surrender();
 	void to_claim();
-	void look_graveyard();
+	void look_graveyard(); // joueur->defausse->lookXfirstCard()
 };
 
 /// <summary>
@@ -162,7 +184,7 @@ public:
 /// <param name="os"> the output stream</param>
 /// <param name="j"> the player to display</param>
 /// <returns> the output stream with the players's information</returns>
-inline std::ostream& operator<<(std::ostream& os, const Joueur& j)
+inline std::ostream& operator<<(std::ostream& os, const Joueur& j) //display à revoir n'afficher que le nom et le nb_carte + la main.
 {
 	os << "Joueur : \n\t Name : " << j.getNom() << "\n\t "
 		<< "Nombre cartes : " << j.getNbCartes() << "\n\t "
@@ -183,4 +205,13 @@ inline std::ostream& operator<<(std::ostream& os, const Joueur& j)
 	return os;
 }
 
+
+inline bool operator==(const Joueur& j1, const Joueur& j2) {
+	if (j1.getJId() == j2.getJId() || j1.getNom() == j2.getNom()) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 #endif // !JOUEUR_H

@@ -61,9 +61,9 @@ public:
 	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité ou de revendication par preuve
 	void claimProof(int joueur, vector<Tuile*> plateau);
 
-	bool proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated); 
+	bool proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated);
 
-	
+
 
 	bool computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated);
 
@@ -77,7 +77,7 @@ public:
 
 	bool isCardOnTuile(Carte_c* c);
 
-	void proofCardGenerator(vector<Carte_c*>& gen); 
+	void proofCardGenerator(vector<Carte_c*>& gen);
 
 
 	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité ou de revendication par preuve
@@ -99,14 +99,14 @@ public:
 	bool isClaimable();
 
 	void clearVictoires();
-	
+
 	void setVictoires(vector<Combinaison*> newVict);
 
 	void setClaim(int winner) {
 		claim = winner;
 	}
 
-	
+
 
 
 	int getClaim() {
@@ -132,32 +132,34 @@ public:
 		return victoirePossible;
 	}
 
+	~Tuile() = default;
+
 	inline friend ostream& operator<<(ostream& os, Tuile& t);
-	
+
 };
 
 ostream& operator<<(ostream& os, Tuile& t) {
+
+
 	for (int i = 0; i < t.getCotes()[0]->getNbCartes(); i++) {
-		os << " |" << *t.getCotes()[0]->getCartesC()[i] << "| ";
+		os << *t.getCotes()[0]->getCartesC()[i];
 	}
 
 	//os << "\t\u2591\u2591\u2591"<<t.getClaim()<< "\u2591\u2591\u2591\t";
 
 	for (int i = 0; i < t.getCotes()[1]->getNbCartes(); i++) {
-		os << " |" << *t.getCotes()[1]->getCartesC()[i] << "| ";
+		os << *t.getCotes()[1]->getCartesC()[i];
 	}
 
 	os << "\t";
 
 	for (int i = 0; i < t.getCotes()[0]->getCartesT().size(); i++) {
-		os << " " << *t.getCotes()[0]->getCartesT()[i] << " ";
+		os << " " << *t.getCotes()[0]->getCartesT()[i];
 	}
 
 	for (int i = 0; i < t.getCotes()[1]->getCartesT().size(); i++) {
-		os << " " << *t.getCotes()[1]->getCartesT()[i] << " ";
+		os << " " << *t.getCotes()[1]->getCartesT()[i];
 	}
-
-	os << endl;
 
 	return os;
 }

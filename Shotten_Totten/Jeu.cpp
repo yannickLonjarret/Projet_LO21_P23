@@ -3,8 +3,40 @@
 #include <stdexcept>
 #include <stdlib.h>
 
-void Jeu::printPlateau() const {
+void Jeu::displayBoard(Joueur& currentJoueur) const {
 
+	cout << "           COTE J1                                                 COTE J2               \n";
+
+	if (currentJoueur == j1) {
+		for (size_t j = 0; j < getPlateau().size(); j++) {
+			if (plateau[j]->getHist_c().size() == 0) {
+				cout << "|----------------------------------|        |        |----------------------------------|\n";
+				cout << "|                                  |        |        |                                  |          Borne " << j << "\n";
+				cout << "|__________________________________|        |        |__________________________________|\n";
+			}
+			else {
+				cout << "|----------------------------------|        |        |----------------------------------|\n";
+				cout << "|" << *getPlateau()[j] << "                                                                           Borne " << j << "\n";
+				cout << "|__________________________________|        |        |__________________________________|\n";
+
+			}
+		}
+	}
+	else {
+		for (size_t j = 0; j < getPlateau().size(); j++) {
+			if (plateau[j]->getHist_c().size() == 0) {
+				cout << "|----------------------------------|        |        |----------------------------------|\n";
+				cout << "|                                  |        |        |                                  |          Borne " << j << "\n";
+				cout << "|__________________________________|        |        |__________________________________|\n";
+			}
+			else {
+				cout << "|----------------------------------|        |        |----------------------------------|\n";
+				cout << "|                                  |        |        |" << *getPlateau()[j] << "                      Borne " << j << "\n";
+				cout << "|__________________________________|        |        |__________________________________|\n";
+
+			}
+		}
+	}
 }
 
 void Jeu::printTitles() const {
@@ -23,6 +55,25 @@ void Jeu::printTitles() const {
 )" << '\n';
 }
 
+
+void Jeu::distribuer_cartes() {
+	//fonction temporaire pour faire des test
+
+	j1.ajouter_Carte_c(new Carte_c(1, "Rouge"));
+	j1.ajouter_Carte_c(new Carte_c(5, "Vert"));
+	j1.ajouter_Carte_c(new Carte_c(6, "Bleu"));
+	j1.ajouter_Carte_c(new Carte_c(3, "Rouge"));
+	j1.ajouter_Carte_c(new Carte_c(9, "Bleu"));
+	j1.ajouter_Carte_c(new Carte_c(5, "Jaune"));
+
+
+	j2.ajouter_Carte_c(new Carte_c(5, "Jaune"));
+	j2.ajouter_Carte_c(new Carte_c(1, "Rouge"));
+	j2.ajouter_Carte_c(new Carte_c(1, "Jaune"));
+	j2.ajouter_Carte_c(new Carte_c(6, "Bleu"));
+	j2.ajouter_Carte_c(new Carte_c(4, "Rouge"));
+	j2.ajouter_Carte_c(new Carte_c(9, "Bleu"));
+}
 
 void Jeu::displayMenu() const {
 	std::cout << R"(
@@ -106,7 +157,8 @@ void Jeu::playerSelection() {
 
 )" << std::endl;
 
-	std::string player1, player2;
+	std::string player1;
+	std::string player2;
 
 	bool quit = false;
 
@@ -142,7 +194,11 @@ void Jeu::playerSelection() {
 		case 3:
 			quit = true;
 			displayMenu();
+
+		default:
+			cout << "L'entrée n'est pas valide, recommencez." << endl;
 		}
+
 	}
 }
 
@@ -163,27 +219,29 @@ void Jeu::startGame(const Joueur& jou1, const Joueur& jou2) {
 
 	bool isOver = false;
 	vector<Joueur> joueurs;
-	joueurs.push_back(jou1);
-	joueurs.push_back(jou2);
+	joueurs.emplace_back(jou1);
+	joueurs.emplace_back(jou2);
 
+	distribuer_cartes();
+	cout << joueurs[0].getNbCartes();
+	displayBoard(joueurs[0]);
 
-	//displayBoard(jou1, jou2);
-
-	while (isOver) {
+	while (isOver == false) {
 
 		for (unsigned int i = 0; i < joueurs.size(); i++) {
 
 			cout << " ## C'est au joueur " << joueurs[i].getNom() << " de jouer ## " << endl;
-			cout << " J" << i + 1 << " choisis une borne[chiffre entre 0 et 5] : ";
+			cout << " J" << i + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 			int id_tuile = getUserInput();
-			cout << " J" << i + 1 << " choisis sa carte à poser [chiffre entre 0 et " << joueurs[i].getNbCartes() << "] : ";
+			cout << " J" << i + 1 << " choisis sa carte a poser [chiffre entre 0 et " << joueurs[i].getNbCartes() << "] : ";
 			int choix_carte = getUserInput();
-			poser_carte_c(0, id_tuile, j1.getCarteC()[choix_carte]);
-			//j1.piocher_c();
+			j1.poser_carte(j1.getCarteC()[choix_carte], j1.getJId(), plateau[id_tuile]);
+			displayBoard(joueurs[i]);
+			j1.piocher_c(this->pioche_c);
 
-			//displayBoard(jou1, jou2);
-
-
+			cout << joueurs[i].getNom() << " a termine son tour. C'est a " << joueurs[i + 1].getNom() << " de jouer. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
+			string temp_prompt = "";
+			cin >> temp_prompt;
 		}
 	}
 }

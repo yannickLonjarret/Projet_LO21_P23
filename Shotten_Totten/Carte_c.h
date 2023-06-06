@@ -34,18 +34,7 @@ public:
 	/// <param name="vmin"> optionnal, minimal value of the card </param>
 	/// <param name="vmax"> optionnal, maximal value of the card </param>
 	Carte_c(int val, const string& col) :valeur(val), couleur(col) {
-		/*
-		Pas de sens de remodifier les attributs static à chaque instanciation
-		val_min = 0;
-		val_max = 0;
-		couleurs.push_back("Non Couleur");
-		couleurs.push_back("Bleu");
-		couleurs.push_back("Rouge");
-		couleurs.push_back("Vert");
-		couleurs.push_back("Jaune");
-		couleurs.push_back("Noir");
-		couleurs.push_back("Gris");
-		*/
+
 	}
 
 	///FUNCTIONS
@@ -59,14 +48,13 @@ public:
 	int getValeur() const;
 	virtual void setDefault();
 
-	
+
 
 
 
 	//overriding the print function
 	void print(std::ostream& os) const override {
-		os << "Carte_c : \n\t Couleur : " << this->getCouleur() << "\n\t "
-			<< "Valeur : " << this->getValeur() << std::endl;
+		os << "[" << this->getCouleur() << "," << this->getValeur() << "]" << std::endl;
 	}
 
 	//Vector qu'on peut modifier ailleur
@@ -78,6 +66,8 @@ public:
 	/// Default Destructor 
 	/// </summary>
 	~Carte_c() = default;
+
+	friend bool operator==(const Carte_c& c1, const Carte_c& c2);
 };
 
 /// <summary>
@@ -90,8 +80,7 @@ public:
 /// 
 /// LE INLINE EST SUPER IMPORTANT POUR LA COMPREHENSION DU COMPILATEUR !!!
 inline std::ostream& operator<<(std::ostream& os, const Carte_c& cc) {
-	os << "Carte_c : \n\t Couleur : " << cc.getCouleur() << "\n\t "
-		<< "Valeur : " << cc.getValeur() << std::endl;
+	os << "[" << cc.getCouleur() << "," << cc.getValeur() << "]";
 	return os;
 }
 

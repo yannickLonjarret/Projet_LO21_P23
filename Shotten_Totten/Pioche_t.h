@@ -17,20 +17,20 @@ class Pioche_t
 private:
 
 	///collection of cards
-	std::vector<Carte_t> cartes;
+	std::vector<Carte_t*> cartes;
 
 public:
 	/// <summary>
 	/// Constructor initializes the card vector
 	/// </summary>
 	/// <param name="c">the collection of cards to be set as the attribute</param>
-	Pioche_t(std::vector<Carte_t> const& c) :cartes(c) {};
+	Pioche_t(std::vector<Carte_t*> const& c) :cartes(c) {};
 
 	size_t getSize() const {
 		return this->cartes.size();
 	}
 
-	std::vector<Carte_t> getCartes() const {
+	std::vector<Carte_t*> getCartes() const {
 		return this->cartes;
 	}
 
@@ -38,13 +38,13 @@ public:
 	/// Allows the user to insert a card at the end of the vector
 	/// </summary>
 	/// <param name="c">the card to insert</param>
-	void push(const Carte_t& c);
+	void push(Carte_t* c);
 
 	/// <summary>
 	/// Allows the user to retrieve the first element of the vector
 	/// </summary>
 	/// <returns> the card on top of the collection</returns>
-	Carte_t pop();
+	Carte_t* pop();
 
 	/// <summary>
 	/// Default destructor
@@ -69,7 +69,7 @@ public:
 inline std::ostream& operator<<(std::ostream& os, const Pioche_t& p) {
 	os << "[";
 	for (int i = 0; i < p.getSize(); i++) {
-		p.getCartes()[i].print(os);
+		p.getCartes()[i]->print(os);
 		if (i != p.getSize() - 1)
 			os << ", ";
 	}

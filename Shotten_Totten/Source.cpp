@@ -9,11 +9,11 @@
 #include "Troupe_Elite.h"
 
 int main() {
-	
-	vector<Combinaison*> vic;
+	/*
+	vector<Combinaison*> vic; //vic
 
 	vector<Carte_c*> cards;
-	vector<Tuile*> tuile;
+	vector<Tuile*> tuile; //plateau
 
 	Carte_c::getCouleurs().push_back("Vert");
 	Carte_c::getCouleurs().push_back("Bleu");
@@ -65,11 +65,13 @@ int main() {
 
 	std::chrono::duration<double> duration = endTime - startTime;
 	double seconds = duration.count();
-	/*
+
+
 	t->ajout_c(new Carte_c(9, "Bleu"), 1);
 	t->ajout_c(new Carte_c(8, "Bleu"), 1);
 	t->ajout_c(new Carte_c(7, "Bleu"), 1);
-	*/
+
+
 	cout << "Nb cartes J2: " << t->getCotes()[1]->getCartesC().size() << endl;
 
 	cards = t->getCotes()[1]->getCartesC();
@@ -83,12 +85,12 @@ int main() {
 
 	cout << "Temps de preuve: " << seconds << endl;
 	cout << *t;
-	
-	/*
-	Jeu* j{};
+	*/
+
+	Jeu* j = new Jeu();
 
 	j->printTitles();
-	j->playGame();
-	*/
+	j->menu_selection();
+
 	return 0;
 }

@@ -1,11 +1,11 @@
 #include "Pioche_c.h"
 
-void Pioche_c::push(const Carte_c& c)
+void Pioche_c::push(Carte_c* c)
 {
 	this->cartes.push_back(c);
 }
 
-Carte_c Pioche_c::pop()
+Carte_c* Pioche_c::pop()
 {
 	return cartes.back();
 }
@@ -15,8 +15,8 @@ std::vector<Carte_c*> Pioche_c::getXFirstCard(int x)
 	std::vector<Carte_c*> ret;
 
 	for (int i = 0; i < x; i++) {
-		ret.push_back(&this->cartes[i]);
+		ret.push_back(this->cartes[i]);
 	}
-	return std::vector<Carte_c*>();
+	return ret;
 }
 

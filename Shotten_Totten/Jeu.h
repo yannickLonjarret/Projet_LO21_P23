@@ -27,7 +27,20 @@ private:
 
 
 public:
-	Jeu();
+	Jeu() {
+
+		vector<Combinaison*> vic;
+		vic.push_back(new Combinaison(false, false, false));
+
+		for (unsigned int i = 0; i < 9; i++) {
+			Tuile* t = new Tuile(3, vic, 2);
+			plateau.push_back(t);
+		}
+	}
+
+	vector<Tuile*> getPlateau() const {
+		return this->plateau;
+	}
 
 	Joueur getJoueur1() const {
 		return j1;
@@ -45,26 +58,24 @@ public:
 	//	return pioche_t;
 	//}
 
-	void setJoueur1(const string& s) {
+	void setJoueur1(string& s) {
 		j1 = Joueur(s);
 	}
 
-	void setJoueur2(const string& s) {
+	void setJoueur2(string& s) {
 		j2 = Joueur(s);
 	}
 
-	void printPlateau() const;
+
+	void displayBoard(Joueur& currentJoueur) const;
 	void printTitles() const;
 	void displayMenu() const;
 	int getUserInput() const;
-	void poser_carte_c(int id_j, int id_tuile, const Carte_c& c) {
-
-	}
-	void poser_carte_t(int id_j, int id_tuile, const Carte_t& ct);
 
 	void menu_selection();
 	void playerSelection();
 	void startGame(const Joueur& j1, const Joueur& j2);
+	void distribuer_cartes();
 };
 
 
