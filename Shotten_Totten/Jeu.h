@@ -57,10 +57,9 @@ public:
 	void printTitles() const;
 	void displayMenu() const;
 	int getUserInput() const;
-	void poser_carte_c(int id_j, int id_tuile, const Carte_c& c) {
+	void play_card_c(int id_j,int id_tuile, Carte_c& c);
 
-	}
-	void poser_carte_t(int id_j, int id_tuile, const Carte_t& ct);
+	void play_card_t(int id_j, int id_tuile, const Carte_t& ct);
 
 	void menu_selection();
 	void playerSelection();

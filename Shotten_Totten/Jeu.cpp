@@ -59,6 +59,34 @@ int Jeu::getUserInput() const {
 	return choice;
 }
 
+void Jeu::play_card_c(int id_j,int id_tuile, Carte_c& c) {
+	// Find the player with the given id_j
+	Joueur& joueur = (id_j == 1) ? j1 : j2;
+
+
+	// Check if the card is in the player's hand
+	bool cardFound = false;
+	for (const Carte_c& carte : joueur.Joueur::getCarteC()) {
+		if (carte == c) {
+			cardFound = true;
+			break;
+		}
+	}
+
+	if (!cardFound) {
+		std::cout << "The card is not in the player's hand." << std::endl;
+		return;
+	}
+
+	// Place the card on the tile
+
+	plateau[id_tuile]->Tuile::ajout_c(&c , id_j);
+
+	// Remove the card from the player's hand
+	joueur.pop(c);
+}
+
+
 
 
 
@@ -178,7 +206,7 @@ void Jeu::startGame(const Joueur& jou1, const Joueur& jou2) {
 			int id_tuile = getUserInput();
 			cout << " J" << i + 1 << " choisis sa carte à poser [chiffre entre 0 et " << joueurs[i].getNbCartes() << "] : ";
 			int choix_carte = getUserInput();
-			poser_carte_c(0, id_tuile, j1.getCarteC()[choix_carte]);
+			play_card_c(0, id_tuile, j1.getCarteC()[choix_carte]);
 			//j1.piocher_c();
 
 			//displayBoard(jou1, jou2);
