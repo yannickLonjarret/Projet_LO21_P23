@@ -74,7 +74,7 @@ void Jeu::play_card_c(int id_j,int id_tuile, Carte_c& c) {
 	}
 
 	if (!cardFound) {
-		std::cout << "The card is not in the player's hand." << std::endl;
+		std::cout << "La carte n'est pas dans la main du joueur." << std::endl;
 		return;
 	}
 
@@ -84,6 +84,28 @@ void Jeu::play_card_c(int id_j,int id_tuile, Carte_c& c) {
 
 	// Remove the card from the player's hand
 	joueur.pop(c);
+}
+
+void Jeu::draw_card_c(int id_j)
+{
+	// Find the player with the given id_j
+	Joueur& joueur = (id_j == 1) ? j1 : j2;
+	
+	// Check if the classic card deck is empty
+	if (pioche_c.Pioche_c::getSize() == 0)
+	{
+		std::cout << "La pioche classique est vide." << std::endl;
+		return;
+	}
+
+	// Draw a card from the classic card deck
+	Carte_c carte = pioche_c.Pioche_c::pop();
+
+	// Add the card to the player's hand
+	joueur.push(carte);
+
+	// Output a message to indicate the successful draw
+	std::cout << "Joueur " << id_j << " a pioché une carte classique." << std::endl;
 }
 
 
@@ -207,7 +229,7 @@ void Jeu::startGame(const Joueur& jou1, const Joueur& jou2) {
 			cout << " J" << i + 1 << " choisis sa carte à poser [chiffre entre 0 et " << joueurs[i].getNbCartes() << "] : ";
 			int choix_carte = getUserInput();
 			play_card_c(0, id_tuile, j1.getCarteC()[choix_carte]);
-			//j1.piocher_c();
+			draw_card_c(i);
 
 			//displayBoard(jou1, jou2);
 

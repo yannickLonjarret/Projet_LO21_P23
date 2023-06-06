@@ -59,6 +59,8 @@ public:
 	int getUserInput() const;
 	void play_card_c(int id_j,int id_tuile, Carte_c& c);
 
+	void draw_card_c(int id_j);
+
 	void play_card_t(int id_j, int id_tuile, const Carte_t& ct);
 
 	void menu_selection();
