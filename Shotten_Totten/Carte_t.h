@@ -96,6 +96,21 @@ inline std::ostream& operator<<(std::ostream& os, const Carte_t& ct) {
 	return os;
 }
 
+/// Allows the comparison of two tactical cards
+/// </summary>
+/// <param name="c1">the first card</param>
+/// <param name="c2">the second card to be compared to</param>
+/// <returns></returns>
+
+inline bool operator==(const Carte_t& c1, const Carte_t& c2) {
+	if (c1.getType() == c2.getType() && c1.getNom() == c2.getNom() && c1.getDescription() == c1.getDescription()) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 #endif // !CARTES_T_H 
 
 
