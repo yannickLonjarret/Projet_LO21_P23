@@ -8,6 +8,28 @@
 #include "Jeu.h"
 #include "Troupe_Elite.h"
 
+
+const int NUM_ZONES = 9;
+const int BOARD_WIDTH = 40;
+
+// Function to display the game board
+void displayGameBoard(const std::vector<std::string>& leftSide, const std::vector<std::string>& rightSide) {
+	std::cout << std::string(BOARD_WIDTH, ' ') << " | " << std::string(BOARD_WIDTH, ' ') << std::endl;
+
+	for (int i = NUM_ZONES - 1; i >= 0; i--) {
+		std::string leftZone = (i < leftSide.size()) ? leftSide[i] : "";
+		std::string rightZone = (i < rightSide.size()) ? rightSide[i] : "";
+
+		std::string leftPadding(BOARD_WIDTH - leftZone.length(), ' ');
+		std::string rightPadding(BOARD_WIDTH - rightZone.length(), ' ');
+
+		std::cout << leftZone << leftPadding << " | " << rightZone << rightPadding << std::endl;
+	}
+
+	std::cout << std::string(BOARD_WIDTH, ' ') << " | " << std::string(BOARD_WIDTH, ' ') << std::endl;
+}
+
+
 int main() {
 
 
@@ -94,6 +116,8 @@ int main() {
 
 	j->printTitles();
 	j->menu_selection();
+
+
 
 	return 0;
 }

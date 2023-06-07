@@ -74,8 +74,10 @@ public:
 
 	void menu_selection();
 	void playerSelection();
-	void startGame(const Joueur& j1, const Joueur& j2);
+	void startGame(Joueur& j1, Joueur& j2);
 	void distribuer_cartes();
+
+	//void play_card_c(int id_j, int id_tuile, Carte_c& c)
 };
 
 

@@ -184,6 +184,16 @@ public:
 	/// <param name="c">the card to retrieve</param>
 	void pop(const Carte_t& c);
 
+
+	void afficherMain() const {
+		cout << "\nMain :";
+		for (size_t i = 0; i < getNbCartes(); i++) {
+			cout << *getCarteC()[i] << " | ";
+		}
+		cout << endl;
+		cout << endl;
+	}
+
 	void surrender();
 	void to_claim();
 	void look_graveyard(); // joueur->defausse->lookXfirstCard()

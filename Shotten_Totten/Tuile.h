@@ -7,6 +7,7 @@
 #include <iostream>
 #include <algorithm>
 #include <ostream>
+#include <sstream>
 
 using namespace std;
 
@@ -136,6 +137,12 @@ public:
 
 	inline friend ostream& operator<<(ostream& os, Tuile& t);
 
+	string toString() {
+		stringstream ss;
+		ss << (*this);
+		return ss.str();
+	}
+
 };
 
 ostream& operator<<(ostream& os, Tuile& t) {
@@ -151,7 +158,6 @@ ostream& operator<<(ostream& os, Tuile& t) {
 		os << *t.getCotes()[1]->getCartesC()[i];
 	}
 
-	os << "\t";
 
 	for (int i = 0; i < t.getCotes()[0]->getCartesT().size(); i++) {
 		os << " " << *t.getCotes()[0]->getCartesT()[i];

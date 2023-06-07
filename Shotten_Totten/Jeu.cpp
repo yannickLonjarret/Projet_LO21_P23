@@ -2,39 +2,37 @@
 #include <iostream>
 #include <stdexcept>
 #include <stdlib.h>
+#include <iomanip>
+
+
+
+
 
 void Jeu::displayBoard(Joueur& currentJoueur) const {
+	const int NUM_ZONES = 9;
+	const int BOARD_WIDTH = 50;
 
-	cout << "           COTE J1                                                 COTE J2               \n";
+	int longueur_borne = 46;
+	cout << " \n COTE J1                                 COTE J2               \n";
 
-	if (currentJoueur == j1) {
-		for (size_t j = 0; j < getPlateau().size(); j++) {
-			if (plateau[j]->getHist_c().size() == 0) {
-				cout << "|----------------------------------|        |        |----------------------------------|\n";
-				cout << "|                                  |        |        |                                  |          Borne " << j << "\n";
-				cout << "|__________________________________|        |        |__________________________________|\n";
-			}
-			else {
-				cout << "|----------------------------------|        |        |----------------------------------|\n";
-				cout << "|" << *getPlateau()[j] << "                                                                           Borne " << j << "\n";
-				cout << "|__________________________________|        |        |__________________________________|\n";
+	string leftZone = "";
+	string rightZone = "";
 
-			}
+	for (int i = NUM_ZONES - 1; i >= 0; i--) {
+
+		string claimable = (getPlateau()[i]->isClaimable() == true ? "REVENDICABLE" : "NON REVENDICABLE");
+
+		if (currentJoueur == j1) {
+			std::string leftZone = (getPlateau()[i]->getHist_c().size() != 0 ? getPlateau()[i]->toString() : "");
+			std::string leftPadding(BOARD_WIDTH - (BOARD_WIDTH / 2 + leftZone.length()), ' ');
+			std::string rightPadding(BOARD_WIDTH - rightZone.length() + 3, ' ');
+			cout << leftPadding << leftZone << " |" << i << "| " << rightPadding << claimable << endl;;
 		}
-	}
-	else {
-		for (size_t j = 0; j < getPlateau().size(); j++) {
-			if (plateau[j]->getHist_c().size() == 0) {
-				cout << "|----------------------------------|        |        |----------------------------------|\n";
-				cout << "|                                  |        |        |                                  |          Borne " << j << "\n";
-				cout << "|__________________________________|        |        |__________________________________|\n";
-			}
-			else {
-				cout << "|----------------------------------|        |        |----------------------------------|\n";
-				cout << "|                                  |        |        |" << *getPlateau()[j] << "                      Borne " << j << "\n";
-				cout << "|__________________________________|        |        |__________________________________|\n";
-
-			}
+		else {
+			std::string rightZone = (getPlateau()[i]->getHist_c().size() != 0 ? getPlateau()[i]->toString() : "");
+			std::string leftPadding(BOARD_WIDTH - (BOARD_WIDTH / 2 + leftZone.length()), ' ');
+			std::string rightPadding(BOARD_WIDTH - rightZone.length() + 3, ' ');
+			cout << leftPadding << " |" << i << "| " << rightZone << rightPadding << claimable << endl;
 		}
 	}
 }
@@ -57,22 +55,7 @@ void Jeu::printTitles() const {
 
 
 void Jeu::distribuer_cartes() {
-	//fonction temporaire pour faire des test
 
-	j1.ajouter_Carte_c(new Carte_c(1, "Rouge"));
-	j1.ajouter_Carte_c(new Carte_c(5, "Vert"));
-	j1.ajouter_Carte_c(new Carte_c(6, "Bleu"));
-	j1.ajouter_Carte_c(new Carte_c(3, "Rouge"));
-	j1.ajouter_Carte_c(new Carte_c(9, "Bleu"));
-	j1.ajouter_Carte_c(new Carte_c(5, "Jaune"));
-
-
-	j2.ajouter_Carte_c(new Carte_c(5, "Jaune"));
-	j2.ajouter_Carte_c(new Carte_c(1, "Rouge"));
-	j2.ajouter_Carte_c(new Carte_c(1, "Jaune"));
-	j2.ajouter_Carte_c(new Carte_c(6, "Bleu"));
-	j2.ajouter_Carte_c(new Carte_c(4, "Rouge"));
-	j2.ajouter_Carte_c(new Carte_c(9, "Bleu"));
 }
 
 void Jeu::displayMenu() const {
@@ -110,15 +93,16 @@ int Jeu::getUserInput() const {
 	return choice;
 }
 
-void Jeu::play_card_c(int id_j,int id_tuile, Carte_c& c) {
+/*
+void Jeu::play_card_c(int id_j, int id_tuile, Carte_c& c) {
 	// Find the player with the given id_j
 	Joueur& joueur = (id_j == 1) ? j1 : j2;
 
 
 	// Check if the card is in the player's hand
 	bool cardFound = false;
-	for (const Carte_c& carte : joueur.Joueur::getCarteC()) {
-		if (carte == c) {
+	for (Carte_c* carte : joueur.getCarteC()) {
+		if (*carte == c) {
 			cardFound = true;
 			break;
 		}
@@ -131,17 +115,19 @@ void Jeu::play_card_c(int id_j,int id_tuile, Carte_c& c) {
 
 	// Place the card on the tile
 
-	plateau[id_tuile]->Tuile::ajout_c(&c , id_j);
+	plateau[id_tuile]->Tuile::ajout_c(&c, id_j);
 
 	// Remove the card from the player's hand
 	joueur.pop(c);
 }
+*/
 
+/*
 void Jeu::draw_card_c(int id_j)
 {
 	// Find the player with the given id_j
 	Joueur& joueur = (id_j == 1) ? j1 : j2;
-	
+
 	// Check if the classic card deck is empty
 	if (pioche_c.Pioche_c::getSize() == 0)
 	{
@@ -158,7 +144,7 @@ void Jeu::draw_card_c(int id_j)
 	// Output a message to indicate the successful draw
 	std::cout << "Joueur " << id_j << " a pioché une carte classique." << std::endl;
 }
-
+*/
 
 
 
@@ -253,7 +239,7 @@ void Jeu::playerSelection() {
 }
 
 
-void Jeu::startGame(const Joueur& jou1, const Joueur& jou2) {
+void Jeu::startGame(Joueur& jou1, Joueur& jou2) {
 
 	system("CLS");
 	cout << R"(
@@ -269,29 +255,49 @@ void Jeu::startGame(const Joueur& jou1, const Joueur& jou2) {
 
 	bool isOver = false;
 	vector<Joueur> joueurs;
+
+
+	jou1.ajouter_Carte_c(new Carte_c(1, "Rouge"));
+	jou1.ajouter_Carte_c(new Carte_c(5, "Vert"));
+	jou1.ajouter_Carte_c(new Carte_c(6, "Bleu"));
+	jou1.ajouter_Carte_c(new Carte_c(3, "Rouge"));
+	jou1.ajouter_Carte_c(new Carte_c(9, "Bleu"));
+	jou1.ajouter_Carte_c(new Carte_c(5, "Jaune"));
+	//remplacer les instruction avant par la méthode distibuer cartes qui donne des cartes de la pioche vers la main du joueur.
+
+	jou2.ajouter_Carte_c(new Carte_c(5, "Jaune"));
+	jou2.ajouter_Carte_c(new Carte_c(1, "Rouge"));
+	jou2.ajouter_Carte_c(new Carte_c(1, "Jaune"));
+	jou2.ajouter_Carte_c(new Carte_c(6, "Bleu"));
+	jou2.ajouter_Carte_c(new Carte_c(4, "Rouge"));
+	jou2.ajouter_Carte_c(new Carte_c(9, "Bleu"));
+
+
+
 	joueurs.emplace_back(jou1);
 	joueurs.emplace_back(jou2);
 
-	distribuer_cartes();
-	cout << joueurs[0].getNbCartes();
-	displayBoard(joueurs[0]);
-
 	while (isOver == false) {
-
+		cout << joueurs.size();
 		for (unsigned int i = 0; i < joueurs.size(); i++) {
 
-			cout << " ## C'est au joueur " << joueurs[i].getNom() << " de jouer ## " << endl;
-			cout << " J" << i + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
-			int id_tuile = getUserInput();
-			cout << " J" << i + 1 << " choisis sa carte a poser [chiffre entre 0 et " << joueurs[i].getNbCartes() << "] : ";
-			int choix_carte = getUserInput();
-			j1.poser_carte(j1.getCarteC()[choix_carte], j1.getJId(), plateau[id_tuile]);
 			displayBoard(joueurs[i]);
-			j1.piocher_c(this->pioche_c);
+			joueurs[i].afficherMain();
 
-			cout << joueurs[i].getNom() << " a termine son tour. C'est a " << joueurs[i + 1].getNom() << " de jouer. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
+			cout << " ## C'est au joueur " << joueurs[i].getNom() << " de jouer ## " << endl;
+			cout << joueurs[i].getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+			int id_tuile = getUserInput();
+			cout << joueurs[i].getNom() << " choisis sa carte a poser [chiffre entre 0 et " << joueurs[i].getNbCartes() - 1 << "] : ";
+			int choix_carte = getUserInput();
+			joueurs[i].poser_carte(joueurs[i].getCarteC()[choix_carte], i, plateau[id_tuile]);
+			displayBoard(joueurs[i]);
+			joueurs[i].afficherMain();
+			joueurs[i].piocher_c(this->pioche_c);
+
+			cout << joueurs[i].getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
 			string temp_prompt = "";
 			cin >> temp_prompt;
+			cout << endl;
 		}
 	}
 }
