@@ -9,6 +9,9 @@
 #include "Troupe_Elite.h"
 
 int main() {
+
+
+
 	/*
 	vector<Combinaison*> vic; //vic
 
