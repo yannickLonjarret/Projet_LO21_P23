@@ -74,6 +74,11 @@ public:
 		setNb_cartes();
 	}
 
+	void ajouter_Carte_t(Carte_t* c) {
+		this->cartes_t.push_back(c);
+		setNb_cartes();
+	}
+
 	/// <summary>
 	/// Set the value of score
 	/// </summary>
@@ -160,14 +165,14 @@ public:
 	/// <param name="c">the card to insert</param>
 	void push(const Carte_c& c);
 
-	Carte_c* piocher_c(Pioche_c& pc); //mettre pioche_c à la place de jeu et reafctor dans .cpp
+	//Carte_c* piocher_c(Pioche_c& pc); //mettre pioche_c à la place de jeu et reafctor dans .cpp
 
 	/// <summary>
 	/// Allows the user to insert a card at the end of the hand
 	/// </summary>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	Carte_t* piocher_t(Pioche_t& pt); //pareil pour pioche_t
+	//Carte_t* piocher_t(Pioche_t& pt); //pareil pour pioche_t
 
 	/// <summary>
 	/// Allows the user to retrieve a classic card of the hand
