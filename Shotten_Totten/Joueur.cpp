@@ -2,7 +2,7 @@
 #include "Tuile.h"
 
 
-int Joueur::prochain_id = 0; // Initialisation de la variable statique
+int Joueur::prochain_id = 1; // Initialisation de la variable statique
 
 void Joueur::poser_carte(Carte_c* c, int id, Tuile* t) {
 	//Logique de pose d'une carte classique sur le plateau
@@ -19,9 +19,6 @@ void Joueur::poser_carte(Carte_c* c, int id, Tuile* t) {
 	}
 	if (carteTrouvee == false) {
 		t->ajout_c(c, id);
-	}
-	else {
-		std::cout << "La carte n'appartient pas à la main du joueur !" << std::endl;
 	}
 }
 

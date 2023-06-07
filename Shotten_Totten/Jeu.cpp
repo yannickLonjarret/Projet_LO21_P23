@@ -110,6 +110,56 @@ int Jeu::getUserInput() const {
 	return choice;
 }
 
+void Jeu::play_card_c(int id_j,int id_tuile, Carte_c& c) {
+	// Find the player with the given id_j
+	Joueur& joueur = (id_j == 1) ? j1 : j2;
+
+
+	// Check if the card is in the player's hand
+	bool cardFound = false;
+	for (const Carte_c& carte : joueur.Joueur::getCarteC()) {
+		if (carte == c) {
+			cardFound = true;
+			break;
+		}
+	}
+
+	if (!cardFound) {
+		std::cout << "La carte n'est pas dans la main du joueur." << std::endl;
+		return;
+	}
+
+	// Place the card on the tile
+
+	plateau[id_tuile]->Tuile::ajout_c(&c , id_j);
+
+	// Remove the card from the player's hand
+	joueur.pop(c);
+}
+
+void Jeu::draw_card_c(int id_j)
+{
+	// Find the player with the given id_j
+	Joueur& joueur = (id_j == 1) ? j1 : j2;
+	
+	// Check if the classic card deck is empty
+	if (pioche_c.Pioche_c::getSize() == 0)
+	{
+		std::cout << "La pioche classique est vide." << std::endl;
+		return;
+	}
+
+	// Draw a card from the classic card deck
+	Carte_c carte = pioche_c.Pioche_c::pop();
+
+	// Add the card to the player's hand
+	joueur.push(carte);
+
+	// Output a message to indicate the successful draw
+	std::cout << "Joueur " << id_j << " a pioché une carte classique." << std::endl;
+}
+
+
 
 
 

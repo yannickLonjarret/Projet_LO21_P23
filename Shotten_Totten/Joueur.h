@@ -126,6 +126,15 @@ public:
 	}
 
 	/// <summary>
+	/// Return player's id
+	/// </summary>
+
+	int getId() const
+	{
+		return this->id_joueur;
+	}
+
+	/// <summary>
 	/// Return player's classic card
 	/// </summary>
 
@@ -143,22 +152,25 @@ public:
 		return this->cartes_t;
 	}
 
+
+
 	/// <summary>
-	/// Allows the player to draw a classic card
+	/// Allows the user to insert a card at the end of the hand
 	/// </summary>
-	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
+	/// <param name="c">the card to insert</param>
+	void push(const Carte_c& c);
 
 	Carte_c* piocher_c(Pioche_c& pc); //mettre pioche_c à la place de jeu et reafctor dans .cpp
 
 	/// <summary>
-	/// Allows the player to draw a tactic card
+	/// Allows the user to insert a card at the end of the hand
 	/// </summary>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
 	Carte_t* piocher_t(Pioche_t& pt); //pareil pour pioche_t
 
 	/// <summary>
-	/// Allowss the player to place a classic card
+	/// Allows the user to retrieve a classic card of the hand
 	/// </summary>
 	/// <param name="c"> classic card to place : Carte_c </param>
 	///<param name="id"> Player's id : int </param>
@@ -167,11 +179,10 @@ public:
 	void poser_carte(Carte_c* c, int id, Tuile* t); // ######### juste poser carte Tuile gère cc ou ct
 
 	/// <summary>
-	/// Allowss the player to place a tactic card
+	/// Allows the user to retrieve a tactical card of the hand
 	/// </summary>
-	/// <param name="c"> tactic card to place : Carte_t </param>
-	/// <param name="id"> Player's id : int </param>
-	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
+	/// <param name="c">the card to retrieve</param>
+	void pop(const Carte_t& c);
 
 	void surrender();
 	void to_claim();

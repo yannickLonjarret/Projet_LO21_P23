@@ -16,13 +16,17 @@ class Ruse : public Carte_t
 private:
 	/// @brief Represents a vector which contains all the permitted actions of the card
 	vector<int> actions;
+	/// <summary>
+	/// Represents a vector of the cards which have to be kept during the process of a card Ruse
+	/// </summary>
+	vector<Carte*> cartes;
 
 public:
 	/// @brief Constructor of a Ruse card
 	/// @param t : the type of the card
 	/// @param n : the name of the card
 	/// @param suite_actions : a vector of the different actions permitted by this card
-	Ruse(types t, string n, string d, vector<int> suite_actions) : Carte_t(t, n, d), actions(suite_actions) {}
+	Ruse(types t, string n, vector<int> suite_actions) : Carte_t(t, n), actions(suite_actions) {}
 
 	/// @brief Default destructor
 	~Ruse() = default;
@@ -37,6 +41,22 @@ public:
 	/// @param a : the action to add
 	void addAction(int a) {
 		actions.push_back(a);
+	}
+
+	/// <summary>
+	/// Allows the user to add a Carte pointer in the vector cartes
+	/// </summary>
+	/// <param name="c">The Carte pointer to add</param>
+	void addCartes(const Carte* c) {
+		cartes.push_back(c);
+	}
+
+	/// <summary>
+	/// Return the entire vector cartes
+	/// </summary>
+	/// <returns>The vector with all the cards in it</returns>
+	const vector<Carte*> getAllCartes() const {
+		return cartes;
 	}
 };
 
