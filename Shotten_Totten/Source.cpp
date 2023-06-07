@@ -30,6 +30,12 @@ int main() {
 	TroupeElite* joker2 = new TroupeElite((types)0, "Joker", "Le putain de joker", -1, Carte_c::getCouleurs()[0], 1, 9);
 	TroupeElite* joker3 = new TroupeElite((types)0, "Joker", "Le putain de joker", -1, Carte_c::getCouleurs()[0], 1, 9);
 
+	
+
+	Carte_t* j1 = joker;
+	Carte_t* j2 = joker2;
+	Carte_t* j3 = joker3;
+
 	vic.push_back(new Combinaison(false, false, false));
 	vic.push_back(new Combinaison(true, false, false));
 	vic.push_back(new Combinaison(false, true, false));
@@ -40,9 +46,9 @@ int main() {
 
 	tuile.push_back(t);
 
-	t->ajout_c(new Carte_c(3, "Rouge"), 0);
-	t->ajout_c(new Carte_c(2, "Rouge"), 0);
-	t->ajout_c(new Carte_c(1, "Rouge"), 0);
+	t->ajout_carte((Carte*)new Carte_c(3, "Rouge"), 0);
+	t->ajout_carte((Carte*)new Carte_c(2, "Rouge"), 0);
+	t->ajout_carte((Carte*)new Carte_c(1, "Rouge"), 0);
 
 	cards = t->getCotes()[0]->getCartesC();
 	cout << "Nb cartes J1: " << cards.size() << endl;
@@ -55,14 +61,20 @@ int main() {
 		cout << t->getCotes()[1]->getCartesC()[i]->getValeur() << " " << t->getCotes()[1]->getCartesC()[i]->getCouleur() << endl;
 	}
 
-	t->ajout_c(joker, 1);
-	t->ajout_c(joker2, 1);
-	t->ajout_c(joker3, 1);
+	t->ajout_carte((Carte*)j1, 1);
+	t->ajout_carte((Carte*)j2, 1);
+	t->ajout_carte((Carte*)j3, 1);
+
+	cards = t->getCotes()[1]->getCartesC();
+
+	for (int i = 0; i < cards.size(); i++) {
+		cout << cards[i]->getValeur() << " " << cards[i]->getCouleur() << endl;
+	}
 
 
 	auto startTime = std::chrono::high_resolution_clock::now();
 
-	//t->claimTuile(0, tuile);
+	t->claimTuile(0, tuile);
 	auto endTime = std::chrono::high_resolution_clock::now();
 	cout << "gagnant: " << t->getClaim() << endl;
 
@@ -83,7 +95,14 @@ int main() {
 		cout << cards[i]->getValeur() << " " << cards[i]->getCouleur() << endl;
 	}
 
-	t->claimTuile(0, tuile);
+	cout << endl;
+	vector<Carte_t*> card = t->getCotes()[1]->getCartesT();
+
+	for (int i = 0; i < card.size(); i++) {
+		cout << *card[i]<< endl;
+	}
+
+	//t->claimTuile(0, tuile);
 	cout << "gagnant: " << t->getClaim() << endl;
 
 	cout << "Temps de preuve: " << seconds << endl;

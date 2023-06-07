@@ -55,7 +55,11 @@ public:
 
 	};
 
+
+	void ajout_carte(Carte* c, int idJoueur);
 	void ajout_c(Carte_c* c, int idJoueur);
+	void ajout_t(Carte_t* c, int idJoueur);
+	void ajout_TroupeElite(TroupeElite* c, int idJoueur);
 
 
 	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité ou de revendication par preuve
@@ -145,7 +149,7 @@ ostream& operator<<(ostream& os, Tuile& t) {
 		os << *t.getCotes()[0]->getCartesC()[i];
 	}
 
-	//os << "\t\u2591\u2591\u2591"<<t.getClaim()<< "\u2591\u2591\u2591\t";
+	os << "\t\u2591\u2591\u2591"<<t.getClaim()<< "\u2591\u2591\u2591 \t";
 
 	for (int i = 0; i < t.getCotes()[1]->getNbCartes(); i++) {
 		os << *t.getCotes()[1]->getCartesC()[i];
