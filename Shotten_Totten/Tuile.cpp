@@ -21,6 +21,37 @@ void Tuile::ajout_c(Carte_c* c, int idJoueur) {
 
 }
 
+void Tuile::ajout_t(Carte_t* c, int idJoueur) {
+
+	Cote* coteJoueur = getCotes()[idJoueur];
+
+	coteJoueur->getCartesT().push_back(c);
+
+}
+
+void Tuile::ajout_carte(Carte* c, int idJoueur) {
+
+	if (typeid(*c) == typeid(TroupeElite)) {
+		Carte_t* t = (Carte_t*)c;
+		ajout_TroupeElite((TroupeElite*)t, idJoueur);
+	}
+	else if (typeid(*c) == typeid(Carte_c))
+		ajout_c((Carte_c*)c, idJoueur);
+	
+	else
+		ajout_t((Carte_t*)c, idJoueur);
+}
+
+void Tuile::ajout_TroupeElite(TroupeElite* c, int idJoueur) {
+	int insertCtrl = getCotes()[idJoueur]->getCartesC().size();
+
+	ajout_c((Carte_c*)c, idJoueur);
+
+	if (insertCtrl == getCotes()[idJoueur]->getCartesC().size()) return;
+
+	ajout_t((Carte_t*)c, idJoueur);
+}
+
 bool Tuile::computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated){
 	int lowB, hiB;
 
@@ -222,6 +253,89 @@ void Tuile::claimTuile(int idJoueur, vector<Tuile*> plateau) {
 
 }
 
+Carte_c* Tuile::defausseSoi(int idJoueur) {
+
+	vector<Carte_c*> soi = getCotes()[idJoueur]->getCartesC();
+	Carte_c* toDefausse = nullptr;
+	char valid;
+
+	cout << "Vous défaussez votre tuile" << endl;
+
+	while (true) {
+		for (size_t i = 0; i < soi.size(); i++) {
+			cout << "Voulez vous défaussez cette carte ?" << endl << *soi[i];
+			cin >> valid;
+
+			if (valid == 'o') {
+				toDefausse = soi[i];
+				soi.erase(soi.begin() + i);
+
+				return toDefausse;
+			}
+		}
+	}
+
+}
+
+Carte_c* Tuile::defausseAdverse(int idJoueur) {
+	vector<Carte_c*> adv = getCotes()[(idJoueur+1)%2]->getCartesC();
+	Carte_c* toDefausse = nullptr;
+	char valid;
+
+	cout << "Vous défaussez la tuile adverse" << endl;
+
+	while (true) {
+		for (size_t i = 0; i < adv.size(); i++) {
+			cout << "Voulez vous défaussez cette carte ? (o pour oui)" << endl << *adv[i];
+			cin >> valid;
+
+			if (valid == 'o') {
+				toDefausse = adv[i];
+				adv.erase(adv.begin() + i);
+
+				return toDefausse;
+			}
+		}
+	}
+
+}
+
+Carte_c* Tuile::defausseTout(int idJoueur) {
+	vector<Carte_c*> soi = getCotes()[1]->getCartesC();
+	vector<Carte_c*> adv = getCotes()[(idJoueur + 1) % 2]->getCartesC();
+	Carte_c* toDefausse = nullptr;
+	char valid;
+	
+
+	while (true) {
+		cout << "Vous défaussez votre tuile" << endl;
+		for (size_t i = 0; i < soi.size(); i++) {
+			cout << "Voulez vous défaussez cette carte ?" << endl << *soi[i];
+			cin >> valid;
+
+			if (valid == 'o') {
+				toDefausse = soi[i];
+				soi.erase(soi.begin() + i);
+
+				return toDefausse;
+			}
+		}
+
+		cout << "Vous défaussez la tuile adverse" << endl;
+		for (size_t i = 0; i < adv.size(); i++) {
+			cout << "Voulez vous défaussez cette carte ?" << endl << *adv[i];
+			cin >> valid;
+
+			if (valid == 'o') {
+				toDefausse = adv[i];
+				adv.erase(adv.begin() + i);
+
+				return toDefausse;
+			}
+		}
+	}
+}
+
 void Tuile::claimTroupeE_CardSetter(vector<Carte_c*> v) {
 	int id_col, value;
 	TroupeElite* cast;
@@ -234,20 +348,21 @@ void Tuile::claimTroupeE_CardSetter(vector<Carte_c*> v) {
 		cast = (TroupeElite*)v[0];
 		cout << "Please type in the index of the color." << endl;
 		cin >> id_col;
-		if (id_col < 1 || id_col >= Carte_c::getCouleurs().size()) {
+		while(id_col < 1 || id_col >= Carte_c::getCouleurs().size()) {
 			cout << "Invalid value for the color" << endl;
 			cout << "Please type in a value between " << 1 << " and " << Carte_c::getCouleurs().size() - 1 << endl;
-			continue;
+			cin >> id_col;
+
 		}
 
 		cout << "Please type in the value of the card." << endl;
 		cout << "Here are the range for your card : " << cast->getDebut() << " : " << cast->getFin() << endl;
 		cin >> value;
 
-		if (id_col < cast->getDebut() || id_col > cast->getFin() ){
+		while(value < cast->getDebut() || value > cast->getFin() ){
 			cout << "Invalid value for the card" << endl;
 			cout << "Please type in a value between " << cast->getDebut() << " and " << cast->getFin() << endl;
-			continue;
+			cin >> value;
 		}
 
 		v[0]->setCouleur(Carte_c::getCouleurs()[id_col]);

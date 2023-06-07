@@ -21,7 +21,7 @@ void Joueur::poser_carte(Carte_c* c, int id, Tuile* t) {
 		t->ajout_c(c, id);
 	}
 }
-
+/*
 Carte_c* Joueur::piocher_c(Pioche_c& pc) {
 	//Logique de la pioche d'une carte classique
 	Carte_c* carte = nullptr;
@@ -44,4 +44,5 @@ Carte_t* Joueur::piocher_t(Pioche_t& pt) {
 
 	return carte;
 }
+*/
 

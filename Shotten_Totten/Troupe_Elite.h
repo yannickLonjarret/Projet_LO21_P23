@@ -1,6 +1,7 @@
 #ifndef TROUPE_ELITE_H
 #define TROUPE_ELITE_H
 #include "Carte_t.h"
+#include "Carte.h"
 using namespace std;
 
 /// @brief TroupeElite represents cards which correspond to Troupe d'Elite cards (playable as clan cards)

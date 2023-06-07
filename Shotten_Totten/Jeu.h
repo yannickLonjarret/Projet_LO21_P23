@@ -54,6 +54,15 @@ public:
 		return pioche_c;
 	}
 
+	/// <summary>
+	/// Allows the user to pick the first card of the classical pick
+	/// </summary>
+	/// <returns>The reference of the card</returns>
+	Carte_c& piocher_c() {
+		if (pioche_c.getSize() != 0)
+			return pioche_c.pop();
+	}
+
 	//Pioche_t getPioche_t() const {
 	//	return pioche_t;
 	//}

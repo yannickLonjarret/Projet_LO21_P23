@@ -28,7 +28,25 @@ public:
 	/// </summary>
 	Schotten1_tact();
 
-	void execRuse(Ruse& carte);
+	/// <summary>
+	/// Allows the user to pick the first card of the tactical pick
+	/// </summary>
+	/// <returns>The reference of the card</returns>
+	Carte_t& piocher_t() {
+		if (pioche_tact.getSize() != 0)
+			return pioche_tact.pop();
+	}
+
+	void piocheRuse(int choix_pioche, Ruse& carte);
+
+	void execRuse(Ruse& carte, int id_joueur);
+	int choixPioche() const;
+	Carte* choisirCarte(int id_joueur, vector<Carte*> vecteur);
+	Carte* defausser();
+	Carte* choixCarteTuile();
+	Carte* piocherRuse();
+	int checkCarteT_joue(); // renvoie le nombre de cartes tactiques jouées par l'adversaire
+	void jouer(); // méthode virtuelle de Jeu normalement
 };
 
 #endif // !SCHOTTEN1_TACT_H
