@@ -110,7 +110,11 @@ public:
 		claim = winner;
 	}
 
+	Carte_c* defausseSoi(int idJoueur);
 
+	Carte_c* defausseAdverse(int idJoueur);
+
+	Carte_c* defausseTout(int idJoueur);
 
 
 	int getClaim() {

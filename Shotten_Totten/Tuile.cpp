@@ -253,6 +253,89 @@ void Tuile::claimTuile(int idJoueur, vector<Tuile*> plateau) {
 
 }
 
+Carte_c* Tuile::defausseSoi(int idJoueur) {
+
+	vector<Carte_c*> soi = getCotes()[idJoueur]->getCartesC();
+	Carte_c* toDefausse = nullptr;
+	char valid;
+
+	cout << "Vous défaussez votre tuile" << endl;
+
+	while (true) {
+		for (size_t i = 0; i < soi.size(); i++) {
+			cout << "Voulez vous défaussez cette carte ?" << endl << *soi[i];
+			cin >> valid;
+
+			if (valid == 'o') {
+				toDefausse = soi[i];
+				soi.erase(soi.begin() + i);
+
+				return toDefausse;
+			}
+		}
+	}
+
+}
+
+Carte_c* Tuile::defausseAdverse(int idJoueur) {
+	vector<Carte_c*> adv = getCotes()[(idJoueur+1)%2]->getCartesC();
+	Carte_c* toDefausse = nullptr;
+	char valid;
+
+	cout << "Vous défaussez la tuile adverse" << endl;
+
+	while (true) {
+		for (size_t i = 0; i < adv.size(); i++) {
+			cout << "Voulez vous défaussez cette carte ? (o pour oui)" << endl << *adv[i];
+			cin >> valid;
+
+			if (valid == 'o') {
+				toDefausse = adv[i];
+				adv.erase(adv.begin() + i);
+
+				return toDefausse;
+			}
+		}
+	}
+
+}
+
+Carte_c* Tuile::defausseTout(int idJoueur) {
+	vector<Carte_c*> soi = getCotes()[1]->getCartesC();
+	vector<Carte_c*> adv = getCotes()[(idJoueur + 1) % 2]->getCartesC();
+	Carte_c* toDefausse = nullptr;
+	char valid;
+	
+
+	while (true) {
+		cout << "Vous défaussez votre tuile" << endl;
+		for (size_t i = 0; i < soi.size(); i++) {
+			cout << "Voulez vous défaussez cette carte ?" << endl << *soi[i];
+			cin >> valid;
+
+			if (valid == 'o') {
+				toDefausse = soi[i];
+				soi.erase(soi.begin() + i);
+
+				return toDefausse;
+			}
+		}
+
+		cout << "Vous défaussez la tuile adverse" << endl;
+		for (size_t i = 0; i < adv.size(); i++) {
+			cout << "Voulez vous défaussez cette carte ?" << endl << *adv[i];
+			cin >> valid;
+
+			if (valid == 'o') {
+				toDefausse = adv[i];
+				adv.erase(adv.begin() + i);
+
+				return toDefausse;
+			}
+		}
+	}
+}
+
 void Tuile::claimTroupeE_CardSetter(vector<Carte_c*> v) {
 	int id_col, value;
 	TroupeElite* cast;
