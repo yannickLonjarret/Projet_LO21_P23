@@ -13,13 +13,15 @@ void Jeu::displayBoard() const {
 	const int BOARD_WIDTH = 50;
 
 	int longueur_borne = 46;
-	cout << " \n COTE J1                                                           COTE J2               \n";
+	cout << "\t\tJoueur 1: "<<getJoueur1().getNom()<< "\t\t\t\t\tJoueur 2:  " << getJoueur2().getNom() << "\n";
 
 	string leftZone = "";
 	string rightZone = "";
 
 	for (int i = NUM_ZONES - 1; i >= 0; i--) {
-
+		cout << "Tuile :" << i;
+		cout << *getPlateau()[i];
+		/*
 		string claimable = (getPlateau()[i]->isClaimable() == true ? "REVENDICABLE" : "NON REVENDICABLE");
 
 		if (getPlateau()[i]->getCotes()[0]->getNbCartes() == 0) {
@@ -39,6 +41,8 @@ void Jeu::displayBoard() const {
 			std::string rightPadding(BOARD_WIDTH, ' ');
 			cout << leftPadding << tile << rightPadding << claimable << endl;
 		}
+
+		*/
 	}
 }
 
