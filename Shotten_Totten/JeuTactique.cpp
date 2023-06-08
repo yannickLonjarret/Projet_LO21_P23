@@ -1,23 +1,23 @@
 #include "JeuTactique.h"
 #include <string>
 
-void JeuTactique::jouer() { 
+void JeuTactique::startGame() {
 	system("CLS");
 	cout << R"(
-  _____           _   _                                              
- |  __ \         | | (_)                                             
- | |__) |_ _ _ __| |_ _  ___    ___ _ __     ___ ___  _   _ _ __ ___ 
- |  ___/ _` | '__| __| |/ _ \  / _ \ '_ \   / __/ _ \| | | | '__/ __|
- | |  | (_| | |  | |_| |  __/ |  __/ | | | | (_| (_) | |_| | |  \__ \
- |_|   \__,_|_|   \__|_|\___|  \___|_| |_|  \___\___/ \__,_|_|  |___/
-                                                                     
-                                                                     
-)" << endl;
+_____           _   _
+|  __ \         | | (_)
+| |__) |_ _ _ __| |_ _  ___    ___ _ __     ___ ___  _   _ _ __ ___
+|  ___/ _` | '__| __| |/ _ \  / _ \ '_ \   / __/ _ \| | | | '__/ __|
+| |  | (_| | |  | |_| |  __/ |  __/ | | | | (_| (_) | |_| | |  \__ \  
+|_|   \__,_|_|   \__|_|\___|  \___|_| |_|  \___\___/ \__,_|_|  |___/
+
+
+	   )" << endl;
 
 	bool isOver = false;
 
 	// On distribue les cartes
-	distribuerCartes();
+	distribuerCartes(7);
 
 	while (isOver == false) {
 
@@ -30,8 +30,6 @@ void JeuTactique::jouer() {
 			cout << " ## C'est au joueur " << getJoueurs()[i].getNom() << " de jouer ## " << endl;
 			cout << getJoueurs()[i].getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
 			int id_tuile = getUserInput();
-			cout << getJoueurs()[i].getNom() << " choisis sa carte a poser [chiffre entre 0 et " << getJoueurs()[i].getNbCartes() - 1 << "] : ";
-			int choix_carte = getUserInput();
 			vector<Carte*> vect;
 			Carte* carte_a_jouer = choisirCarte(i, vect);
 			if (typeid(*carte_a_jouer) == typeid(Ruse)) {
@@ -44,6 +42,7 @@ void JeuTactique::jouer() {
 			for (int i = 0; i < 10; i++)
 				cout << endl;
 			displayBoard();
+			getJoueurs()[i].afficherMain();
 
 			// Possible revendication
 			string choix;
@@ -52,7 +51,6 @@ void JeuTactique::jouer() {
 			if (choix.front() == 'O' || choix.front() == 'o') {
 				claim(i);
 			}
-			getJoueurs()[i].afficherMain();
 
 			// Piocher (classique / tactique)
 			piocher(choixPioche(), i);
@@ -68,7 +66,7 @@ void JeuTactique::jouer() {
 	}
 }
 
-int JeuTactique::choixPioche() const { 
+int JeuTactique::choixPioche() const {
 	std::cout << "Voulez-vous piocher dans la pioche classique ou tactique (C/T) : " << std::endl;
 	string choix;
 	std::cin >> choix;
@@ -99,7 +97,8 @@ void JeuTactique::piocheRuse(int choix_pioche, Ruse* carte) {
 }
 
 Carte* JeuTactique::choisirCarte(int id_joueur, vector<Carte*> vecteur) {
-	cout << " Choisis une carte [chiffre entre 0 et " << getJoueurs()[id_joueur].getNbCartes() << "] : ";
+	cout << "BOUOUOUOUUOU" << endl;
+	cout << " Choisis une carte [chiffre entre 0 et " << getJoueurs()[id_joueur].getNbCartes() - 1 << "] : ";
 	int choix_carte = Jeu::getUserInput();
 	int taille_main_classique = getJoueurs()[id_joueur].getCarteC().size();
 	int taille_main_tactique = getJoueurs()[id_joueur].getCarteT().size();
@@ -262,12 +261,4 @@ void JeuTactique::execRuse(Ruse* carte, int id_joueur) {
 
 bool JeuTactique::tactiqueJouable(int id_j1, int id_j2) const {
 	return nb_cartes_tactiques_jouees[id_j1] <= nb_cartes_tactiques_jouees[id_j2];
-}
-
-void JeuTactique::distribuerCartes() {
-	for (unsigned int i = 0; i < getJoueurs().size(); i++) {
-		for (unsigned int j = 0; j < 7; j++) {
-			getJoueurs()[i].ajouter_Carte_c(getPioche_c().pop());
-		}
-	}
 }

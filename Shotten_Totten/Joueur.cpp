@@ -10,7 +10,7 @@ void Joueur::poser_carte(Carte* c, int id, Tuile* t) {
 	for (auto it = 0; it < cartes_c.size(); it++) {
 		if ((Carte*)cartes_c[it] == c) {
 			cartes_c.erase(cartes_c.begin() + it);
-			
+
 		}
 	}
 

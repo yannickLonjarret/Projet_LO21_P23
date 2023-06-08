@@ -179,14 +179,15 @@ int main() {
 			jeu_classique->printTitles();
 			jeu_classique->menu_selection();
 			jeu_classique->startGame();
+			delete jeu_classique;
 			break;
 		case 2:
 			quit = true;
 			jeu_tactique = new JeuTactique();
-			//jeu_tactique->test();
 			jeu_tactique->printTitles();
 			jeu_tactique->menu_selection();
 			jeu_tactique->startGame();
+			delete jeu_tactique; 
 			break;
 		case 3:
 			quit = true;
