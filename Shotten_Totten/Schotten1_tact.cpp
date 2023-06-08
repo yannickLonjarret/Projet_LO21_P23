@@ -4,6 +4,9 @@
 Schotten1_tact::Schotten1_tact() {
 	defausse = Defausse();
 	vector<Carte_t> pioche;
+	nb_cartes_tactiques_jouees = vector<int>;
+	nb_cartes_tactiques_jouees.push_back(0);
+	nb_cartes_tactiques_jouees.push_back(0); 
 
 	// Création des cartes Troupe d'Elite
 	pioche.push_back(TroupeElite(elite, "Joker", -1, "Non couleur", 1, 9));
@@ -48,7 +51,7 @@ Schotten1_tact::Schotten1_tact() {
 	pioche_tact = Pioche_t(pioche);
 }
 
-int choixPioche() const {
+int Schotten1_tact::choixPioche() const {
 	std::cout << "Voulez-vous piocher dans la pioche classique ou tactique (C/T) : " << std::endl;
 	string choix;
 	std::cin >> choix;
@@ -64,14 +67,14 @@ int choixPioche() const {
 }
 
 // Ajoute dans le vecteur de la carte Ruse
-void piocheRuse(int choix_pioche, Ruse& carte) {
+void Schotten1_tact::piocheRuse(int choix_pioche, Ruse& carte) {
 	if (choix_pioche)
 		carte.addCartes(piocher_t());
 	else
 		carte.addCartes(Jeu::piocher_c());
 }
 
-Carte* choisirCarte(int id_joueur, vector<Carte*> vecteur) {
+Carte* Schotten1_tact::choisirCarte(int id_joueur, vector<Carte*> vecteur) {
 	cout << " Choisis une carte [chiffre entre 0 et " << joueurs[id_joueur].getNbCartes() << "] : ";
 	int choix_carte = Jeu::getUserInput();
 	int taille_main_classique = joueurs[id_joueur].getCarteC().size(); 
@@ -210,3 +213,6 @@ void Schotten1_tact::execRuse(Ruse& carte, int id_joueur) {
 	}
 }
 
+bool Schotten1_tact::tactiqueJouable(int id_j1, int id_j2) {
+	return (nb_cartes_tactiques_jouees[joueurs[id_j1]] <= nb_cartes_tactiques_jouees[joueurs[id_j2]]);
+}

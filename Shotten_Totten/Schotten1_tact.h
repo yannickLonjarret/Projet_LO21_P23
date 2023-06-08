@@ -24,6 +24,10 @@ private:
 	/// defausse represents the collections of discarded cards (tactical and potentially classical either)
 	/// </summary>
 	Defausse defausse;
+	/// <summary>
+	/// nb_cartes_tactiques_jouees represents the number of tactical cards played by each player (each player id corresponds to each id of the vector
+	/// </summary>
+	vector<int> nb_cartes_tactiques_jouees;
 public:
 	/// <summary>
 	/// Constructor which creates the pick with all the specific tactical cards required, and initializes the discard defausse
@@ -44,10 +48,13 @@ public:
 	void execRuse(Ruse& carte, int id_joueur);
 	int choixPioche() const;
 	Carte* choisirCarte(int id_joueur, vector<Carte*> vecteur);
-	Carte* defausser();
-	Carte* choixCarteTuile();
-	Carte* piocherRuse();
-	int checkCarteT_joue(); // renvoie le nombre de cartes tactiques jouées par l'adversaire
+	/// <summary>
+	/// Returns the possibility of the player (id_j1) to play a tactical card
+	/// </summary>
+	/// <param name="id_j1">The id of the player 1</param>
+	/// <param name="id_j2">The id of the player 2</param>
+	/// <returns>A boolean : True if playable or False if not</returns>
+	bool tactiqueJouable(int id_j1, int id_j2); 
 	void jouer(); // méthode virtuelle de Jeu normalement
 };
 
