@@ -10,16 +10,17 @@ void Joueur::poser_carte(Carte* c, int id, Tuile* t) {
 	for (auto it = 0; it < cartes_c.size(); it++) {
 		if ((Carte*)cartes_c[it] == c) {
 			cartes_c.erase(cartes_c.begin() + it);
-			setNb_cartes();
+			
 		}
 	}
 
 	for (auto it = 0; it < cartes_t.size(); it++) {
 		if ((Carte*)cartes_t[it] == c) {
 			cartes_t.erase(cartes_t.begin() + it);
-			setNb_cartes();
 		}
 	}
+
+	setNb_cartes();
 }
 
 Carte_c* Joueur::piocher_c(Pioche_c& pc) {
