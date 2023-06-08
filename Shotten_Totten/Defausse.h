@@ -44,7 +44,6 @@ public:
 	void push(Carte* c) {
 		this->cartes.push_back(c);
 		this->nb_cartes++;
-
 	}
 
 	/// <summary>
