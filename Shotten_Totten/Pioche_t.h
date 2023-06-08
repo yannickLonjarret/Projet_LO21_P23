@@ -69,7 +69,7 @@ public:
 /// <returns> the output stream with the card's information</returns>
 inline std::ostream& operator<<(std::ostream& os, const Pioche_t& p) {
 	os << "[";
-	for (int i = 0; i < p.getSize(); i++) {
+	for (size_t i = 0; i < p.getSize(); i++) {
 		p.getCartes()[i]->print(os);
 		if (i != p.getSize() - 1)
 			os << ", ";

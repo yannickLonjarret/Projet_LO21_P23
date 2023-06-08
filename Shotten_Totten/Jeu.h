@@ -90,7 +90,7 @@ public:
 	void menu_selection();
 	void playerSelection();
 	void startGame();
-	void distribuer_cartes();
+	virtual void distribuer_cartes();
 
 	//void play_card_c(int id_j, int id_tuile, Carte_c& c)
 };

@@ -4,6 +4,7 @@ void Pioche_t::push(Carte_t* c)
 {
 	this->cartes.push_back(c);
 }
+
 Carte_t* Pioche_t::pop()
 {
 	return cartes.back();

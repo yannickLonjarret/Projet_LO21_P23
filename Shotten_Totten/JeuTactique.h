@@ -123,6 +123,11 @@ public:
 	/// <returns>A boolean : True if playable or False if not</returns>
 	bool tactiqueJouable(int id_j1, int id_j2) const;
 
+	/// <summary>
+	/// Distributes automatically 7 classical cards to each player
+	/// </summary>
+	void distribuerCartes();
+
 	//void jouer(); // méthode virtuelle de Jeu normalement
 };
 
