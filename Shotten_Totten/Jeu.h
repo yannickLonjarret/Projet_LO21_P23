@@ -12,8 +12,7 @@
 class Jeu
 {
 private:
-	Joueur j1;
-	Joueur j2;
+	vector<Joueur> joueurs; 
 
 	Pioche_c pioche_c;
 	//Pioche_t pioche_t;
@@ -36,6 +35,7 @@ public:
 			Tuile* t = new Tuile(3, vic, 2);
 			plateau.push_back(t);
 		}
+		vector<Joueur> joueurs;
 	}
 
 	vector<Tuile*> getPlateau() const {
@@ -43,11 +43,15 @@ public:
 	}
 
 	Joueur getJoueur1() const {
-		return j1;
+		return joueurs[0];
 	}
 
 	Joueur getJoueur2() const {
-		return j2;
+		return joueurs[1];
+	}
+
+	vector<Joueur> getJoueurs() const {
+		return joueurs;
 	}
 
 	Pioche_c getPioche_c() const {
@@ -68,11 +72,11 @@ public:
 	//}
 
 	void setJoueur1(string& s) {
-		j1 = Joueur(s);
+		joueurs.emplace_back(Joueur(s));
 	}
 
 	void setJoueur2(string& s) {
-		j2 = Joueur(s);
+		joueurs.emplace_back(Joueur(s));
 	}
 
 
@@ -83,7 +87,7 @@ public:
 
 	void menu_selection();
 	void playerSelection();
-	void startGame(Joueur& j1, Joueur& j2);
+	void startGame();
 	void distribuer_cartes();
 
 	//void play_card_c(int id_j, int id_tuile, Carte_c& c)

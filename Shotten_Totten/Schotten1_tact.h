@@ -54,7 +54,7 @@ public:
 	/// <param name="id_j1">The id of the player 1</param>
 	/// <param name="id_j2">The id of the player 2</param>
 	/// <returns>A boolean : True if playable or False if not</returns>
-	bool tactiqueJouable(int id_j1, int id_j2); 
+	bool tactiqueJouable(int id_j1, int id_j2) const; 
 	void jouer(); // méthode virtuelle de Jeu normalement
 };
 

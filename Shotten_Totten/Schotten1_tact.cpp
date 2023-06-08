@@ -213,6 +213,6 @@ void Schotten1_tact::execRuse(Ruse& carte, int id_joueur) {
 	}
 }
 
-bool Schotten1_tact::tactiqueJouable(int id_j1, int id_j2) {
+bool Schotten1_tact::tactiqueJouable(int id_j1, int id_j2) const {
 	return (nb_cartes_tactiques_jouees[joueurs[id_j1]] <= nb_cartes_tactiques_jouees[joueurs[id_j2]]);
 }

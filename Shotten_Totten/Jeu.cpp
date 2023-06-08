@@ -221,7 +221,7 @@ void Jeu::playerSelection() {
 
 			std::cout << "Le jeu commence ! " << player1 << " VERSUS " << player2 << std::endl;
 			quit = true;
-			startGame(j1, j2);
+			startGame();
 			break;
 
 		case 2:
@@ -244,7 +244,7 @@ void Jeu::playerSelection() {
 }
 
 
-void Jeu::startGame(Joueur& jou1, Joueur& jou2) {
+void Jeu::startGame() {
 
 	system("CLS");
 	cout << R"(
@@ -259,28 +259,21 @@ void Jeu::startGame(Joueur& jou1, Joueur& jou2) {
 )" << endl;
 
 	bool isOver = false;
-	vector<Joueur> joueurs;
-
-
-	jou1.ajouter_Carte_c(new Carte_c(1, "Rouge"));
-	jou1.ajouter_Carte_c(new Carte_c(5, "Vert"));
-	jou1.ajouter_Carte_c(new Carte_c(6, "Bleu"));
-	jou1.ajouter_Carte_c(new Carte_c(3, "Rouge"));
-	jou1.ajouter_Carte_c(new Carte_c(9, "Bleu"));
-	jou1.ajouter_Carte_c(new Carte_c(5, "Jaune"));
+	
+	joueurs[0].ajouter_Carte_c(new Carte_c(1, "Rouge"));
+	joueurs[0].ajouter_Carte_c(new Carte_c(5, "Vert"));
+	joueurs[0].ajouter_Carte_c(new Carte_c(6, "Bleu"));
+	joueurs[0].ajouter_Carte_c(new Carte_c(3, "Rouge"));
+	joueurs[0].ajouter_Carte_c(new Carte_c(9, "Bleu"));
+	joueurs[0].ajouter_Carte_c(new Carte_c(5, "Jaune"));
 	//remplacer les instruction avant par la méthode distibuer cartes qui donne des cartes de la pioche vers la main du joueur.
 
-	jou2.ajouter_Carte_c(new Carte_c(5, "Jaune"));
-	jou2.ajouter_Carte_c(new Carte_c(1, "Rouge"));
-	jou2.ajouter_Carte_c(new Carte_c(1, "Jaune"));
-	jou2.ajouter_Carte_c(new Carte_c(6, "Bleu"));
-	jou2.ajouter_Carte_c(new Carte_c(4, "Rouge"));
-	jou2.ajouter_Carte_c(new Carte_c(9, "Bleu"));
-
-
-
-	joueurs.emplace_back(jou1);
-	joueurs.emplace_back(jou2);
+	joueurs[1].ajouter_Carte_c(new Carte_c(5, "Jaune"));
+	joueurs[1].ajouter_Carte_c(new Carte_c(1, "Rouge"));
+	joueurs[1].ajouter_Carte_c(new Carte_c(1, "Jaune"));
+	joueurs[1].ajouter_Carte_c(new Carte_c(6, "Bleu"));
+	joueurs[1].ajouter_Carte_c(new Carte_c(4, "Rouge"));
+	joueurs[1].ajouter_Carte_c(new Carte_c(9, "Bleu"));
 
 	while (isOver == false) {
 		cout << joueurs.size();
