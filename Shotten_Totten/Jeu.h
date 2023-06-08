@@ -60,7 +60,7 @@ public:
 	/// <returns>The reference of the card</returns>
 	Carte_c& piocher_c() {
 		if (pioche_c.getSize() != 0)
-			return pioche_c.pop();
+			return *pioche_c.pop();
 	}
 
 	//Pioche_t getPioche_t() const {
@@ -76,7 +76,7 @@ public:
 	}
 
 
-	void displayBoard(Joueur& currentJoueur) const;
+	void displayBoard() const;
 	void printTitles() const;
 	void displayMenu() const;
 	int getUserInput() const;

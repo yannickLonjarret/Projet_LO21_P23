@@ -6,22 +6,14 @@ int Joueur::prochain_id = 1; // Initialisation de la variable statique
 
 void Joueur::poser_carte(Carte_c* c, int id, Tuile* t) {
 	//Logique de pose d'une carte classique sur le plateau
-	bool carteTrouvee = false;
 	for (auto it = cartes_c.begin(); it != cartes_c.end(); ++it) {
-		/*
-		if (it == c) {
-			carteTrouvee = true;
-			cartes_c.erase(it);
-			setNb_cartes();
-			break;
-		}
-		*/
-	}
-	if (carteTrouvee == false) {
 		t->ajout_c(c, id);
+		cartes_c.erase(it);
+		setNb_cartes();
+		break;
 	}
 }
-/*
+
 Carte_c* Joueur::piocher_c(Pioche_c& pc) {
 	//Logique de la pioche d'une carte classique
 	Carte_c* carte = nullptr;
@@ -44,5 +36,5 @@ Carte_t* Joueur::piocher_t(Pioche_t& pt) {
 
 	return carte;
 }
-*/
+
 

@@ -8,12 +8,12 @@
 
 
 
-void Jeu::displayBoard(Joueur& currentJoueur) const {
+void Jeu::displayBoard() const {
 	const int NUM_ZONES = 9;
 	const int BOARD_WIDTH = 50;
 
 	int longueur_borne = 46;
-	cout << " \n COTE J1                                 COTE J2               \n";
+	cout << " \n COTE J1                                                           COTE J2               \n";
 
 	string leftZone = "";
 	string rightZone = "";
@@ -22,17 +22,22 @@ void Jeu::displayBoard(Joueur& currentJoueur) const {
 
 		string claimable = (getPlateau()[i]->isClaimable() == true ? "REVENDICABLE" : "NON REVENDICABLE");
 
-		if (currentJoueur == j1) {
-			std::string leftZone = (getPlateau()[i]->getHist_c().size() != 0 ? getPlateau()[i]->toString() : "");
-			std::string leftPadding(BOARD_WIDTH - (BOARD_WIDTH / 2 + leftZone.length()), ' ');
+		if (getPlateau()[i]->getCotes()[0]->getNbCartes() == 0) {
+
+			std::string leftZone = "";
+			std::string rightZone = "";
+
+			std::string leftPadding(BOARD_WIDTH - (BOARD_WIDTH / 2 + leftZone.length()) + 20, ' ');
 			std::string rightPadding(BOARD_WIDTH - rightZone.length() + 3, ' ');
-			cout << leftPadding << leftZone << " |" << i << "| " << rightPadding << claimable << endl;;
+			cout << leftPadding << leftZone << " | | " << rightZone << rightPadding << claimable << endl;;
 		}
 		else {
-			std::string rightZone = (getPlateau()[i]->getHist_c().size() != 0 ? getPlateau()[i]->toString() : "");
-			std::string leftPadding(BOARD_WIDTH - (BOARD_WIDTH / 2 + leftZone.length()), ' ');
-			std::string rightPadding(BOARD_WIDTH - rightZone.length() + 3, ' ');
-			cout << leftPadding << " |" << i << "| " << rightZone << rightPadding << claimable << endl;
+
+			Tuile tile = *getPlateau()[i];
+
+			std::string leftPadding(BOARD_WIDTH - (BOARD_WIDTH / 2) + 20, ' ');
+			std::string rightPadding(BOARD_WIDTH, ' ');
+			cout << leftPadding << tile << rightPadding << claimable << endl;
 		}
 	}
 }
@@ -281,7 +286,7 @@ void Jeu::startGame(Joueur& jou1, Joueur& jou2) {
 		cout << joueurs.size();
 		for (unsigned int i = 0; i < joueurs.size(); i++) {
 
-			displayBoard(joueurs[i]);
+			displayBoard();
 			joueurs[i].afficherMain();
 
 			cout << " ## C'est au joueur " << joueurs[i].getNom() << " de jouer ## " << endl;
@@ -290,9 +295,9 @@ void Jeu::startGame(Joueur& jou1, Joueur& jou2) {
 			cout << joueurs[i].getNom() << " choisis sa carte a poser [chiffre entre 0 et " << joueurs[i].getNbCartes() - 1 << "] : ";
 			int choix_carte = getUserInput();
 			joueurs[i].poser_carte(joueurs[i].getCarteC()[choix_carte], i, plateau[id_tuile]);
-			displayBoard(joueurs[i]);
+			displayBoard();
 			joueurs[i].afficherMain();
-			joueurs[i].piocher_c(this->pioche_c);
+			//joueurs[i].piocher_c(this->pioche_c);
 
 			cout << joueurs[i].getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
 			string temp_prompt = "";
