@@ -60,7 +60,11 @@ void Jeu::printTitles() const {
 
 
 void Jeu::distribuer_cartes() {
-
+	for (unsigned int i = 0; i < joueurs.size(); i++) {
+		for (unsigned int j = 0; j < 7; j++) {
+			joueurs[i].ajouter_Carte_c(pioche_c.pop());
+		}
+	}
 }
 
 void Jeu::displayMenu() const {

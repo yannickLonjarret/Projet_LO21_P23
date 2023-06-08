@@ -55,7 +55,7 @@ public:
 	/// Return the entire vector cartes
 	/// </summary>
 	/// <returns>The vector with all the cards in it</returns>
-	const vector<Carte*> getAllCartes() const {
+	vector<Carte*> getAllCartes() const {
 		return cartes;
 	}
 };

@@ -10,6 +10,7 @@
 #include "Mode_Combat.h"
 #include "Defausse.h"
 #include "Joueur.h"
+#include <vector>
 
 using namespace std;
 
@@ -31,6 +32,11 @@ private:
 	/// </summary>
 	vector<int> nb_cartes_tactiques_jouees;
 public:
+	/// <summary>
+	/// Test
+	/// </summary>
+	void jouer();
+
 	/// <summary>
 	/// Constructor which creates the deck with all the specific tactical cards required, and initializes the discard defausse
 	/// </summary>
@@ -132,11 +138,7 @@ public:
 	void distribuerCartes();
 
 	void piocher(int choix_pioche, int id_joueur); 
-
-	/// <summary>
-	/// Test
-	/// </summary>
-	void startGame();
+	
 };
 
 #endif // !JeuTactique_H
