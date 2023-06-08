@@ -1,31 +1,29 @@
-#include "Schotten1_tact.h"
+#include "JeuTactique.h"
 #include <string>
-
-Schotten1_tact::Schotten1_tact() {
+/*
+JeuTactique::JeuTactique() : Jeu() {
 	defausse = Defausse();
-	vector<Carte_t> pioche;
-	nb_cartes_tactiques_jouees = vector<int>;
-	nb_cartes_tactiques_jouees.push_back(0);
-	nb_cartes_tactiques_jouees.push_back(0); 
+	pioche_tact = Pioche_t();
+	nb_cartes_tactiques_jouees = { 0, 0 };
 
 	// Création des cartes Troupe d'Elite
-	pioche.push_back(TroupeElite(elite, "Joker", -1, "Non couleur", 1, 9));
-	pioche.push_back(TroupeElite(elite, "Joker", -1, "Non couleur", 1, 9));
-	pioche.push_back(TroupeElite(elite, "Espion", -1, "Non couleur", 7, 7));
-	pioche.push_back(TroupeElite(elite, "Porte-Bouclier", -1, "Non couleur", 1, 3));
+	pioche_tact.push(new TroupeElite(elite, "Joker", -1, "Non couleur", 1, 9));
+	pioche_tact.push(new TroupeElite(elite, "Joker", -1, "Non couleur", 1, 9));
+	pioche_tact.push(new TroupeElite(elite, "Espion", -1, "Non couleur", 7, 7));
+	pioche_tact.push(new TroupeElite(elite, "Porte Bouclier", -1, "Non couleur", 1, 3));
 
 	// Création des cartes Mode de Combat
-	Combinaison c1 = Combinaison(1, 0, 0); 
-	Combinaison c2 = Combinaison(1, 1, 0); 
-	Combinaison c3 = Combinaison(0, 0, 1); 
-	Combinaison c4 = Combinaison(0, 1, 0); 
-	vector<Combinaison*> vecteur_combi; 
-	vecteur_combi.push_back(&c1); 
-	vecteur_combi.push_back(&c2); 
-	vecteur_combi.push_back(&c3); 
-	vecteur_combi.push_back(&c4);
-	pioche.push_back(ModeCombat(combat, "Colin-Maillard", 3, vecteur_combi));
-	pioche.push_back(ModeCombat(combat, "Combat de Boue", 4, vector<Combinaison*>)); // vecteur vide
+	Combinaison* c1 = new Combinaison(1, 0, 0);
+	Combinaison* c2 = new Combinaison(1, 1, 0);
+	Combinaison* c3 = new Combinaison(0, 0, 1);
+	Combinaison* c4 = new Combinaison(0, 1, 0);
+	vector<Combinaison*> vecteur_combi;
+	pioche_tact.push(new ModeCombat(combat, "Combat de Boue", 4, vecteur_combi)); // vecteur vide
+	vecteur_combi.push_back(c1);
+	vecteur_combi.push_back(c2);
+	vecteur_combi.push_back(c3);
+	vecteur_combi.push_back(c4);
+	pioche_tact.push(new ModeCombat(combat, "Colin Maillard", 3, vecteur_combi));
 
 	// Création des cartes Ruse
 	/*
@@ -37,21 +35,18 @@ Schotten1_tact::Schotten1_tact() {
 	5 = défausser de la main
 	6 = placer devant une tuile non revendiquée de notre cote
 	7 = choisir carte de notre cote
-	*/
-	vector<int> suite(0, 0, 0, 2, 1, 2, 1);
-	pioche.push_back(Ruse(ruse, "Chasseur de Tete", suite));
-	suite = (7, 3);
-	pioche.push_back(Ruse(ruse, "Stratège", suite));
-	suite = (4, 5);
-	pioche.push_back(Ruse(ruse, "Banshee", suite));
-	suite = (4, 6);
-	pioche.push_back(Ruse(ruse, "Traitre", suite));
+	*//*
+	vector<int> suite = { 0, 0, 0, 2, 1, 2, 1 };
+	pioche_tact.push(new Ruse(ruse, "Chasseur de Tete", suite));
+	suite = { 7, 3 };
+	pioche_tact.push(new Ruse(ruse, "Stratège", suite));
+	suite = { 4, 5 };
+	pioche_tact.push(new Ruse(ruse, "Banshee", suite));
+	suite = { 4, 6 };
+	pioche_tact.push(new Ruse(ruse, "Traitre", suite));
+}*/
 
-	// Création de la pioche tactique
-	pioche_tact = Pioche_t(pioche);
-}
-
-int Schotten1_tact::choixPioche() const {
+int JeuTactique::choixPioche() const {
 	std::cout << "Voulez-vous piocher dans la pioche classique ou tactique (C/T) : " << std::endl;
 	string choix;
 	std::cin >> choix;
@@ -67,17 +62,17 @@ int Schotten1_tact::choixPioche() const {
 }
 
 // Ajoute dans le vecteur de la carte Ruse
-void Schotten1_tact::piocheRuse(int choix_pioche, Ruse& carte) {
+void JeuTactique::piocheRuse(int choix_pioche, Ruse& carte) {
 	if (choix_pioche)
 		carte.addCartes(piocher_t());
 	else
 		carte.addCartes(Jeu::piocher_c());
 }
 
-Carte* Schotten1_tact::choisirCarte(int id_joueur, vector<Carte*> vecteur) {
+Carte* JeuTactique::choisirCarte(int id_joueur, vector<Carte*> vecteur) {
 	cout << " Choisis une carte [chiffre entre 0 et " << joueurs[id_joueur].getNbCartes() << "] : ";
 	int choix_carte = Jeu::getUserInput();
-	int taille_main_classique = joueurs[id_joueur].getCarteC().size(); 
+	int taille_main_classique = joueurs[id_joueur].getCarteC().size();
 	int taille_main_tactique = joueurs[id_joueur].getCarteT().size();
 	int taille_main = taille_main_classique + taille_main_tactique;
 	if (choix_carte < taille_main_classique) {
@@ -93,9 +88,9 @@ Carte* Schotten1_tact::choisirCarte(int id_joueur, vector<Carte*> vecteur) {
 	}
 }
 
-void Schotten1_tact::execRuse(Ruse& carte, int id_joueur) {
+void JeuTactique::execRuse(Ruse& carte, int id_joueur) {
 	vector<int> actions = carte.getActions();
-	Carte_c* carte_classique = nullptr; 
+	Carte_c* carte_classique = nullptr;
 	Carte_t* carte_tactique = nullptr;
 	for (int i = 0; i < actions.size(); i++) {
 		switch (actions[i])
@@ -125,10 +120,10 @@ void Schotten1_tact::execRuse(Ruse& carte, int id_joueur) {
 
 		case 2:
 			// 2 = choisir carte de notre main (et le vecteur de Ruse)
-			Carte* c = choisirCarte(int id_joueur, carte.getAllCartes()); // fonction à définir dans joueur ?
+			Carte * c = choisirCarte(int id_joueur, carte.getAllCartes()); // fonction à définir dans joueur ?
 			carte_tactique = dynamic_cast<Carte_t*>(c);
 			if (carte_tactique != nullptr)
-				carte_classique = dynamic_cast<Carte_c*>(c);  
+				carte_classique = dynamic_cast<Carte_c*>(c);
 			break;
 
 		case 3:
@@ -139,20 +134,20 @@ void Schotten1_tact::execRuse(Ruse& carte, int id_joueur) {
 			while (true) {
 				if (choix[0] == "d" || choix[0] == "D")
 					displayBoard(joueurs[i]);
-					cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
-					int id_tuile = getUserInput();
-					carte_classique = getPlateau()[id_tuile]->defausseSoi(id_joueur);
-					defausse.push(carte_classique);
-					cout << "C'est tout bon ! " << endl;
-					break;
+				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
+				int id_tuile = getUserInput();
+				carte_classique = getPlateau()[id_tuile]->defausseSoi(id_joueur);
+				defausse.push(carte_classique);
+				cout << "C'est tout bon ! " << endl;
+				break;
 				else if (choix[0] == "p" || choix[0] == "P")
 					displayBoard(joueurs[i]);
-					cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
-					int id_tuile = getUserInput();
-					joueurs[id_joueur].poser_carte(carte_classique, id_joueur, getPlateau()[id_tuile]);
-					cout << "C'est bon !" << endl; 
-					displayBoard(joueurs[i]);
-					break;
+				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
+				int id_tuile = getUserInput();
+				joueurs[id_joueur].poser_carte(carte_classique, id_joueur, getPlateau()[id_tuile]);
+				cout << "C'est bon !" << endl;
+				displayBoard(joueurs[i]);
+				break;
 				else
 					std::cout << "Choix invalide, recommencez (d/p) : " << std::endl;
 				choix = "";
@@ -164,34 +159,34 @@ void Schotten1_tact::execRuse(Ruse& carte, int id_joueur) {
 			displayBoard(joueurs[i]);
 			cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 			int id_tuile = getUserInput();
-			if (id_joueur) 
+			if (id_joueur)
 				carte_classique = getPlateau()[id_tuile]->defausseSoi(id_joueur - 1);
-			else 
+			else
 				carte_classique = getPlateau()[id_tuile]->defausseSoi(id_joueur + 1);
 			break;
 
 		case 5:
 			// 5 = défausser de la main
 			if (carte_classique != nullptr)
-				defausse.push(carte_classique); 
+				defausse.push(carte_classique);
 			else
-				defausse.push(carte_tactique); 
+				defausse.push(carte_tactique);
 			break;
 
 		case 6:
 			// 6 = placer devant une tuile non revendiquée de notre cote
-			displayBoard(joueurs[i]); 
+			displayBoard(joueurs[i]);
 			cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
-			int id_tuile = getUserInput(); 
-			joueurs[id_joueur].poser_carte(carte_classique, id_joueur, getPlateau()[id_tuile]); 
+			int id_tuile = getUserInput();
+			joueurs[id_joueur].poser_carte(carte_classique, id_joueur, getPlateau()[id_tuile]);
 			cout << "C'est bon !" << endl;
-			displayBoard(joueurs[i]); 
+			displayBoard(joueurs[i]);
 			break;
 
 		case 7:
 			// 7 = choisir carte de notre cote
-			displayBoard(joueurs[i]); 
-			cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : "; 
+			displayBoard(joueurs[i]);
+			cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 			int id_tuile = getUserInput();
 			carte_classique = getPlateau()[id_tuile]->defausseSoi(id_joueur);
 			break;
@@ -205,14 +200,14 @@ void Schotten1_tact::execRuse(Ruse& carte, int id_joueur) {
 		carte_tactique = dynamic_cast<Carte_t*>(actions[i]);
 		if (carte_tactique != nullptr) {
 			carte_classique = dynamic_cast<Carte_c*>(actions[i]);
-			joueurs[id_joueur].ajouter_Carte_c(carte_classique); 
+			joueurs[id_joueur].ajouter_Carte_c(carte_classique);
 		}
 		else {
-			joueurs[id_joueur].ajouter_Carte_t(carte_tactique); 
+			joueurs[id_joueur].ajouter_Carte_t(carte_tactique);
 		}
 	}
 }
 
-bool Schotten1_tact::tactiqueJouable(int id_j1, int id_j2) const {
+bool JeuTactique::tactiqueJouable(int id_j1, int id_j2) const {
 	return (nb_cartes_tactiques_jouees[joueurs[id_j1]] <= nb_cartes_tactiques_jouees[joueurs[id_j2]]);
 }

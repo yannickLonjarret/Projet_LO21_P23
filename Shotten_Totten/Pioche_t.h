@@ -20,11 +20,12 @@ private:
 	std::vector<Carte_t*> cartes;
 
 public:
+	Pioche_t() = default;
 	/// <summary>
 	/// Constructor initializes the card vector
 	/// </summary>
 	/// <param name="c">the collection of cards to be set as the attribute</param>
-	Pioche_t(std::vector<Carte_t*> const& c) :cartes(c) {};
+	Pioche_t(std::vector<Carte_t*> const& c) : cartes(c) {};
 
 	size_t getSize() const {
 		return this->cartes.size();

@@ -47,7 +47,7 @@ public:
 	/// Allows the user to add a Carte pointer in the vector cartes
 	/// </summary>
 	/// <param name="c">The Carte pointer to add</param>
-	void addCartes(const Carte* c) {
+	void addCartes(Carte* c) {
 		cartes.push_back(c);
 	}
 
