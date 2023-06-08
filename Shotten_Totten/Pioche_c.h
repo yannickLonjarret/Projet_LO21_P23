@@ -4,6 +4,8 @@
 
 #include <vector>
 #include <ostream>
+#include <random>
+#include <algorithm>
 #include "Carte_c.h"
 
 /// <summary>
@@ -47,6 +49,10 @@ public:
 	/// </summary>
 	/// <returns> the card on top of the collection</returns>
 	Carte_c* pop();
+
+	void shuffle() {
+		random_shuffle(cartes.begin(), cartes.end());
+	}
 
 	/// <summary>
 	/// Default destructor

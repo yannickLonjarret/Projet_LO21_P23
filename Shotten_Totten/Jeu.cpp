@@ -59,9 +59,9 @@ void Jeu::printTitles() const {
 }
 
 
-void Jeu::distribuer_cartes() {
+void Jeu::distribuerCartes() {
 	for (unsigned int i = 0; i < joueurs.size(); i++) {
-		for (unsigned int j = 0; j < 7; j++) {
+		for (unsigned int j = 0; j < 6; j++) {
 			joueurs[i].ajouter_Carte_c(pioche_c.pop());
 		}
 	}
@@ -279,7 +279,9 @@ void Jeu::startGame() {
 )" << endl;
 
 	bool isOver = false;
-	
+
+	distribuerCartes();
+	/*
 	joueurs[0].ajouter_Carte_c(new Carte_c(1, "Rouge"));
 	joueurs[0].ajouter_Carte_c(new Carte_c(5, "Vert"));
 	joueurs[0].ajouter_Carte_c(new Carte_c(6, "Bleu"));
@@ -294,7 +296,7 @@ void Jeu::startGame() {
 	joueurs[1].ajouter_Carte_c(new Carte_c(6, "Bleu"));
 	joueurs[1].ajouter_Carte_c(new Carte_c(4, "Rouge"));
 	joueurs[1].ajouter_Carte_c(new Carte_c(9, "Bleu"));
-
+	*/
 	while (isOver == false) {
 		//cout << joueurs.size();
 		for (unsigned int i = 0; i < joueurs.size(); i++) {

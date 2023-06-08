@@ -186,7 +186,7 @@ int main() {
 			//jeu_tactique->test();
 			jeu_tactique->printTitles();
 			jeu_tactique->menu_selection();
-			jeu_tactique->jouer();
+			jeu_tactique->startGame();
 			break;
 		case 3:
 			quit = true;

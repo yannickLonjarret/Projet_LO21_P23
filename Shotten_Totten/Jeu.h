@@ -36,6 +36,18 @@ public:
 			plateau.push_back(t);
 		}
 		vector<Joueur> joueurs;
+
+		pioche_c = Pioche_c();
+		vector<string> couleurs = { "Vert", "Bleu", "Rouge", "Jaune", "Violet", "Marron" };
+		
+		for (unsigned int i = 1; i < 10; i++) {
+			for (unsigned int j = 0; j < couleurs.size(); j++) {
+				pioche_c.push(new Carte_c(i, couleurs[j]));
+			}
+		}
+
+		pioche_c.shuffle(); 
+		cout << pioche_c.getSize() << endl; 
 	}
 
 	vector<Tuile*> getPlateau() const {
@@ -74,11 +86,11 @@ public:
 	//}
 
 	void setJoueur1(string& s) {
-		joueurs.emplace_back(Joueur(s));
+		joueurs.push_back(Joueur(s));
 	}
 
 	void setJoueur2(string& s) {
-		joueurs.emplace_back(Joueur(s));
+		joueurs.push_back(Joueur(s));
 	}
 
 
@@ -90,7 +102,7 @@ public:
 	void menu_selection();
 	void playerSelection();
 	virtual void startGame();
-	virtual void distribuer_cartes();
+	virtual void distribuerCartes();
 
 	//void play_card_c(int id_j, int id_tuile, Carte_c& c)
 };
