@@ -4,12 +4,19 @@
 
 int Joueur::prochain_id = 1; // Initialisation de la variable statique
 
-void Joueur::poser_carte(Carte_c* c, int id, Tuile* t) {
+void Joueur::poser_carte(Carte* c, int id, Tuile* t) {
 	//Logique de pose d'une carte classique sur le plateau
-	t->ajout_c(c, id);
+	t->ajout_carte(c, id);
 	for (auto it = 0; it < cartes_c.size(); it++) {
-		if (cartes_c[it] == c) {
+		if ((Carte*)cartes_c[it] == c) {
 			cartes_c.erase(cartes_c.begin() + it);
+			setNb_cartes();
+		}
+	}
+
+	for (auto it = 0; it < cartes_t.size(); it++) {
+		if ((Carte*)cartes_t[it] == c) {
+			cartes_t.erase(cartes_t.begin() + it);
 			setNb_cartes();
 		}
 	}
