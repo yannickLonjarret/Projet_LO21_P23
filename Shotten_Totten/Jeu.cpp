@@ -307,7 +307,7 @@ void Jeu::startGame() {
 			int id_tuile = getUserInput();
 			cout << joueurs[i].getNom() << " choisis sa carte a poser [chiffre entre 0 et " << joueurs[i].getNbCartes() - 1 << "] : ";
 			int choix_carte = getUserInput();
-			joueurs[i].poser_carte(joueurs[i].getCarteC()[choix_carte], i, plateau[id_tuile]);
+			joueurs[i].poser_carte((Carte*)joueurs[i].getCarteC()[choix_carte], i, plateau[id_tuile]);
 			for(int i = 0; i < 10; i++)
 				cout << endl;
 			displayBoard();
