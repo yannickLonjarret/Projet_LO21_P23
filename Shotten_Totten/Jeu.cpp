@@ -155,7 +155,23 @@ void Jeu::draw_card_c(int id_j)
 }
 */
 
+void Jeu::claim(int idJoueur) {
+	char choice = 'o';
+	int choixTuile;
+	
+	while (choice == 'o') {
+		do {
+			cout << "Veuillez saisir le numéro de tuile. (valeur entre 0 et " << getPlateau().size() << ")" << endl;
+			cin >> choixTuile;
 
+		} while (choixTuile < 0 || choixTuile >= getPlateau().size());
+
+		getPlateau()[choixTuile]->claimTuile(idJoueur, getPlateau());
+
+		cout << "Souhaitez vous revendiquer une autre tuile ? (o pour oui)" << endl;
+		cin >> choice;
+	}
+}
 
 
 
@@ -280,7 +296,7 @@ void Jeu::startGame() {
 	joueurs[1].ajouter_Carte_c(new Carte_c(9, "Bleu"));
 
 	while (isOver == false) {
-		cout << joueurs.size();
+		//cout << joueurs.size();
 		for (unsigned int i = 0; i < joueurs.size(); i++) {
 
 			displayBoard();
@@ -292,10 +308,15 @@ void Jeu::startGame() {
 			cout << joueurs[i].getNom() << " choisis sa carte a poser [chiffre entre 0 et " << joueurs[i].getNbCartes() - 1 << "] : ";
 			int choix_carte = getUserInput();
 			joueurs[i].poser_carte(joueurs[i].getCarteC()[choix_carte], i, plateau[id_tuile]);
+			for(int i = 0; i < 10; i++)
+				cout << endl;
 			displayBoard();
 			joueurs[i].afficherMain();
 			//joueurs[i].piocher_c(this->pioche_c);
-
+			cout << "test claim" << endl;
+			claim(i);
+			for (int i = 0; i < 100; i++)
+				cout << endl;
 			cout << joueurs[i].getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
 			string temp_prompt = "";
 			cin >> temp_prompt;
