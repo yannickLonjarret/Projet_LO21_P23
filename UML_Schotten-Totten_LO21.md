@@ -42,7 +42,7 @@ classDiagram
         + jouer() : void
     }
     
-    class Schotten1_tact{
+    class JeuTactique{
         - Pioche_t: pioche_tact
         - defausse: defausse
         + jouer() : void 
@@ -231,7 +231,7 @@ classDiagram
     IA --|> Joueur
     Joueur "2..n" --* "1" Jeu
     Schotten1_class --|> Jeu
-    Schotten1_tact --|> Jeu
+    JeuTactique --|> Jeu
     Tuiles "1..n" --* "1" Jeu
     nodeHist_c --* Tuiles
     Cote --* Tuiles
