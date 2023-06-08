@@ -60,6 +60,24 @@ public:
 	/// @param c : the color the card has to take
 	/// @return a Carte_c object 
 	Carte_c definir_carte(int v, const string& c);
+
+	//overriding the print function
+	void print(std::ostream& os) const override {
+		os << "[" << this->getNom() << "," << this->getCouleur() << "," << this->getValeur() << "]" << std::endl;
+	}
 };
+
+/// <summary>
+/// Print ooperator overload to display the card and its caracteristics
+/// </summary>
+/// <param name="os"> the output stream</param>
+/// <param name="te"> the card to display</param>
+/// <returns> the output stream with the card's information</returns>
+
+inline std::ostream& operator<<(std::ostream& os, const TroupeElite& te) {
+	os << "[" << te.getNom() << "," << te.getCouleur() << "," << te.getValeur() << "]";
+	return os;
+}
+
 
 #endif // !TROUPE_ELITE_H

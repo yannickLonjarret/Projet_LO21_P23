@@ -83,6 +83,10 @@ public:
 		pioche_tact.push(new Ruse(ruse, "Banshee", suite));
 		suite = { 4, 6 };
 		pioche_tact.push(new Ruse(ruse, "Traitre", suite));
+
+		pioche_tact.shuffle();
+
+		cout << pioche_tact << endl;
 	}
 
 	/// <summary>

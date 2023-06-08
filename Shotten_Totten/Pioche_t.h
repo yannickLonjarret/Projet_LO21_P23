@@ -4,6 +4,8 @@
 
 #include <vector>
 #include <ostream>
+#include <random>
+#include <algorithm>
 #include "Carte_t.h"
 
 /// <summary>
