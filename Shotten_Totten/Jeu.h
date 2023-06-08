@@ -47,7 +47,6 @@ public:
 		}
 
 		pioche_c.shuffle(); 
-		cout << pioche_c.getSize() << endl; 
 	}
 
 	vector<Tuile*> getPlateau() const {
@@ -102,7 +101,7 @@ public:
 	void menu_selection();
 	void playerSelection();
 	virtual void startGame();
-	virtual void distribuerCartes();
+	void distribuerCartes(int nb_a_distribuer);
 
 	//void play_card_c(int id_j, int id_tuile, Carte_c& c)
 };

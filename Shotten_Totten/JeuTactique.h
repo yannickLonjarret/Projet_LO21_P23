@@ -110,7 +110,7 @@ public:
 		bool isOver = false;
 
 		// On distribue les cartes
-		distribuerCartes();
+		distribuerCartes(7);
 
 		while (isOver == false) {
 
@@ -356,14 +356,16 @@ public:
 	bool tactiqueJouable(int id_j1, int id_j2) const {
 		return nb_cartes_tactiques_jouees[id_j1] <= nb_cartes_tactiques_jouees[id_j2];
 	}
-
+	/*
 	void distribuerCartes() {
 		for (unsigned int i = 0; i < getJoueurs().size(); i++) {
 			for (unsigned int j = 0; j < 7; j++) {
-				getJoueurs()[i].ajouter_Carte_c(getPioche_c().pop());
+				Carte_c* carte = getPioche_c().pop();
+				cout << carte << endl;
+				//getJoueurs()[i].ajouter_Carte_c(getPioche_c().pop());
 			}
 		}
-	}
+	}*/
 
 
 	/*
