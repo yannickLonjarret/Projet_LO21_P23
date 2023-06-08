@@ -48,6 +48,13 @@ public:
 	Carte_t* pop();
 
 	/// <summary>
+	/// Allows the user to randomly shuffle the deck
+	/// </summary>
+	void shuffle() {
+		random_shuffle(cartes.begin(), cartes.end());
+	} 
+
+	/// <summary>
 	/// Default destructor
 	/// </summary>
 	~Pioche_t() = default;

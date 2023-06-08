@@ -50,6 +50,9 @@ public:
 	/// <returns> the card on top of the collection</returns>
 	Carte_c* pop();
 
+	/// <summary>
+	/// Allows the user to randomly shuffle the deck
+	/// </summary>
 	void shuffle() {
 		random_shuffle(cartes.begin(), cartes.end());
 	}

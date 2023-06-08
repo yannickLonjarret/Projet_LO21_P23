@@ -300,7 +300,6 @@ void Jeu::startGame() {
 	while (isOver == false) {
 		//cout << joueurs.size();
 		for (unsigned int i = 0; i < joueurs.size(); i++) {
-
 			displayBoard();
 			joueurs[i].afficherMain();
 
