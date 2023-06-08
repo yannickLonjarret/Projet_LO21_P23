@@ -9,6 +9,8 @@
 #include "Mode_Combat.h"
 #include "Defausse.h"
 
+using namespace std;
+
 /// <summary>
 /// Represents the tactical version of the game, with specific conditions and methods
 /// </summary>
