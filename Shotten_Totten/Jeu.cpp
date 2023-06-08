@@ -4,10 +4,6 @@
 #include <stdlib.h>
 #include <iomanip>
 
-
-
-
-
 void Jeu::displayBoard() const {
 	const int NUM_ZONES = 9;
 	const int BOARD_WIDTH = 50;
@@ -186,6 +182,7 @@ void Jeu::menu_selection() {
 		{
 		case 1:
 			playerSelection();
+			quit = true;
 			break;
 		case 2:
 			quit = true;
@@ -241,7 +238,6 @@ void Jeu::playerSelection() {
 
 			std::cout << "Le jeu commence ! " << player1 << " VERSUS " << player2 << std::endl;
 			quit = true;
-			startGame();
 			break;
 
 		case 2:

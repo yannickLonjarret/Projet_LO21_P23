@@ -9,6 +9,7 @@
 #include "Troupe_Elite.h"
 #include "Mode_Combat.h"
 #include "Defausse.h"
+#include "Joueur.h"
 
 using namespace std;
 
@@ -92,14 +93,14 @@ public:
 	/// </summary>
 	/// <param name="choix_pioche">The deck where the user wants to pick a card (tactical or classical)</param>
 	/// <param name="carte">The Ruse card permitting the picking</param>
-	void piocheRuse(int choix_pioche, Ruse& carte);
+	void piocheRuse(int choix_pioche, Ruse* carte);
 
 	/// <summary>
 	/// Executes the different actions of a Ruse card
 	/// </summary>
 	/// <param name="carte">The Ruse card to play</param>
 	/// <param name="id_joueur">The id of the player whose the Ruse card belongs to</param>
-	void execRuse(Ruse& carte, int id_joueur);
+	void execRuse(Ruse* carte, int id_joueur);
 
 	/// <summary>
 	/// Allows the user to choose in what deck to pick
@@ -123,12 +124,19 @@ public:
 	/// <returns>A boolean : True if playable or False if not</returns>
 	bool tactiqueJouable(int id_j1, int id_j2) const;
 
+	//void startGame();
+
 	/// <summary>
 	/// Distributes automatically 7 classical cards to each player
 	/// </summary>
 	void distribuerCartes();
 
-	//void jouer(); // méthode virtuelle de Jeu normalement
+	void piocher(int choix_pioche, int id_joueur); 
+
+	/// <summary>
+	/// Test
+	/// </summary>
+	void startGame();
 };
 
 #endif // !JeuTactique_H
