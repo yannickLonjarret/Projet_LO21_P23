@@ -47,13 +47,13 @@ public:
 		nb_cartes_tactiques_jouees = { 0, 0 };
 
 		// Création des cartes Troupe d'Elite
-		/*pioche_tact.push(new TroupeElite(elite, "Joker", -1, "Non couleur", 1, 9));
+		pioche_tact.push(new TroupeElite(elite, "Joker", -1, "Non couleur", 1, 9));
 		pioche_tact.push(new TroupeElite(elite, "Joker", -1, "Non couleur", 1, 9));
 		pioche_tact.push(new TroupeElite(elite, "Espion", -1, "Non couleur", 7, 7));
-		pioche_tact.push(new TroupeElite(elite, "Porte Bouclier", -1, "Non couleur", 1, 3));*/
+		pioche_tact.push(new TroupeElite(elite, "Porte Bouclier", -1, "Non couleur", 1, 3));
 
 		// Création des cartes Mode de Combat 
-		/*
+		
 		Combinaison* c1 = new Combinaison(1, 0, 0); 
 		Combinaison* c2 = new Combinaison(1, 1, 0);
 		Combinaison* c3 = new Combinaison(0, 0, 1);
@@ -64,7 +64,7 @@ public:
 		vecteur_combi.push_back(c2);
 		vecteur_combi.push_back(c3);
 		vecteur_combi.push_back(c4);
-		pioche_tact.push(new ModeCombat(combat, "Colin Maillard", 3, vecteur_combi));*/
+		pioche_tact.push(new ModeCombat(combat, "Colin Maillard", 3, vecteur_combi));
 		
 		// Création des cartes Ruse
 		/*
@@ -79,7 +79,7 @@ public:
 		*/
 		
 		vector<int> suite = { 0, 0, 0, 2, 1, 2, 1 };
-		/*pioche_tact.push(new Ruse(ruse, "Chasseur de Tete", suite));*/
+		pioche_tact.push(new Ruse(ruse, "Chasseur de Tete", suite));
 		suite = { 7, 3 };
 		pioche_tact.push(new Ruse(ruse, "Stratège", suite));
 		suite = {4, 5};
@@ -129,10 +129,7 @@ public:
 
 				// Poser la carte choisie
 				cout << " ## C'est au joueur " << getJoueurs()[i]->getNom() << " de jouer ## " << endl; 
-				cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
-				int id_tuile = getUserInput();
 				vector<Carte*> vect;
-				cout << "on est là" << endl;
 				Carte* carte_a_jouer = choisirCarte(i, vect);
 				cout << "Choix carte fait !" << endl;
 				if (typeid(*carte_a_jouer) == typeid(Ruse)) {
@@ -142,15 +139,23 @@ public:
 					execRuse(dynamic_cast<Ruse*>(carte_a_jouer), i);
 					cout << "Exécution terminée ! " << endl;
 				}
-				else {
+				else if (typeid(*carte_a_jouer) == typeid(ModeCombat)) {
+					cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+					int id_tuile = getUserInput();
 					cout << "je suis dans le else" << endl;
-					while (!posePossible(getPlateau()[id_tuile], i)) {
-						cout << "Choix impossible, la borne est pleine, veuillez réessayer." << endl;
-						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
-						id_tuile = getUserInput();
+					while (!tuileNonRevendiquee(getPlateau()[id_tuile])) {
+						cout << "Choix impossible, la borne est déjà revendiquée, veuillez réessayer." << endl;
+						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : "; 
+						id_tuile = getUserInput(); 
 					}
-					while (!posePossible(getPlateau()[id_tuile], i)) {
-						cout << "Choix impossible, la borne est pleine, veuillez réessayer." << endl;
+					getJoueurs()[i]->poser_carte(carte_a_jouer, i, getPlateau()[id_tuile]); 
+				}
+				else {
+					cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : "; 
+					int id_tuile = getUserInput(); 
+					cout << "je suis dans le else" << endl;
+					while (!posePossible(getPlateau()[id_tuile], i) || !tuileNonRevendiquee(getPlateau()[id_tuile])) {
+						cout << "Choix impossible, la borne est pleine ou déjà revendiquée, veuillez réessayer." << endl;
 						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
 						id_tuile = getUserInput();
 					}
@@ -184,6 +189,14 @@ public:
 			}
 
 		}
+	}
+
+	bool ckeckBornes(int b1, int b2, string input) {
+		return b1 <= std::stoi(input) <= b2; 
+	}
+
+	bool tuileNonRevendiquee(Tuile* tuile) {
+		return tuile->getClaim() == -1; 
 	}
 
 	bool posePossible(Tuile* tuile, int id_joueur) {
@@ -330,16 +343,11 @@ public:
 						displayBoard();
 						cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 						int id_tuile = getUserInput();
-						while (!posePossible(getPlateau()[id_tuile], id_joueur)) {
-							cout << "Choix impossible, la borne est pleine, veuillez réessayer." << endl;
+						while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile])) {
+							cout << "Choix impossible, la borne est pleine ou déjà revendiquée, veuillez réessayer." << endl;
 							cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
-							id_tuile = getUserInput();
+							id_tuile = getUserInput(); 
 						} 
-						while (!posePossible(getPlateau()[id_tuile], id_joueur)) {
-							cout << "Choix impossible, la borne est pleine, veuillez réessayer." << endl;
-							cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
-							id_tuile = getUserInput();
-						}
 						getJoueurs()[id_joueur]->poser_carte((Carte*)carte_classique, id_joueur, getPlateau()[id_tuile]);
 						cout << "C'est bon !" << endl;
 						displayBoard();
@@ -356,6 +364,11 @@ public:
 				displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 				id_tuile = getUserInput();
+				while (!tuileNonRevendiquee(getPlateau()[id_tuile])) {
+					cout << "Choix impossible, la borne est déjà revendiquée, veuillez réessayer." << endl;
+					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+					id_tuile = getUserInput(); 
+				} 
 				carte_classique = getPlateau()[id_tuile]->defausseAdverse(id_joueur);
 				cout << "Défausse faite" << endl; 
 				break;
@@ -373,11 +386,11 @@ public:
 				displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 				id_tuile = getUserInput();
-				while (!posePossible(getPlateau()[id_tuile], id_joueur)) {
-					cout << "Choix impossible, la borne est pleine, veuillez réessayer." << endl;
+				while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile])) {
+					cout << "Choix impossible, la borne est pleine ou déjà revendiquée, veuillez réessayer." << endl;
 					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
 					id_tuile = getUserInput();
-				}
+				} 
 				getJoueurs()[id_joueur]->poser_carte((Carte*)carte_classique, id_joueur, getPlateau()[id_tuile]);
 				cout << "C'est bon !" << endl;
 				displayBoard();
@@ -388,6 +401,11 @@ public:
 				displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 				id_tuile = getUserInput();
+				while (!tuileNonRevendiquee(getPlateau()[id_tuile])) {
+					cout << "Choix impossible, la borne est déjà revendiquée, veuillez réessayer." << endl;
+					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+					id_tuile = getUserInput();
+				}
 				carte_classique = getPlateau()[id_tuile]->defausseSoi(id_joueur);
 				break;
 
