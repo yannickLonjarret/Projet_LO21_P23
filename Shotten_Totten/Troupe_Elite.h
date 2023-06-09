@@ -58,8 +58,7 @@ public:
 	/// @brief Allows the user to define the TroupeElite card to a Carte_c card (to claim)
 	/// @param v : the value the card has to take
 	/// @param c : the color the card has to take
-	/// @return a Carte_c object 
-	Carte_c definir_carte(int v, const string& c);
+	void definir_carte(int v, const string& c);
 
 	//overriding the print function
 	void print(std::ostream& os) const override {

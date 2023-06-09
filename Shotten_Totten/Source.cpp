@@ -185,6 +185,7 @@ int main() {
 			quit = true;
 			jeu_tactique = new JeuTactique();
 
+
 			jeu_tactique->printTitles();
 			jeu_tactique->menu_selection();
 			jeu_tactique->startGame();

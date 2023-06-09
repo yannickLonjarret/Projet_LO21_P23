@@ -102,6 +102,8 @@ int Jeu::getUserInput() const {
 	return choice;
 }
 
+
+
 /*
 void Jeu::play_card_c(int id_j, int id_tuile, Carte_c& c) {
 	// Find the player with the given id_j
@@ -263,6 +265,25 @@ void Jeu::playerSelection() {
 	}
 }
 
+bool Jeu::estGagnant(int id_joueur) {
+	int score = 0;
+	for (unsigned i = 1; i <= plateau.size() - 2; i++) {
+		if (plateau[i - 1]->getClaim() == id_joueur && plateau[i]->getClaim() == id_joueur && plateau[i + 1]->getClaim() == id_joueur)
+			return true;
+		if (plateau[i]->getClaim() == id_joueur)
+			score++;
+		cout << "score : " << score << endl;
+	}
+	if (plateau[0]->getClaim() == id_joueur)
+		score++;
+	cout << "score : " << score << endl;
+	if (plateau[plateau.size() - 1]->getClaim() == id_joueur)
+		score++; 
+	cout << "score : " << score << endl;
+	if (score == 5)
+		return true;
+	return false;
+}
 
 void Jeu::startGame() {
 

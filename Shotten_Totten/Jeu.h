@@ -30,6 +30,10 @@ public:
 
 		vector<Combinaison*> vic;
 		vic.push_back(new Combinaison(false, false, false));
+		vic.push_back(new Combinaison(true, false, false));
+		vic.push_back(new Combinaison(false, true, false));
+		vic.push_back(new Combinaison(false, false, true));
+		vic.push_back(new Combinaison(true, true, false));
 
 		for (unsigned int i = 0; i < 9; i++) {
 			Tuile* t = new Tuile(3, vic, 2);
@@ -69,7 +73,7 @@ public:
 		return pioche_c;
 	}
 
-	void claim(int idJoueur);
+	virtual void claim(int idJoueur);
 
 	/// <summary>
 	/// Allows the user to pick the first card of the classical pick
@@ -100,6 +104,7 @@ public:
 
 	void menu_selection();
 	void playerSelection();
+	bool estGagnant(int id_joueur); 
 	virtual void startGame();
 	void distribuerCartes(int nb_a_distribuer);
 

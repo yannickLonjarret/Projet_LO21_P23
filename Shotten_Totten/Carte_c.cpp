@@ -84,6 +84,6 @@ void Carte_c::setCouleur(const string& col) {
 
 int Carte_c::val_min = 1;
 int Carte_c::val_max = 9;
-
-vector<string> Carte_c::couleurs(1, "NULL");
+vector<string> Carte_c::couleurs = { "Non couleur", "Vert", "Bleu", "Rouge", "Jaune", "Violet", "Marron" };
+//vector<string> Carte_c::couleurs(1, "NULL");
 

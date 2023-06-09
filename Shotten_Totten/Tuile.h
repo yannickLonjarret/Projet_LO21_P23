@@ -107,6 +107,10 @@ public:
 
 	void setVictoires(vector<Combinaison*> newVict);
 
+	void setNbCartesMax(int nb) {
+		nbCarteMax = nb;
+	}
+
 	void setClaim(int winner) {
 		claim = winner;
 	}

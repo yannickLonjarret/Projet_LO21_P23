@@ -53,24 +53,25 @@ public:
 		pioche_tact.push(new TroupeElite(elite, "Porte Bouclier", -1, "Non couleur", 1, 3));
 
 		// Création des cartes Mode de Combat 
-		
-		Combinaison* c1 = new Combinaison(1, 0, 0); 
-		Combinaison* c2 = new Combinaison(1, 1, 0);
-		Combinaison* c3 = new Combinaison(0, 0, 1);
-		Combinaison* c4 = new Combinaison(0, 1, 0);
+		Combinaison* c1 = new Combinaison(false, false, false);
+		Combinaison* c2 = new Combinaison(true, false, false);
+		Combinaison* c3 = new Combinaison(false, true, false);
+		Combinaison* c4 = new Combinaison(false, false, true);
+		Combinaison* c5 = new Combinaison(true, true, false);
 		vector<Combinaison*> vecteur_combi;
-		pioche_tact.push(new ModeCombat(combat, "Combat de Boue", 4, vecteur_combi)); // vecteur vide
 		vecteur_combi.push_back(c1);
+		pioche_tact.push(new ModeCombat(combat, "Colin Maillard", 3, vecteur_combi));
 		vecteur_combi.push_back(c2);
 		vecteur_combi.push_back(c3);
 		vecteur_combi.push_back(c4);
-		pioche_tact.push(new ModeCombat(combat, "Colin Maillard", 3, vecteur_combi));
+		vecteur_combi.push_back(c5);
+		pioche_tact.push(new ModeCombat(combat, "Combat de boue", 4, vecteur_combi));
 		
 		// Création des cartes Ruse
 		/*
-		0 = piocher
-		1 = placer carte sous pioche
-		2 = choisir carte de notre main (et le vecteur de Ruse)
+		0 = piocher 
+		1 = placer carte sous pioche 
+		2 = choisir carte de notre main (et le vecteur de Ruse) 
 		3 = placer carte sur borne non revendiquée de notre côté ou defausser
 		4 = choisir carte du cote adverse non revendiquée
 		5 = défausser de la main
@@ -87,7 +88,7 @@ public:
 		suite = {4, 6};
 		pioche_tact.push(new Ruse(ruse, "Traitre", suite));
 		
-		//pioche_tact.shuffle();
+		pioche_tact.shuffle();
 
 		cout << pioche_tact << endl; 
 	}
@@ -118,6 +119,15 @@ public:
 
 		// On distribue les cartes
 		distribuerCartes(7);
+		getPlateau()[0]->setClaim(0);
+		getPlateau()[1]->setClaim(1);
+		getPlateau()[2]->setClaim(0); 
+		getPlateau()[3]->setClaim(-1);
+		getPlateau()[4]->setClaim(-1);
+		getPlateau()[5]->setClaim(-1);
+		getPlateau()[6]->setClaim(1);
+		getPlateau()[7]->setClaim(1);
+		getPlateau()[8]->setClaim(1);
 
 		while (isOver == false) {
 
@@ -148,6 +158,9 @@ public:
 						id_tuile = getUserInput(); 
 					}
 					getJoueurs()[i]->poser_carte(carte_a_jouer, i, getPlateau()[id_tuile]); 
+					getPlateau()[id_tuile]->setNbCartesMax(dynamic_cast<ModeCombat*>(carte_a_jouer)->getNbCartes());
+					getPlateau()[id_tuile]->setVictoires(dynamic_cast<ModeCombat*>(carte_a_jouer)->getCombinaison());
+					cout << getPlateau()[id_tuile]->getVictoires().size() << endl;
 				}
 				else {
 					cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : "; 
@@ -181,11 +194,76 @@ public:
 
 				for (int i = 0; i < 100; i++)
 					cout << endl;
-				cout << getJoueurs()[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
-				string temp_prompt = "";
-				cin >> temp_prompt;
-				cout << endl;
+				if (estGagnant(i)) {
+					cout << "VICTOIRE !" << endl;
+					cout << "Bravo " << getJoueurs()[i]->getNom() << ", vous avez gagne !" << endl;
+					isOver = true;
+					break;
+				}
+				else {
+					cout << getJoueurs()[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
+					string temp_prompt = "";
+					cin >> temp_prompt;
+					cout << endl; 
+				}
 			}
+		}
+	}
+
+	void claim(int idJoueur) override {
+		char choice = 'o';
+		int choixTuile;
+
+		while (choice == 'o' || choice == 'O') {
+			do {
+				cout << "Veuillez saisir le numéro de tuile à revendiquer [valeur entre 0 et " << getPlateau().size() - 1 << "] : " << endl;
+				choixTuile = getUserInput();
+
+			} while (choixTuile < 0 || choixTuile >= getPlateau().size());
+
+			vector<Carte_t*> cartes_tactiques = getPlateau()[choixTuile]->getCotes()[idJoueur]->getCartesT();
+			 
+			for (auto i = 0; i < cartes_tactiques.size(); i++) {
+				if (typeid(*cartes_tactiques[i]) == typeid(TroupeElite)) {
+					if (cartes_tactiques[i]->getNom() == "Joker") {
+						int valeur; 
+						cout << "Quelle valeur doit-prendre la carte Joker ? [1 à 9] : " << endl; 
+						valeur = getUserInput();  
+						while (!checkBornes(0, 9, valeur)) {
+							cout << "Choix impossible, veuillez réessayer. [1 à 9]" << endl;
+							valeur = getUserInput(); 
+						}
+						string couleur; 
+						cout << "Quelle couleur doit-prendre la carte Joker ? : " << endl; 
+						cin >> couleur; 
+						dynamic_cast<TroupeElite*>(cartes_tactiques[i])->TroupeElite::definir_carte(valeur, couleur);
+					}
+					else if (cartes_tactiques[i]->getNom() == "Espion") {
+						string couleur;  
+						cout << "Quelle couleur doit-prendre la carte Espion ? : " << endl;
+						cin >> couleur; 
+						dynamic_cast<TroupeElite*>(cartes_tactiques[i])->TroupeElite::definir_carte(7, couleur);
+					}
+					else {
+						int valeur;
+						cout << "Quelle valeur doit-prendre la carte Porte Bouclier ? [1 à 3] : " << endl;
+						valeur = getUserInput();
+						while (!checkBornes(0, 3, valeur)) {
+							cout << "Choix impossible, veuillez réessayer. [1 à 3]" << endl;
+							valeur = getUserInput();
+						}
+						string couleur;
+						cout << "Quelle couleur doit-prendre la carte Joker ? : " << endl;
+						cin >> couleur;
+						dynamic_cast<TroupeElite*>(cartes_tactiques[i])->TroupeElite::definir_carte(valeur, couleur);
+					}
+				}
+			}
+
+			getPlateau()[choixTuile]->claimTuile(idJoueur, getPlateau());
+
+			cout << "Souhaitez vous revendiquer une autre tuile ? (O / N)" << endl;
+			cin >> choice;
 		}
 	}
 
