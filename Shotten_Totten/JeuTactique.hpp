@@ -142,9 +142,8 @@ public:
 				else if (typeid(*carte_a_jouer) == typeid(ModeCombat)) {
 					cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
 					int id_tuile = getUserInput();
-					cout << "je suis dans le else" << endl;
-					while (!tuileNonRevendiquee(getPlateau()[id_tuile])) {
-						cout << "Choix impossible, la borne est déjà revendiquée, veuillez réessayer." << endl;
+					while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
+						cout << "Choix impossible, la borne est déjà revendiquée ou inexistante, veuillez réessayer." << endl;
 						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : "; 
 						id_tuile = getUserInput(); 
 					}
@@ -154,8 +153,8 @@ public:
 					cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : "; 
 					int id_tuile = getUserInput(); 
 					cout << "je suis dans le else" << endl;
-					while (!posePossible(getPlateau()[id_tuile], i) || !tuileNonRevendiquee(getPlateau()[id_tuile])) {
-						cout << "Choix impossible, la borne est pleine ou déjà revendiquée, veuillez réessayer." << endl;
+					while (!posePossible(getPlateau()[id_tuile], i) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
+						cout << "Choix impossible, la borne est pleine, déjà revendiquée ou inexistante, veuillez réessayer." << endl;
 						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
 						id_tuile = getUserInput();
 					}
@@ -187,12 +186,11 @@ public:
 				cin >> temp_prompt;
 				cout << endl;
 			}
-
 		}
 	}
 
-	bool ckeckBornes(int b1, int b2, string input) {
-		return b1 <= std::stoi(input) <= b2; 
+	bool checkBornes(int b1, int b2, int input) {
+		return b1 <= input <= b2; 
 	}
 
 	bool tuileNonRevendiquee(Tuile* tuile) {
@@ -236,12 +234,20 @@ public:
 	}
 
 	Carte* choisirCarte(int id_joueur, vector<Carte*> vecteur) {
-		if (vecteur.size() == 0)
-			cout << " Choisis une carte [chiffre entre 0 et " << getJoueurs()[id_joueur]->getNbCartes() - 1<< "] : ";
-		else
+		int nb_cartes;
+		if (vecteur.size() == 0) {
+			cout << " Choisis une carte [chiffre entre 0 et " << getJoueurs()[id_joueur]->getNbCartes() - 1 << "] : ";
+			nb_cartes = getJoueurs()[id_joueur]->getNbCartes() - 1;
+		}
+		else {
 			cout << " Choisis une carte [chiffre entre 0 et " << getJoueurs()[id_joueur]->getNbCartes() - 1 + vecteur.size() << "] : ";
+			nb_cartes = getJoueurs()[id_joueur]->getNbCartes() - 1 + vecteur.size();
+		}
 		int choix_carte = Jeu::getUserInput();
-		cout << "Choix carte : " << choix_carte << endl;
+		while (!checkBornes(0, nb_cartes, choix_carte)) {
+			cout << "Carte inexistante, veuillez reessayer." << endl;
+			choix_carte = Jeu::getUserInput();
+		}
 		int taille_main_classique = getJoueurs()[id_joueur]->getCarteC().size();
 		int taille_main_tactique = getJoueurs()[id_joueur]->getCarteT().size();
 		int taille_main = taille_main_classique + taille_main_tactique;
@@ -343,8 +349,8 @@ public:
 						displayBoard();
 						cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 						int id_tuile = getUserInput();
-						while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile])) {
-							cout << "Choix impossible, la borne est pleine ou déjà revendiquée, veuillez réessayer." << endl;
+						while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
+							cout << "Choix impossible, la borne est pleine, déjà revendiquée ou inexistante, veuillez réessayer." << endl;
 							cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
 							id_tuile = getUserInput(); 
 						} 
@@ -364,12 +370,12 @@ public:
 				displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 				id_tuile = getUserInput();
-				while (!tuileNonRevendiquee(getPlateau()[id_tuile])) {
-					cout << "Choix impossible, la borne est déjà revendiquée, veuillez réessayer." << endl;
+				while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
+					cout << "Choix impossible, la borne est déjà revendiquée ou inexistante, veuillez réessayer." << endl;
 					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
 					id_tuile = getUserInput(); 
 				} 
-				carte_classique = getPlateau()[id_tuile]->defausseAdverse(id_joueur);
+				carte_classique = getPlateau()[id_tuile]->defausseAdverse(id_joueur); 
 				cout << "Défausse faite" << endl; 
 				break;
 
@@ -386,8 +392,8 @@ public:
 				displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 				id_tuile = getUserInput();
-				while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile])) {
-					cout << "Choix impossible, la borne est pleine ou déjà revendiquée, veuillez réessayer." << endl;
+				while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
+					cout << "Choix impossible, la borne est pleine, déjà revendiquée ou inexistante, veuillez réessayer." << endl;
 					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
 					id_tuile = getUserInput();
 				} 
@@ -401,8 +407,8 @@ public:
 				displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 				id_tuile = getUserInput();
-				while (!tuileNonRevendiquee(getPlateau()[id_tuile])) {
-					cout << "Choix impossible, la borne est déjà revendiquée, veuillez réessayer." << endl;
+				while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
+					cout << "Choix impossible, la borne est déjà revendiquée ou inexistante, veuillez réessayer." << endl;
 					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
 					id_tuile = getUserInput();
 				}
