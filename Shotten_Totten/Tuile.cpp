@@ -93,7 +93,7 @@ void Tuile::claimProof(int joueur, vector<Tuile*> plateau) {
 	if (!proofComputer(getCotes()[(joueur + 1) % 2]->getCartesC(), allCards, complete, mem))
 		setClaim(joueur);
 
-	//Remise ‡ dÈfaut de toutes les cartes TroupeElite
+	//Remise ≈ï d√©faut de toutes les cartes TroupeElite
 	for (int i = 0; i < getCotes().size(); i++) {
 		for (int j = 0; j < getCotes()[i]->getCartesC().size(); j++)
 			getCotes()[i]->getCartesC()[j]->setDefault();
@@ -123,7 +123,7 @@ bool Tuile::proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsT
 			});
 
 		//2 pointeurs, pour la comparaison
-		//operator> n'apprecie pas un type diffÈrent
+		//operator> n'apprecie pas un type diff√©rent
 		Combinaison* incompl = new Combinaison(combiIncompl, getNbCartesMax());
 
 		if (Combinaison::cmpSup(incompl, complete)) {
@@ -144,7 +144,7 @@ bool Tuile::computeProofCarteC(vector<Carte_c*> combiIncompl, vector<Carte_c*> c
 
 	for (int i = 0; i < cardsToTest.size(); i++) {
 
-		//Evaluation sans rÈpÈtition des cartes par consultation d'un hist
+		//Evaluation sans r√©p√©tition des cartes par consultation d'un hist
 		for (int j = 0; j < prevEvaluated.size(); j++) {
 			if (cardsToTest[i] == prevEvaluated[j])
 				i++;
@@ -228,7 +228,7 @@ void Tuile::proofCardGenerator(vector<Carte_c*>& gen) {
 	return;
 }
 
-//ImplÈmentation pour 2 joueurs uniquement car aucune idÈes des rËgles ‡ ajouter en cas d'ÈgalitÈ ou de revendication par preuve
+//Impl√©mentation pour 2 joueurs uniquement car aucune id√©es des rƒçgles ≈ï ajouter en cas d'√©galit√© ou de revendication par preuve
 void Tuile::claimTuile(int idJoueur, vector<Tuile*> plateau) {
 	if (!isClaimable()) {
 		std::cout << "Tuile non revendicable" << std::endl;
@@ -260,11 +260,11 @@ Carte_c* Tuile::defausseSoi(int idJoueur) {
 	Carte_c* toDefausse = nullptr;
 	char valid;
 
-	cout << "Vous dÈfaussez votre tuile" << endl;
+	cout << "Vous d√©faussez votre tuile" << endl;
 
 	while (true) {
 		for (size_t i = 0; i < soi.size(); i++) {
-			cout << "Voulez vous dÈfaussez cette carte ?" << endl << *soi[i];
+			cout << "Voulez vous d√©faussez cette carte ?" << endl << *soi[i];
 			cin >> valid;
 
 			if (valid == 'o') {
@@ -283,11 +283,11 @@ Carte_c* Tuile::defausseAdverse(int idJoueur) {
 	Carte_c* toDefausse = nullptr;
 	char valid;
 
-	cout << "Vous dÈfaussez la tuile adverse" << endl;
+	cout << "Vous d√©faussez la tuile adverse" << endl;
 
 	while (true) {
 		for (size_t i = 0; i < adv.size(); i++) {
-			cout << "Voulez vous dÈfaussez cette carte ? (o pour oui)" << endl << *adv[i];
+			cout << "Voulez vous d√©faussez cette carte ? (o pour oui)" << endl << *adv[i];
 			cin >> valid;
 
 			if (valid == 'o') {
@@ -302,16 +302,16 @@ Carte_c* Tuile::defausseAdverse(int idJoueur) {
 }
 
 Carte_c* Tuile::defausseTout(int idJoueur) {
-	vector<Carte_c*> soi = getCotes()[1]->getCartesC();
+	vector<Carte_c*> soi = getCotes()[idJoueur]->getCartesC();
 	vector<Carte_c*> adv = getCotes()[(idJoueur + 1) % 2]->getCartesC();
 	Carte_c* toDefausse = nullptr;
 	char valid;
 
 
 	while (true) {
-		cout << "Vous dÈfaussez votre tuile" << endl;
+		cout << "Vous d√©faussez votre tuile" << endl;
 		for (size_t i = 0; i < soi.size(); i++) {
-			cout << "Voulez vous dÈfaussez cette carte ?" << endl << *soi[i];
+			cout << "Voulez vous d√©faussez cette carte ?" << endl << *soi[i];
 			cin >> valid;
 
 			if (valid == 'o') {
@@ -322,9 +322,9 @@ Carte_c* Tuile::defausseTout(int idJoueur) {
 			}
 		}
 
-		cout << "Vous dÈfaussez la tuile adverse" << endl;
+		cout << "Vous d√©faussez la tuile adverse" << endl;
 		for (size_t i = 0; i < adv.size(); i++) {
-			cout << "Voulez vous dÈfaussez cette carte ?" << endl << *adv[i];
+			cout << "Voulez vous d√©faussez cette carte ?" << endl << *adv[i];
 			cin >> valid;
 
 			if (valid == 'o') {
@@ -393,7 +393,7 @@ void Tuile::claimClassic(int joueur) {
 		claimTroupeE_CardSetter(jAdv);
 	}
 
-	//ImplÈmentation pour 2 joueurs uniquement car aucune idÈes des rËgles ‡ ajouter en cas d'ÈgalitÈ
+	//Impl√©mentation pour 2 joueurs uniquement car aucune id√©es des rƒçgles ≈ï ajouter en cas d'√©galit√©
 	Combinaison combiJ1(getCotes()[0]->getCartesC(), getNbCartesMax()), combiJ2(getCotes()[1]->getCartesC(), getNbCartesMax());
 	combiJ1.dropDown(getVictoires());
 	combiJ2.dropDown(getVictoires());
@@ -422,7 +422,7 @@ void Tuile::casEgalite() {
 		i++;
 	}
 
-	if (idJoueur == -1) cout << "ProblËme cas EgalitÈ" << endl;
+	if (idJoueur == -1) cout << "Problƒçme cas Egalit√©" << endl;
 
 	setClaim(idJoueur);
 
