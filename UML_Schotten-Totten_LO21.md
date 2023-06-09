@@ -53,33 +53,44 @@ classDiagram
         + choixCarteTuile() : Carte
     }
     
-    class Tuiles{
+    class Tuile{
         - nbCarteMax: int
         - joueurs: vector<cote *>
         - hist_c : vector<nodeHist_c *>
         - victoirePossible : vector<Combinaison *> 
         - claim: int
-        + constructeurs (nb_cartes, vicPoss)
-        + ajout_c(Carte_c* c, int idJoueur) : void
+        + Tuile(int nb_cartes, vector<Combinaison*> vicPoss, int nbJoueur)
+        + ajout_carte(Carte* c, int idJoueur) : void
+	    + ajout_c(Carte_c* c, int idJoueur) : void
+	    + ajout_t(Carte_t* c, int idJoueur) : void
+	    + ajout_TroupeElite(TroupeElite* c, int idJoueur) : void
         + claimProof(int joueur, vector<Tuile*> plateau) : void
-        + cardSubstractor(vector<Carte_c*>& toSub, vector<Tuile*> plateau) : void
-        + isCardOnBoard(Carte_c* c, vector<Tuile*> plateau) : bool
-        + isCardOnTuile(Carte_c* c) : bool
-        + proofCardGenerator(vector<Carte_c *> & gen) : void
-        + claimTuile(int idJoueur, vector<Tuile *> plateau) : void
-        + claimClassic(int joueur): void
-        + casEgalite(vector<nodeHist_c *> hist_c) : void
+	    + proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated) : bool
+	    + computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated) : bool
+	    + computeProofCarteC(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated) : bool
+	    + claimTroupeE_CardSetter(vector<Carte_c*> v) : void
+	    + cardSubstractor(vector<Carte_c*>& toSub, vector<Tuile*> plateau) : void
+	    + isCardOnBoard(Carte_c* c, vector<Tuile*> plateau) : bool
+	    + isCardOnTuile(Carte_c* c) : bool
+	    + proofCardGenerator(vector<Carte_c*>& gen) : void
+        + claimTuile(int idJoueur, vector<Tuile*> plateau) : void
+	    + claimClassic(int joueur) : void
+        + casEgalite() : void
         + canPlayerClaim(int idJoueur) : bool
         + isClaimProof() : bool
         + isClaimable() : bool
-        + setClaim(int winner): void
-        + getClaim(): int
+        + defausseSoi(int idJoueur) : Carte_c*
+	    + defausseAdverse(int idJoueur) : Carte_c*
+	    + defausseTout(int idJoueur) : Carte_c*
+        + clearVictoires(): void
+	    + setVictoires(vector<Combinaison*> newVict) : void
+        + getClaim() : int
         + getNbCartesMax() : int
-        + getHist_c() : vector<nodeHist_c *>&
-        + getCotes(): vector<Cote *>&
-        + defausse_c
-        + overload print
-        + destructeur
+        + getHist_c(): vector<nodeHist_c*>&
+        + getCotes(): vector<Cote*>&
+        + getVictoires(): vector<Combinaison*>&
+        + ~Tuile()
+        + operator<<(ostream& os, Tuile& t) : ostream&
     }
     
     class nodeHist_c{
@@ -97,21 +108,31 @@ classDiagram
         - is_suite: bool
         - is_couleur: bool
         - is_brelan : bool
-        + constructeur (cartes : liste_cartes_c, nb_cartes : int)
-        + constructeur (bools)
+        + Combinaison(vector<Carte_c*>& combi, int szCombi)
+        + Combinaison(bool suite, bool couleur, bool brelan, int szCombi)
         + isSuite(vector<Carte_c*> combi) : bool
         + isCouleur(vector<Carte_c*> combi) : bool
         + isBrelan(vector<Carte_c*> combi) : bool
         + calculSumCombi(vector<Carte_c*> combi) : int
         + calculScoreCombi(Combinaison* c) : int
+        + dropDown(vector<Combinaison*> lstCombi) : void
+        + isCombiInLst(int scoreCombi, vector<Combinaison*> lstCombi) : bool
+        + convertToCouleur() : void
+        + convertToSuite() : void
+        + convertToSomme() : void
+        + operator>(Combinaison& other) : bool
+        + cmpSup(Combinaison* combi1, Combinaison* combi2) : bool
         + getTailleCombi(): int
         + getScoreCombi() : int
         + getSumCombi() : int
         + getBrelan() : bool
         + getCouleur() : bool
         + getSuite() : bool
+        + setSuite(bool s) : void
+        + setCouleur(bool s) : void
         + setScoreCombi(int v) : void
-        + setSumCombi(int s) : void
+        + setSumCombi(int v) : void
+        + setDefault() : void
         + operator>>(Combinaison& other) : bool
     }
     
@@ -120,12 +141,13 @@ classDiagram
         - cartesC: vector<Carte_c *>
         - cartesT_: vector<Carte_T *>
         -  nbCartesJoue: int
-        + constructeurs (nb_cartes, vicPoss)
+        + constructeurs (int id)
         + getNbCartes() : int
-        + setNbCartes(intNewVal) : void
         + getIdJoueur() : int
         + getCartesC() : vector<Carte_c*>&
         + getCartesT() : vector<Carte_t*>&
+        + setNbCartes(intNewVal) : void
+       
     }
     
     class Pioche_c{
