@@ -133,7 +133,7 @@ public:
 			return;
 
 		case 4:
-			if (isCombiInLst(3, lstCombi)) {
+			if (isCombiInLst(3, lstCombi) && getCouleur()) {
 				setDefault();
 				convertToCouleur();
 			}
@@ -176,14 +176,6 @@ public:
 		return false;
 	}
 
-
-	void setDefault() {
-		is_brelan = false;
-		is_couleur = false;
-		is_suite = false;
-		scoreCombi = 1;
-	}
-
 	void convertToCouleur() {
 		setCouleur(true);
 		setScoreCombi(calculScoreCombi(this));
@@ -209,6 +201,13 @@ public:
 
 	int getTailleCombi() {
 		return taille_combi;
+	}
+
+	void setDefault() {
+		is_brelan = false;
+		is_couleur = false;
+		is_suite = false;
+		scoreCombi = 1;
 	}
 
 	void setScoreCombi(int v) {
