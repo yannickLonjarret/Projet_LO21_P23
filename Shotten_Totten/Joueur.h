@@ -181,7 +181,7 @@ public:
 	///<param name="id"> Player's id : int </param>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	void poser_carte(Carte_c* c, int id, Tuile* t); // ######### juste poser carte Tuile gère cc ou ct
+	void poser_carte(Carte* c, int id, Tuile* t); // ######### juste poser carte Tuile gère cc ou ct
 
 	/// <summary>
 	/// Allows the user to retrieve a tactical card of the hand

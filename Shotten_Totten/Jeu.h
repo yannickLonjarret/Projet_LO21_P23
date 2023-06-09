@@ -12,8 +12,7 @@
 class Jeu
 {
 private:
-	Joueur j1;
-	Joueur j2;
+	vector<Joueur> joueurs; 
 
 	Pioche_c pioche_c;
 	//Pioche_t pioche_t;
@@ -36,6 +35,18 @@ public:
 			Tuile* t = new Tuile(3, vic, 2);
 			plateau.push_back(t);
 		}
+		vector<Joueur> joueurs;
+
+		pioche_c = Pioche_c();
+		vector<string> couleurs = { "Vert", "Bleu", "Rouge", "Jaune", "Violet", "Marron" };
+		
+		for (unsigned int i = 1; i < 10; i++) {
+			for (unsigned int j = 0; j < couleurs.size(); j++) {
+				pioche_c.push(new Carte_c(i, couleurs[j]));
+			}
+		}
+
+		pioche_c.shuffle(); 
 	}
 
 	vector<Tuile*> getPlateau() const {
@@ -43,16 +54,22 @@ public:
 	}
 
 	Joueur getJoueur1() const {
-		return j1;
+		return joueurs[0];
 	}
 
 	Joueur getJoueur2() const {
-		return j2;
+		return joueurs[1];
+	}
+
+	vector<Joueur> getJoueurs() const {
+		return joueurs;
 	}
 
 	Pioche_c getPioche_c() const {
 		return pioche_c;
 	}
+
+	void claim(int idJoueur);
 
 	/// <summary>
 	/// Allows the user to pick the first card of the classical pick
@@ -68,11 +85,11 @@ public:
 	//}
 
 	void setJoueur1(string& s) {
-		j1 = Joueur(s);
+		joueurs.push_back(Joueur(s));
 	}
 
 	void setJoueur2(string& s) {
-		j2 = Joueur(s);
+		joueurs.push_back(Joueur(s));
 	}
 
 
@@ -83,8 +100,8 @@ public:
 
 	void menu_selection();
 	void playerSelection();
-	void startGame(Joueur& j1, Joueur& j2);
-	void distribuer_cartes();
+	virtual void startGame();
+	void distribuerCartes(int nb_a_distribuer);
 
 	//void play_card_c(int id_j, int id_tuile, Carte_c& c)
 };

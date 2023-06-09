@@ -7,6 +7,8 @@
 #include <chrono>
 #include "Jeu.h"
 #include "Troupe_Elite.h"
+#include "Defausse.h"
+#include "JeuTactique.h"
 
 
 const int NUM_ZONES = 9;
@@ -131,12 +133,80 @@ int main() {
 	cout << *t;
 	*/
 
-	Jeu* j = new Jeu();
+	std::cout << R"(
 
-	j->printTitles();
-	j->menu_selection();
+   _____      _           _   _                _______    _   _             
+  / ____|    | |         | | | |              |__   __|  | | | |            
+ | (___   ___| |__   ___ | |_| |_ ___ _ __ ______| | ___ | |_| |_ ___ _ __  
+  \___ \ / __| '_ \ / _ \| __| __/ _ \ '_ \______| |/ _ \| __| __/ _ \ '_ \ 
+  ____) | (__| | | | (_) | |_| ||  __/ | | |     | | (_) | |_| ||  __/ | | |
+ |_____/ \___|_| |_|\___/ \__|\__\___|_| |_|     |_|\___/ \__|\__\___|_| |_|
+            
+ BOUCHARD REMI & BRUNIAUX ALIENOR & LAGUE PIERRE & LONJARRET YANNICK & MONDESERT JULES
+                                                
+                                                                            
+)" << '\n';
+	
+	int choice;
+	bool quit = false;
+	Jeu* jeu_classique;
+	JeuTactique* jeu_tactique;
 
+	while (!quit) {
+		std::cout << R"(
+  __  __                  
+ |  \/  |                 
+ | \  / | ___ _ __  _   _ 
+ | |\/| |/ _ \ '_ \| | | |
+ | |  | |  __/ | | | |_| |
+ |_|  |_|\___|_| |_|\__,_|
+                          
+ 1 - Jouer en version classique
+ 2 - Joueur en version tactique
+ 3 - Quitter  
+                     
+		)" << '\n';
 
-
+		std::string input; 
+		std::cout << "Choisissez une option : ";
+		std::cin >> input; 
+		choice = std::stoi(input);
+		switch (choice)
+		{
+		case 1:
+			quit = true;
+			jeu_classique = new Jeu(); 
+			jeu_classique->printTitles();
+			jeu_classique->menu_selection();
+			jeu_classique->startGame();
+			delete jeu_classique;
+			break;
+		case 2:
+			quit = true;
+			jeu_tactique = new JeuTactique();
+			jeu_tactique->printTitles();
+			jeu_tactique->menu_selection();
+			jeu_tactique->startGame();
+			delete jeu_tactique; 
+			break;
+		case 3:
+			quit = true;
+			std::cout << "Au revoir !" << std::endl;
+			return 0;
+		default:
+			std::cout << "Option invalide, respectez les choix et réessayez." << std::endl;
+			break;
+		}
+	}
+	/*
+	if (choice) {
+		Jeu* jeu = new Jeu();
+		jeu->printTitles(); 
+		jeu->menu_selection(); 
+	}
+	else {
+		JeuTactique* jeu = new JeuTactique(); 
+	}
+	*/
 	return 0;
 }

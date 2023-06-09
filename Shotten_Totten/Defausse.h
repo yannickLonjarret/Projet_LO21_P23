@@ -12,7 +12,7 @@ using namespace std;
 class Defausse {
 private:
 
-	static int nb_cartesMax; //maximum number of cards
+	static const int nb_cartesMax = 64; //maximum number of cards
 	int nb_cartes = 0; // number of cards at a given time
 	vector<Carte*> cartes; // the cards that are stored
 
@@ -21,9 +21,7 @@ public:
 	/// <summary>
 	/// Constructor for the Defausse , initialy the defausse is empty, so is the number of cards.
 	///
-	Defausse() {
-		nb_cartesMax = (int)cartes.size(); //change maybe ?
-	}
+	Defausse() = default;
 
 	//FUNCTIONS
 
@@ -82,11 +80,9 @@ public:
 	/// </summary>
 	~Defausse() = default;
 
-
-	friend std::ostream& operator<<(std::ostream& os, const Defausse& d);
-
-
-
+	static int getNbCartesMax() {
+		return nb_cartesMax;
+	}
 };
 
 /// <summary>
@@ -95,7 +91,8 @@ public:
 /// <param name="os">the output stream to print the defausse on</param>
 /// <param name="d">the defausse</param>
 /// <returns>the output stream with the defausse displayed on</returns>
-std::ostream& operator<<(std::ostream& os, const Defausse& d) {
+
+inline std::ostream& operator<<(std::ostream& os, const Defausse& d) {
 	os << "[";
 	for (int i = 0; i < d.getSize(); i++) {
 		d.getCartes()[i]->print(os); //particularité de l'appel de print -> permet de print n'importe quelle sous classe de Carte.

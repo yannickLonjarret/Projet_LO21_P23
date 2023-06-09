@@ -155,25 +155,34 @@ public:
 
 ostream& operator<<(ostream& os, Tuile& t) {
 
+	for (int i = 0; i < t.getNbCartesMax() -  t.getCotes()[0]->getNbCartes() ; i++)
+		os << "         "  ;
+	
 
-	for (int i = 0; i < t.getCotes()[0]->getNbCartes(); i++) {
+	for (int i = 0; i < t.getCotes()[0]->getNbCartes(); i++) 
 		os << *t.getCotes()[0]->getCartesC()[i];
-	}
+	if(t.getClaim() == -1)
+		os << "\t[][][" << t.getClaim() << "][][]\t";
+	else
+		os << "\t[][][" << t.getClaim() + 1 << "][][]\t";
 
-	//os << "\t   " << t.getClaim() << "   \t";
-
-	for (int i = 0; i < t.getCotes()[1]->getNbCartes(); i++) {
+	for (int i = 0; i < t.getCotes()[1]->getNbCartes(); i++) 
 		os << *t.getCotes()[1]->getCartesC()[i];
-	}
+	
+	for (int i = 0; i < t.getNbCartesMax() - t.getCotes()[0]->getNbCartes(); i++)
+		os << "         ";
 
+	os << "\t";
 
-	for (int i = 0; i < t.getCotes()[0]->getCartesT().size(); i++) {
-		os << *t.getCotes()[0]->getCartesT()[i];
-	}
+	for (int i = 0; i < t.getCotes()[0]->getCartesT().size(); i++) 
+		os << " " << *t.getCotes()[0]->getCartesT()[i];
+	
 
-	for (int i = 0; i < t.getCotes()[1]->getCartesT().size(); i++) {
-		os << *t.getCotes()[1]->getCartesT()[i];
-	}
+	for (int i = 0; i < t.getCotes()[1]->getCartesT().size(); i++)
+		os << " " << *t.getCotes()[1]->getCartesT()[i];
+	
+	os << endl;
+
 
 	return os;
 }

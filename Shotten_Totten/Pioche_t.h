@@ -4,6 +4,8 @@
 
 #include <vector>
 #include <ostream>
+#include <random>
+#include <algorithm>
 #include "Carte_t.h"
 
 /// <summary>
@@ -20,11 +22,12 @@ private:
 	std::vector<Carte_t*> cartes;
 
 public:
+	Pioche_t() = default;
 	/// <summary>
 	/// Constructor initializes the card vector
 	/// </summary>
 	/// <param name="c">the collection of cards to be set as the attribute</param>
-	Pioche_t(std::vector<Carte_t*> const& c) :cartes(c) {};
+	Pioche_t(std::vector<Carte_t*> const& c) : cartes(c) {};
 
 	size_t getSize() const {
 		return this->cartes.size();
@@ -45,6 +48,13 @@ public:
 	/// </summary>
 	/// <returns> the card on top of the collection</returns>
 	Carte_t* pop();
+
+	/// <summary>
+	/// Allows the user to randomly shuffle the deck
+	/// </summary>
+	void shuffle() {
+		random_shuffle(cartes.begin(), cartes.end());
+	} 
 
 	/// <summary>
 	/// Default destructor
@@ -68,7 +78,7 @@ public:
 /// <returns> the output stream with the card's information</returns>
 inline std::ostream& operator<<(std::ostream& os, const Pioche_t& p) {
 	os << "[";
-	for (int i = 0; i < p.getSize(); i++) {
+	for (size_t i = 0; i < p.getSize(); i++) {
 		p.getCartes()[i]->print(os);
 		if (i != p.getSize() - 1)
 			os << ", ";

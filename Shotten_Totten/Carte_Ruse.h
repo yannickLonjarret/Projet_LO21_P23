@@ -47,7 +47,7 @@ public:
 	/// Allows the user to add a Carte pointer in the vector cartes
 	/// </summary>
 	/// <param name="c">The Carte pointer to add</param>
-	void addCartes(const Carte* c) {
+	void addCartes(Carte* c) {
 		cartes.push_back(c);
 	}
 
@@ -55,9 +55,26 @@ public:
 	/// Return the entire vector cartes
 	/// </summary>
 	/// <returns>The vector with all the cards in it</returns>
-	const vector<Carte*> getAllCartes() const {
+	vector<Carte*> getAllCartes() const {
 		return cartes;
 	}
+
+	//overriding the print function
+	void print(std::ostream& os) const override {
+		os << "[" << this->getNom() << "]" << std::endl;
+	}
 };
+
+/// <summary>
+/// Print ooperator overload to display the card and its caracteristics
+/// </summary>
+/// <param name="os"> the output stream</param>
+/// <param name="r"> the card to display</param>
+/// <returns> the output stream with the card's information</returns>
+
+inline std::ostream& operator<<(std::ostream& os, const Ruse& r) {
+	os << "[" << r.getNom() << "]";
+	return os;
+}
 
 #endif // !CARTE_RUSE_H
