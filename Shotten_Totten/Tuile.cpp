@@ -277,20 +277,20 @@ Carte_c* Tuile::defausseSoi(int idJoueur) {
 }
 
 Carte_c* Tuile::defausseAdverse(int idJoueur) {
-	vector<Carte_c*> adv = getCotes()[(idJoueur + 1) % 2]->getCartesC();
+
 	Carte_c* toDefausse = nullptr;
 	char valid;
 
 	cout << "Vous défaussez la tuile adverse" << endl;
 
 	while (true) {
-		for (size_t i = 0; i < adv.size(); i++) {
-			cout << "Voulez vous défaussez cette carte ? (o pour oui)" << endl << *adv[i];
+		for (size_t i = 0; i < getCotes()[(idJoueur + 1) % 2]->getCartesC().size(); i++) {
+			cout << "Voulez vous défaussez cette carte ? (o pour oui)" << endl << *getCotes()[(idJoueur + 1) % 2]->getCartesC()[i];
 			cin >> valid;
 
 			if (valid == 'o') {
-				toDefausse = adv[i];
-				adv.erase(adv.begin() + i);
+				toDefausse = getCotes()[(idJoueur + 1) % 2]->getCartesC()[i];
+				getCotes()[(idJoueur + 1) % 2]->getCartesC().erase(getCotes()[(idJoueur + 1) % 2]->getCartesC().begin() + i);
 
 				return toDefausse;
 			}
