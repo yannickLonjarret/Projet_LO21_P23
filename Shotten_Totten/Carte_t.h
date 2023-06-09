@@ -62,8 +62,7 @@ public:
 
 	//overriding the print function 
 	void print(std::ostream& os) const override {
-		os << "Carte Tactique : \n\t Type : " << this->getType() << "\n\t "
-			<< "Nom : " << this->getNom() << std::endl;
+		os << "[" << this->getNom() << "]" << std::endl;
 	}
 };
 
@@ -75,8 +74,7 @@ public:
 /// <returns> the output stream with the card's information</returns>
 /// LE INLINE EST SUPER IMPORTANT POUR LA COMPREHENSION DU COMPILATEUR !!!
 inline std::ostream& operator<<(std::ostream& os, const Carte_t& ct) {
-	os << "Carte Tactique : \n\t Type : " << ct.getType() << "\n\t "
-		<< "Nom : " << ct.getNom() << std::endl;
+	os << "[" << ct.getNom() << "]" << std::endl;
 	return os;
 }
 

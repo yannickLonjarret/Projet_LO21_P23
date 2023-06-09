@@ -11,6 +11,7 @@
 #include "Defausse.h"
 #include "Joueur.h"
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -129,14 +130,17 @@ _____           _   _
 				cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
 				int id_tuile = getUserInput();
 				vector<Carte*> vect;
+				cout << "on est là" << endl;
 				Carte* carte_a_jouer = choisirCarte(i, vect);
+				cout << "Choix carte fait !" << endl;
 				if (typeid(*carte_a_jouer) == typeid(Ruse)) {
+					cout << "RUSE !" << endl;
 					execRuse(dynamic_cast<Ruse*>(carte_a_jouer), i);
 					cout << "Exécution terminée ! " << endl;
 				}
 				else {
+					cout << "je suis dans le else" << endl;
 					getJoueurs()[i]->poser_carte(carte_a_jouer, i, getPlateau()[id_tuile]);
-					cout << "Taille main : " << getJoueurs()[i]->getCarteC().size() << endl;
 				}
 				for (int i = 0; i < 10; i++)
 					cout << endl;
@@ -197,20 +201,33 @@ _____           _   _
 	}
 
 	Carte* choisirCarte(int id_joueur, vector<Carte*> vecteur) {
-		cout << " Choisis une carte [chiffre entre 0 et " << getJoueurs()[id_joueur]->getNbCartes() - 1 << "] : ";
+		if (vecteur.size() == 0)
+			cout << " Choisis une carte [chiffre entre 0 et " << getJoueurs()[id_joueur]->getNbCartes() - 1<< "] : ";
+		else
+			cout << " Choisis une carte [chiffre entre 0 et " << getJoueurs()[id_joueur]->getNbCartes() - 1 + vecteur.size() << "] : ";
 		int choix_carte = Jeu::getUserInput();
+		cout << "Choix carte : " << choix_carte << endl;
 		int taille_main_classique = getJoueurs()[id_joueur]->getCarteC().size();
 		int taille_main_tactique = getJoueurs()[id_joueur]->getCarteT().size();
 		int taille_main = taille_main_classique + taille_main_tactique;
+		cout << "Taille classique : " << taille_main_classique << endl;
+		cout << "Taille tactique : " << taille_main_tactique << endl;
+		cout << "Taille totale : " << taille_main << endl;
 		if (choix_carte < taille_main_classique) {
+			cout << "CLASSIQUE !" << endl;
 			return (Carte*)getJoueurs()[id_joueur]->getCarteC()[choix_carte];
 		}
 		else if (choix_carte < taille_main) {
+			cout << "TACTIQUE !" << endl;
 			choix_carte -= taille_main_classique;
+			cout << "MAJ choix : " << choix_carte << endl;
+			cout << *getJoueurs()[id_joueur]->getCarteT()[choix_carte] << endl;    
 			return (Carte*)getJoueurs()[id_joueur]->getCarteT()[choix_carte];
 		}
 		else {
+			cout << "VECTEUR" << endl;
 			choix_carte -= taille_main;
+			vecteur[choix_carte]->print(cout);
 			return vecteur[choix_carte];
 		}
 	}
@@ -221,21 +238,28 @@ _____           _   _
 		Carte_t* carte_tactique = nullptr;
 		int id_tuile;
 		string choix;
+		int choix_pioche;
 		Carte* c;
 		for (int i = 0; i < actions.size(); i++) {
 			switch (actions[i])
 			{
 			case 0:
 				// 0 = piocher
-				piocheRuse(choixPioche(), carte); // a définir
+				cout << "PIOCHE ! " << endl;
+				choix_pioche = choixPioche();
+				cout << choix_pioche << endl;
+				piocheRuse(choix_pioche, carte); 
+				cout << "Fin pioche ! " << endl;
 				break;
 
 			case 1:
 				// 1 = placer carte sous pioche
+				cout << "PLACEMENT SOUS PIOCHE" << endl;
 				if (carte_classique != nullptr) {
-
+					cout << *carte_classique << endl;
 					for (auto it = 0; it < carte->getAllCartes().size(); it++) {
 						if ((Carte*)carte->getAllCartes()[it] == (Carte*)carte_classique) {
+							cout << "Suppression du vecteur" << endl;
 							carte->getAllCartes().erase(carte->getAllCartes().begin() + it);
 							break;
 						}
@@ -250,9 +274,16 @@ _____           _   _
 					getPioche_c()->push(carte_classique);
 				}
 				else {
+					cout << *carte_tactique << endl;
 					for (auto it = 0; it < carte->getAllCartes().size(); it++) {
+						cout << "BOUCLE" << endl;
 						if ((Carte*)carte->getAllCartes()[it] == (Carte*)carte_tactique) {
-							carte->getAllCartes().erase(carte->getAllCartes().begin() + it);
+							cout << "Suppression du vecteur" << endl; 
+							carte->getAllCartes()[0]->print(cout);
+							carte->getAllCartes()[it]->print(cout); 
+							cout << carte->getAllCartes().size() << endl;
+							//std::erase(carte->getAllCartes(), carte->getAllCartes()[it]);
+							//carte->getAllCartes().erase(it); 
 							break;
 						}
 					}
@@ -263,15 +294,20 @@ _____           _   _
 						}
 					}
 
-					pioche_tact.Pioche_t::push(carte_tactique);
+					pioche_tact.push(carte_tactique); 
 				}
+				cout << "PLACEMENT TERMINE" << endl;
 				break;
 
 			case 2:
 				// 2 = choisir carte de notre main (et le vecteur de Ruse)
+				cout << "CHOIX CARTE" << endl;
+				getJoueurs()[id_joueur]->afficherMain();
+				for (unsigned int i = 0; i < carte->getAllCartes().size(); i++)
+					carte->getAllCartes()[i]->print(cout);
 				c = choisirCarte(id_joueur, carte->getAllCartes()); // fonction à définir dans joueur ?
 				carte_tactique = dynamic_cast<Carte_t*>(c);
-				if (carte_tactique != nullptr)
+				if (carte_tactique == nullptr)
 					carte_classique = dynamic_cast<Carte_c*>(c);
 				break;
 

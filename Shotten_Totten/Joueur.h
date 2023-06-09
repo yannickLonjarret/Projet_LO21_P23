@@ -192,9 +192,13 @@ public:
 
 	void afficherMain() const {
 		cout << "\nMain "<<getNom()<< " :";
-		for (size_t i = 0; i < getNbCartes(); i++) {
+		for (size_t i = 0; i < getCarteC().size(); i++) {
 			cout << *getCarteC()[i] << " | ";
 		}
+		for (size_t i = 0; i < getCarteT().size(); i++) {
+			cout << *getCarteT()[i] << " | ";
+		} 
+
 		cout << endl;
 		cout << endl;
 	}
