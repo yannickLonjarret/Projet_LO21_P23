@@ -34,7 +34,7 @@ _____           _   _
 			Carte* carte_a_jouer = choisirCarte(i, vect);
 			if (typeid(*carte_a_jouer) == typeid(Ruse)) {
 				execRuse(dynamic_cast<Ruse*>(carte_a_jouer), i);
-				cout << "Exécution terminée ! " << endl;
+				cout << "ExÃ©cution terminÃ©e ! " << endl;
 			}
 			else {
 				getJoueurs()[i].poser_carte(carte_a_jouer, i, getPlateau()[id_tuile]);
@@ -57,7 +57,7 @@ _____           _   _
 
 			for (int i = 0; i < 100; i++)
 				cout << endl;
-			cout << getJoueurs()[i].getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
+			cout << getJoueurs()[i].getNom() << " a termine son tour. \n## Entrez un caractÃ¨re pour confirmer que vous avez change de place..." << endl;
 			string temp_prompt = "";
 			cin >> temp_prompt;
 			cout << endl;
@@ -128,7 +128,7 @@ void JeuTactique::execRuse(Ruse* carte, int id_joueur) {
 		{
 		case 0:
 			// 0 = piocher
-			piocheRuse(choixPioche(), carte); // a définir
+			piocheRuse(choixPioche(), carte); // a dÃ©finir
 			break;
 
 		case 1:
@@ -170,15 +170,15 @@ void JeuTactique::execRuse(Ruse* carte, int id_joueur) {
 
 		case 2:
 			// 2 = choisir carte de notre main (et le vecteur de Ruse)
-			c = choisirCarte(id_joueur, carte->getAllCartes()); // fonction à définir dans joueur ?
+			c = choisirCarte(id_joueur, carte->getAllCartes()); // fonction Ã  dÃ©finir dans joueur ?
 			carte_tactique = dynamic_cast<Carte_t*>(c);
 			if (carte_tactique != nullptr)
 				carte_classique = dynamic_cast<Carte_c*>(c);
 			break;
 
 		case 3:
-			// 3 = placer carte sur borne non revendiquée de notre côté ou defausser
-			cout << "Voulez-vous défausser la carte ou la placer sur une autre borne de votre cote ? (d = defausser / p = placer) " << endl;
+			// 3 = placer carte sur borne non revendiquÃ©e de notre cÃ´tÃ© ou defausser
+			cout << "Voulez-vous dÃ©fausser la carte ou la placer sur une autre borne de votre cote ? (d = defausser / p = placer) " << endl;
 
 			std::cin >> choix;
 			while (true) {
@@ -207,7 +207,7 @@ void JeuTactique::execRuse(Ruse* carte, int id_joueur) {
 			break;
 
 		case 4:
-			// 4 = choisir carte du cote adverse non revendiquée
+			// 4 = choisir carte du cote adverse non revendiquÃ©e
 			displayBoard();
 			cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 			id_tuile = getUserInput();
@@ -218,7 +218,7 @@ void JeuTactique::execRuse(Ruse* carte, int id_joueur) {
 			break;
 
 		case 5:
-			// 5 = défausser de la main
+			// 5 = dÃ©fausser de la main
 			if (carte_classique != nullptr)
 				defausse.push((Carte*)carte_classique);
 			else
@@ -226,7 +226,7 @@ void JeuTactique::execRuse(Ruse* carte, int id_joueur) {
 			break;
 
 		case 6:
-			// 6 = placer devant une tuile non revendiquée de notre cote
+			// 6 = placer devant une tuile non revendiquÃ©e de notre cote
 			displayBoard();
 			cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 			id_tuile = getUserInput();
