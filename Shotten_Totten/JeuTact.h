@@ -45,13 +45,13 @@ public:
 		pioche_tact = Pioche_t();
 		nb_cartes_tactiques_jouees = { 0, 0 };
 
-		// Création des cartes Troupe d'Elite
+		// CrÃ©ation des cartes Troupe d'Elite
 		pioche_tact.push(new TroupeElite(elite, "Joker", -1, "Non couleur", 1, 9));
 		pioche_tact.push(new TroupeElite(elite, "Joker", -1, "Non couleur", 1, 9));
 		pioche_tact.push(new TroupeElite(elite, "Espion", -1, "Non couleur", 7, 7));
 		pioche_tact.push(new TroupeElite(elite, "Porte Bouclier", -1, "Non couleur", 1, 3));
 
-		// Création des cartes Mode de Combat
+		// CrÃ©ation des cartes Mode de Combat
 		Combinaison* c1 = new Combinaison(1, 0, 0);
 		Combinaison* c2 = new Combinaison(1, 1, 0);
 		Combinaison* c3 = new Combinaison(0, 0, 1);
@@ -64,21 +64,21 @@ public:
 		vecteur_combi.push_back(c4);
 		pioche_tact.push(new ModeCombat(combat, "Colin Maillard", 3, vecteur_combi));
 
-		// Création des cartes Ruse
+		// CrÃ©ation des cartes Ruse
 		/*
 		0 = piocher
 		1 = placer carte sous pioche
 		2 = choisir carte de notre main (et le vecteur de Ruse)
-		3 = placer carte sur borne non revendiquée de notre côté ou defausser
-		4 = choisir carte du cote adverse non revendiquée
-		5 = défausser de la main
-		6 = placer devant une tuile non revendiquée de notre cote
+		3 = placer carte sur borne non revendiquÃ©e de notre cÃ´tÃ© ou defausser
+		4 = choisir carte du cote adverse non revendiquÃ©e
+		5 = dÃ©fausser de la main
+		6 = placer devant une tuile non revendiquÃ©e de notre cote
 		7 = choisir carte de notre cote
 		*/
 		vector<int> suite = { 0, 0, 0, 2, 1, 2, 1 };
 		pioche_tact.push(new Ruse(ruse, "Chasseur de Tete", suite));
 		suite = { 7, 3 };
-		pioche_tact.push(new Ruse(ruse, "Stratège", suite));
+		pioche_tact.push(new Ruse(ruse, "StratÃ¨ge", suite));
 		suite = { 4, 5 };
 		pioche_tact.push(new Ruse(ruse, "Banshee", suite));
 		suite = { 4, 6 };
@@ -132,7 +132,7 @@ _____           _   _
 				Carte* carte_a_jouer = choisirCarte(i, vect);
 				if (typeid(*carte_a_jouer) == typeid(Ruse)) {
 					execRuse(dynamic_cast<Ruse*>(carte_a_jouer), i);
-					cout << "Exécution terminée ! " << endl;
+					cout << "ExÃ©cution terminÃ©e ! " << endl;
 				}
 				else {
 					(getJoueurs()[i]).poser_carte(carte_a_jouer, i, getPlateau()[id_tuile]);
@@ -157,7 +157,7 @@ _____           _   _
 
 				for (int i = 0; i < 100; i++)
 					cout << endl;
-				cout << getJoueurs()[i].getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
+				cout << getJoueurs()[i].getNom() << " a termine son tour. \n## Entrez un caractÃ¨re pour confirmer que vous avez change de place..." << endl;
 				string temp_prompt = "";
 				cin >> temp_prompt;
 				cout << endl;
@@ -227,7 +227,7 @@ _____           _   _
 			{
 			case 0:
 				// 0 = piocher
-				piocheRuse(choixPioche(), carte); // a définir
+				piocheRuse(choixPioche(), carte); // a dÃ©finir
 				break;
 
 			case 1:
@@ -269,15 +269,15 @@ _____           _   _
 
 			case 2:
 				// 2 = choisir carte de notre main (et le vecteur de Ruse)
-				c = choisirCarte(id_joueur, carte->getAllCartes()); // fonction à définir dans joueur ?
+				c = choisirCarte(id_joueur, carte->getAllCartes()); // fonction Ã  dÃ©finir dans joueur ?
 				carte_tactique = dynamic_cast<Carte_t*>(c);
 				if (carte_tactique != nullptr)
 					carte_classique = dynamic_cast<Carte_c*>(c);
 				break;
 
 			case 3:
-				// 3 = placer carte sur borne non revendiquée de notre côté ou defausser
-				cout << "Voulez-vous défausser la carte ou la placer sur une autre borne de votre cote ? (d = defausser / p = placer) " << endl;
+				// 3 = placer carte sur borne non revendiquÃ©e de notre cÃ´tÃ© ou defausser
+				cout << "Voulez-vous dÃ©fausser la carte ou la placer sur une autre borne de votre cote ? (d = defausser / p = placer) " << endl;
 
 				std::cin >> choix;
 				while (true) {
@@ -306,7 +306,7 @@ _____           _   _
 				break;
 
 			case 4:
-				// 4 = choisir carte du cote adverse non revendiquée
+				// 4 = choisir carte du cote adverse non revendiquÃ©e
 				displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 				id_tuile = getUserInput();
@@ -317,7 +317,7 @@ _____           _   _
 				break;
 
 			case 5:
-				// 5 = défausser de la main
+				// 5 = dÃ©fausser de la main
 				if (carte_classique != nullptr)
 					defausse.push((Carte*)carte_classique);
 				else
@@ -325,7 +325,7 @@ _____           _   _
 				break;
 
 			case 6:
-				// 6 = placer devant une tuile non revendiquée de notre cote
+				// 6 = placer devant une tuile non revendiquÃ©e de notre cote
 				displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 				id_tuile = getUserInput();
