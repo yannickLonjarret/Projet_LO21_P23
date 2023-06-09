@@ -161,6 +161,7 @@ ostream& operator<<(ostream& os, Tuile& t) {
 
 	for (int i = 0; i < t.getCotes()[0]->getNbCartes(); i++) 
 		os << *t.getCotes()[0]->getCartesC()[i];
+
 	if(t.getClaim() == -1)
 		os << "\t[][][" << t.getClaim() << "][][]\t";
 	else

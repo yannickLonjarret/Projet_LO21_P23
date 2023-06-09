@@ -53,14 +53,14 @@ public:
 		pioche_tact.push(new TroupeElite(elite, "Porte Bouclier", -1, "Non couleur", 1, 3));*/
 
 		// Création des cartes Mode de Combat 
-		
+		/*
 		Combinaison* c1 = new Combinaison(1, 0, 0); 
 		Combinaison* c2 = new Combinaison(1, 1, 0);
 		Combinaison* c3 = new Combinaison(0, 0, 1);
 		Combinaison* c4 = new Combinaison(0, 1, 0);
 		vector<Combinaison*> vecteur_combi;
 		pioche_tact.push(new ModeCombat(combat, "Combat de Boue", 4, vecteur_combi)); // vecteur vide
-		/*vecteur_combi.push_back(c1);
+		vecteur_combi.push_back(c1);
 		vecteur_combi.push_back(c2);
 		vecteur_combi.push_back(c3);
 		vecteur_combi.push_back(c4);
@@ -77,19 +77,19 @@ public:
 		6 = placer devant une tuile non revendiquée de notre cote
 		7 = choisir carte de notre cote
 		*/
-		/*
+		
 		vector<int> suite = { 0, 0, 0, 2, 1, 2, 1 };
-		pioche_tact.push(new Ruse(ruse, "Chasseur de Tete", suite));
+		/*pioche_tact.push(new Ruse(ruse, "Chasseur de Tete", suite));*/
 		suite = { 7, 3 };
 		pioche_tact.push(new Ruse(ruse, "Stratège", suite));
 		suite = {4, 5};
 		pioche_tact.push(new Ruse(ruse, "Banshee", suite));
 		suite = {4, 6};
-		pioche_tact.push(new Ruse(ruse, "Traitre", suite));*/
-
+		pioche_tact.push(new Ruse(ruse, "Traitre", suite));
+		
 		//pioche_tact.shuffle();
 
-		cout << pioche_tact << endl;
+		cout << pioche_tact << endl; 
 	}
 
 	/// <summary>
@@ -144,6 +144,16 @@ public:
 				}
 				else {
 					cout << "je suis dans le else" << endl;
+					while (!posePossible(getPlateau()[id_tuile], i)) {
+						cout << "Choix impossible, la borne est pleine, veuillez réessayer." << endl;
+						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+						id_tuile = getUserInput();
+					}
+					while (!posePossible(getPlateau()[id_tuile], i)) {
+						cout << "Choix impossible, la borne est pleine, veuillez réessayer." << endl;
+						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+						id_tuile = getUserInput();
+					}
 					getJoueurs()[i]->poser_carte(carte_a_jouer, i, getPlateau()[id_tuile]);
 				}
 				for (int i = 0; i < 10; i++)
@@ -174,6 +184,12 @@ public:
 			}
 
 		}
+	}
+
+	bool posePossible(Tuile* tuile, int id_joueur) {
+		int nb_cartes_posees = tuile->getCotes()[id_joueur]->getNbCartes(); 
+		int nb_cartes_posables = tuile->getNbCartesMax();
+		return (nb_cartes_posees != nb_cartes_posables); 
 	}
 
 	int choixPioche() const {
@@ -314,6 +330,16 @@ public:
 						displayBoard();
 						cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 						int id_tuile = getUserInput();
+						while (!posePossible(getPlateau()[id_tuile], id_joueur)) {
+							cout << "Choix impossible, la borne est pleine, veuillez réessayer." << endl;
+							cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+							id_tuile = getUserInput();
+						} 
+						while (!posePossible(getPlateau()[id_tuile], id_joueur)) {
+							cout << "Choix impossible, la borne est pleine, veuillez réessayer." << endl;
+							cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+							id_tuile = getUserInput();
+						}
 						getJoueurs()[id_joueur]->poser_carte((Carte*)carte_classique, id_joueur, getPlateau()[id_tuile]);
 						cout << "C'est bon !" << endl;
 						displayBoard();
@@ -330,10 +356,8 @@ public:
 				displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 				id_tuile = getUserInput();
-				if (id_joueur)
-					carte_classique = getPlateau()[id_tuile]->defausseAdverse(id_joueur);
-				else
-					carte_classique = getPlateau()[id_tuile]->defausseAdverse(id_joueur);
+				carte_classique = getPlateau()[id_tuile]->defausseAdverse(id_joueur);
+				cout << "Défausse faite" << endl; 
 				break;
 
 			case 5:
@@ -349,6 +373,11 @@ public:
 				displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 				id_tuile = getUserInput();
+				while (!posePossible(getPlateau()[id_tuile], id_joueur)) {
+					cout << "Choix impossible, la borne est pleine, veuillez réessayer." << endl;
+					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+					id_tuile = getUserInput();
+				}
 				getJoueurs()[id_joueur]->poser_carte((Carte*)carte_classique, id_joueur, getPlateau()[id_tuile]);
 				cout << "C'est bon !" << endl;
 				displayBoard();

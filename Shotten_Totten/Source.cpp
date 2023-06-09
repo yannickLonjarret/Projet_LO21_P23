@@ -184,6 +184,7 @@ int main() {
 		case 2:
 			quit = true;
 			jeu_tactique = new JeuTactique();
+
 			jeu_tactique->printTitles();
 			jeu_tactique->menu_selection();
 			jeu_tactique->startGame();
@@ -193,6 +194,7 @@ int main() {
 			quit = true;
 			std::cout << "Au revoir !" << std::endl;
 			return 0;
+
 		default:
 			std::cout << "Option invalide, respectez les choix et réessayez." << std::endl;
 			break;

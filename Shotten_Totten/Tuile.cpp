@@ -267,7 +267,9 @@ Carte_c* Tuile::defausseSoi(int idJoueur) {
 
 			if (valid == 'o') {
 				toDefausse = getCotes()[idJoueur]->getCartesC()[i];
+				int nb_cartes_precedent = getCotes()[idJoueur]->getNbCartes(); 
 				getCotes()[idJoueur]->getCartesC().erase(getCotes()[idJoueur]->getCartesC().begin() + i);
+				getCotes()[idJoueur]->setNbCartes(nb_cartes_precedent - 1);
 
 				return toDefausse;
 			}
@@ -290,8 +292,9 @@ Carte_c* Tuile::defausseAdverse(int idJoueur) {
 
 			if (valid == 'o') {
 				toDefausse = getCotes()[(idJoueur + 1) % 2]->getCartesC()[i];
+				int nb_cartes_precedent = getCotes()[(idJoueur + 1) % 2]->getNbCartes(); 
 				getCotes()[(idJoueur + 1) % 2]->getCartesC().erase(getCotes()[(idJoueur + 1) % 2]->getCartesC().begin() + i);
-
+				getCotes()[(idJoueur + 1) % 2]->setNbCartes(nb_cartes_precedent-1);
 				return toDefausse;
 			}
 		}
