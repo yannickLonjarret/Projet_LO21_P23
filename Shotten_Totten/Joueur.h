@@ -191,7 +191,7 @@ public:
 
 
 	void afficherMain() const {
-		cout << "\nMain :";
+		cout << "\nMain "<<getNom()<< " :";
 		for (size_t i = 0; i < getNbCartes(); i++) {
 			cout << *getCarteC()[i] << " | ";
 		}

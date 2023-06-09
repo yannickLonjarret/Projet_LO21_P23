@@ -8,7 +8,7 @@
 
 
 
-void Jeu::displayBoard() const {
+void Jeu::displayBoard(const Joueur& current) const {
 	const int NUM_ZONES = 9;
 	const int BOARD_WIDTH = 50;
 
@@ -18,25 +18,26 @@ void Jeu::displayBoard() const {
 	string leftZone = "";
 	string rightZone = "";
 
-	for (int i = NUM_ZONES - 1; i >= 0; i--) {
 
+
+	for (int i = NUM_ZONES - 1; i >= 0; i--) {
 		string claimable = (getPlateau()[i]->isClaimable() == true ? "REVENDICABLE" : "NON REVENDICABLE");
 
-		if (getPlateau()[i]->getCotes()[0]->getNbCartes() == 0) {
+		if (getPlateau()[i]->getCotes()[0]->getNbCartes() == 0 && getPlateau()[i]->getCotes()[1]->getNbCartes() == 0) {
 
 			std::string leftZone = "";
 			std::string rightZone = "";
 
-			std::string leftPadding(BOARD_WIDTH - (BOARD_WIDTH / 2 + leftZone.length()) + 20, ' ');
+			std::string leftPadding(BOARD_WIDTH - (BOARD_WIDTH / 2 + leftZone.length()), ' ');
 			std::string rightPadding(BOARD_WIDTH - rightZone.length() + 3, ' ');
-			cout << leftPadding << leftZone << " | | " << rightZone << rightPadding << claimable << endl;;
+			cout << leftPadding << leftZone << " | | " << rightZone << rightPadding << claimable << endl;
 		}
 		else {
 
 			Tuile tile = *getPlateau()[i];
 
-			std::string leftPadding(BOARD_WIDTH - (BOARD_WIDTH / 2) + 20, ' ');
-			std::string rightPadding(BOARD_WIDTH, ' ');
+			std::string leftPadding(BOARD_WIDTH - (BOARD_WIDTH / 2 + getPlateau()[i]->toString().length()), ' ');
+			std::string rightPadding(BOARD_WIDTH - getPlateau()[i]->toString().length(), ' ');
 			cout << leftPadding << tile << rightPadding << claimable << endl;
 		}
 	}
@@ -286,7 +287,7 @@ void Jeu::startGame(Joueur& jou1, Joueur& jou2) {
 		cout << joueurs.size();
 		for (unsigned int i = 0; i < joueurs.size(); i++) {
 
-			displayBoard();
+			displayBoard(joueurs[i]);
 			joueurs[i].afficherMain();
 
 			cout << " ## C'est au joueur " << joueurs[i].getNom() << " de jouer ## " << endl;
@@ -295,7 +296,7 @@ void Jeu::startGame(Joueur& jou1, Joueur& jou2) {
 			cout << joueurs[i].getNom() << " choisis sa carte a poser [chiffre entre 0 et " << joueurs[i].getNbCartes() - 1 << "] : ";
 			int choix_carte = getUserInput();
 			joueurs[i].poser_carte(joueurs[i].getCarteC()[choix_carte], i, plateau[id_tuile]);
-			displayBoard();
+			displayBoard(joueurs[i]);
 			joueurs[i].afficherMain();
 			//joueurs[i].piocher_c(this->pioche_c);
 

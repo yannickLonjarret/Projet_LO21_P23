@@ -8,6 +8,7 @@ void Tuile::ajout_c(Carte_c* c, int idJoueur) {
 
 		coteJoueur->getCartesC().push_back(c);
 		coteJoueur->setNbCartes(coteJoueur->getNbCartes() + 1);
+		cout << "## AJOUT_C";
 
 		std::sort(coteJoueur->getCartesC().begin(), coteJoueur->getCartesC().end(), [](Carte_c* c1, Carte_c* c2) {
 			return c1->getValeur() < c2->getValeur();
@@ -37,7 +38,7 @@ void Tuile::ajout_carte(Carte* c, int idJoueur) {
 	}
 	else if (typeid(*c) == typeid(Carte_c))
 		ajout_c((Carte_c*)c, idJoueur);
-	
+
 	else
 		ajout_t((Carte_t*)c, idJoueur);
 }
@@ -52,7 +53,7 @@ void Tuile::ajout_TroupeElite(TroupeElite* c, int idJoueur) {
 	ajout_t((Carte_t*)c, idJoueur);
 }
 
-bool Tuile::computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated){
+bool Tuile::computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated) {
 	int lowB, hiB;
 
 	bool combiGagne = false;
@@ -278,7 +279,7 @@ Carte_c* Tuile::defausseSoi(int idJoueur) {
 }
 
 Carte_c* Tuile::defausseAdverse(int idJoueur) {
-	vector<Carte_c*> adv = getCotes()[(idJoueur+1)%2]->getCartesC();
+	vector<Carte_c*> adv = getCotes()[(idJoueur + 1) % 2]->getCartesC();
 	Carte_c* toDefausse = nullptr;
 	char valid;
 
@@ -305,7 +306,7 @@ Carte_c* Tuile::defausseTout(int idJoueur) {
 	vector<Carte_c*> adv = getCotes()[(idJoueur + 1) % 2]->getCartesC();
 	Carte_c* toDefausse = nullptr;
 	char valid;
-	
+
 
 	while (true) {
 		cout << "Vous défaussez votre tuile" << endl;
@@ -348,7 +349,7 @@ void Tuile::claimTroupeE_CardSetter(vector<Carte_c*> v) {
 		cast = (TroupeElite*)v[0];
 		cout << "Please type in the index of the color." << endl;
 		cin >> id_col;
-		while(id_col < 1 || id_col >= Carte_c::getCouleurs().size()) {
+		while (id_col < 1 || id_col >= Carte_c::getCouleurs().size()) {
 			cout << "Invalid value for the color" << endl;
 			cout << "Please type in a value between " << 1 << " and " << Carte_c::getCouleurs().size() - 1 << endl;
 			cin >> id_col;
@@ -359,7 +360,7 @@ void Tuile::claimTroupeE_CardSetter(vector<Carte_c*> v) {
 		cout << "Here are the range for your card : " << cast->getDebut() << " : " << cast->getFin() << endl;
 		cin >> value;
 
-		while(value < cast->getDebut() || value > cast->getFin() ){
+		while (value < cast->getDebut() || value > cast->getFin()) {
 			cout << "Invalid value for the card" << endl;
 			cout << "Please type in a value between " << cast->getDebut() << " and " << cast->getFin() << endl;
 			cin >> value;
@@ -380,7 +381,7 @@ void Tuile::claimClassic(int joueur) {
 	vector<Carte_c*> jCourant, jAdv;
 
 	jCourant = getCotes()[joueur]->getCartesC();
-	jAdv = getCotes()[(joueur + 1)%2]->getCartesC();
+	jAdv = getCotes()[(joueur + 1) % 2]->getCartesC();
 
 	if (jCourant[0]->getValeur() == -1) {
 		cout << "Please set values and colors for your cards. " << endl;

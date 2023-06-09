@@ -160,9 +160,7 @@ ostream& operator<<(ostream& os, Tuile& t) {
 		os << *t.getCotes()[0]->getCartesC()[i];
 	}
 
-	os << " | | ";
-
-	//os << "\t\u2591\u2591\u2591"<<t.getClaim()<< "\u2591\u2591\u2591 \t";
+	//os << "\t   " << t.getClaim() << "   \t";
 
 	for (int i = 0; i < t.getCotes()[1]->getNbCartes(); i++) {
 		os << *t.getCotes()[1]->getCartesC()[i];
@@ -170,11 +168,11 @@ ostream& operator<<(ostream& os, Tuile& t) {
 
 
 	for (int i = 0; i < t.getCotes()[0]->getCartesT().size(); i++) {
-		os << " " << *t.getCotes()[0]->getCartesT()[i];
+		os << *t.getCotes()[0]->getCartesT()[i];
 	}
 
 	for (int i = 0; i < t.getCotes()[1]->getCartesT().size(); i++) {
-		os << " " << *t.getCotes()[1]->getCartesT()[i];
+		os << *t.getCotes()[1]->getCartesT()[i];
 	}
 
 	return os;
