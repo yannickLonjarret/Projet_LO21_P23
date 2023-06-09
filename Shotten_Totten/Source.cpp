@@ -8,7 +8,7 @@
 #include "Jeu.h"
 #include "Troupe_Elite.h"
 #include "Defausse.h"
-#include "JeuTactique.h"
+#include "JeuTactique.hpp"
 
 
 const int NUM_ZONES = 9;
@@ -184,8 +184,6 @@ int main() {
 		case 2:
 			quit = true;
 			jeu_tactique = new JeuTactique();
-
-
 			jeu_tactique->printTitles();
 			jeu_tactique->menu_selection();
 			jeu_tactique->startGame();

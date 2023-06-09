@@ -139,6 +139,25 @@ public:
 		return this->id_joueur;
 	}
 
+	void eraseCarte(Carte* c) {
+		for (auto it = 0; it < cartes_c.size(); it++) { 
+			if ((Carte*)cartes_c[it] == c) { 
+				cartes_c.erase(cartes_c.begin() + it);  
+
+			}
+			cout << "Boucle classique" << endl;
+		}
+
+		for (auto it = 0; it < cartes_t.size(); it++) { 
+			if ((Carte*)cartes_t[it] == c) { 
+				cartes_t.erase(cartes_t.begin() + it); 
+			}
+			cout << "Boucle tactique" << endl;
+		}
+
+		setNb_cartes(); 
+	}
+
 	/// <summary>
 	/// Return player's classic card
 	/// </summary>
