@@ -93,7 +93,7 @@ public:
 	}
 
 
-	void displayBoard(const Joueur& current) const;
+	void displayBoard() const;
 	void printTitles() const;
 	void displayMenu() const;
 	int getUserInput() const;
