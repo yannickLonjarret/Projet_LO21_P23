@@ -12,9 +12,9 @@
 class Jeu
 {
 private:
-	vector<Joueur> joueurs; 
+	vector<Joueur*> joueurs; 
 
-	Pioche_c pioche_c;
+	Pioche_c* pioche_c;
 	//Pioche_t pioche_t;
 
 	vector<Tuile*> plateau;
@@ -37,35 +37,35 @@ public:
 		}
 		vector<Joueur> joueurs;
 
-		pioche_c = Pioche_c();
+		pioche_c = new Pioche_c();
 		vector<string> couleurs = { "Vert", "Bleu", "Rouge", "Jaune", "Violet", "Marron" };
 		
 		for (unsigned int i = 1; i < 10; i++) {
 			for (unsigned int j = 0; j < couleurs.size(); j++) {
-				pioche_c.push(new Carte_c(i, couleurs[j]));
+				pioche_c->push(new Carte_c(i, couleurs[j]));
 			}
 		}
 
-		pioche_c.shuffle(); 
+		pioche_c->shuffle(); 
 	}
 
 	vector<Tuile*> getPlateau() const {
 		return this->plateau;
 	}
 
-	Joueur getJoueur1() const {
+	Joueur* getJoueur1() const {
 		return joueurs[0];
 	}
 
-	Joueur getJoueur2() const {
+	Joueur* getJoueur2() const {
 		return joueurs[1];
 	}
 
-	vector<Joueur> getJoueurs() const {
+	vector<Joueur*> getJoueurs() const {
 		return joueurs;
 	}
 
-	Pioche_c getPioche_c() const {
+	Pioche_c* getPioche_c() const {
 		return pioche_c;
 	}
 
@@ -76,8 +76,8 @@ public:
 	/// </summary>
 	/// <returns>The reference of the card</returns>
 	Carte_c& piocher_c() {
-		if (pioche_c.getSize() != 0)
-			return *pioche_c.pop();
+		if (pioche_c->getSize() != 0)
+			return *pioche_c->pop();
 	}
 
 	//Pioche_t getPioche_t() const {
@@ -85,11 +85,11 @@ public:
 	//}
 
 	void setJoueur1(string& s) {
-		joueurs.push_back(Joueur(s));
+		joueurs.push_back(new Joueur(s));
 	}
 
 	void setJoueur2(string& s) {
-		joueurs.push_back(Joueur(s));
+		joueurs.push_back(new Joueur(s));
 	}
 
 

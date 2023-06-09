@@ -9,7 +9,7 @@ void Jeu::displayBoard() const {
 	const int BOARD_WIDTH = 50;
 
 	int longueur_borne = 46;
-	cout << "\t\tJoueur 1: "<<getJoueur1().getNom()<< "\t\t\t\t\tJoueur 2:  " << getJoueur2().getNom() << "\n";
+	cout << "\t\tJoueur 1: "<<getJoueur1()->getNom()<< "\t\t\t\t\tJoueur 2:  " << getJoueur2()->getNom() << "\n";
 
 	string leftZone = "";
 	string rightZone = "";
@@ -62,7 +62,7 @@ void Jeu::printTitles() const {
 void Jeu::distribuerCartes(int nb_a_distribuer) {
 	for (unsigned int i = 0; i < joueurs.size(); i++) {
 		for (unsigned int j = 0; j < nb_a_distribuer; j++) {
-			joueurs[i].ajouter_Carte_c(pioche_c.pop());
+			joueurs[i]->ajouter_Carte_c(pioche_c->pop()); 
 		}
 	}
 }
@@ -301,24 +301,24 @@ void Jeu::startGame() {
 		//cout << joueurs.size();
 		for (unsigned int i = 0; i < joueurs.size(); i++) {
 			displayBoard();
-			joueurs[i].afficherMain();
+			joueurs[i]->afficherMain();
 
-			cout << " ## C'est au joueur " << joueurs[i].getNom() << " de jouer ## " << endl;
-			cout << joueurs[i].getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+			cout << " ## C'est au joueur " << joueurs[i]->getNom() << " de jouer ## " << endl;
+			cout << joueurs[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
 			int id_tuile = getUserInput();
-			cout << joueurs[i].getNom() << " choisis sa carte a poser [chiffre entre 0 et " << joueurs[i].getNbCartes() - 1 << "] : ";
+			cout << joueurs[i]->getNom() << " choisis sa carte a poser [chiffre entre 0 et " << joueurs[i]->getNbCartes() - 1 << "] : ";
 			int choix_carte = getUserInput();
-			joueurs[i].poser_carte((Carte*)joueurs[i].getCarteC()[choix_carte], i, plateau[id_tuile]);
+			joueurs[i]->poser_carte((Carte*)joueurs[i]->getCarteC()[choix_carte], i, plateau[id_tuile]); 
 			for(int i = 0; i < 10; i++)
 				cout << endl;
 			displayBoard();
-			joueurs[i].afficherMain();
-			//joueurs[i].piocher_c(this->pioche_c);
+			joueurs[i]->afficherMain();
+			//joueurs[i]->piocher_c(this->pioche_c);
 			cout << "test claim" << endl;
 			claim(i);
 			for (int i = 0; i < 100; i++)
 				cout << endl;
-			cout << joueurs[i].getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
+			cout << joueurs[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
 			string temp_prompt = "";
 			cin >> temp_prompt;
 			cout << endl;

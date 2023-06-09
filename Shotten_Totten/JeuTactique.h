@@ -122,11 +122,11 @@ _____           _   _
 
 				displayBoard();
 				cout << "\nDefausse : " << defausse << endl;
-				getJoueurs()[i].afficherMain();
+				getJoueurs()[i]->afficherMain();
 
 				// Poser la carte choisie
-				cout << " ## C'est au joueur " << getJoueurs()[i].getNom() << " de jouer ## " << endl;
-				cout << getJoueurs()[i].getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+				cout << " ## C'est au joueur " << getJoueurs()[i]->getNom() << " de jouer ## " << endl; 
+				cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
 				int id_tuile = getUserInput();
 				vector<Carte*> vect;
 				Carte* carte_a_jouer = choisirCarte(i, vect);
@@ -135,14 +135,14 @@ _____           _   _
 					cout << "Exécution terminée ! " << endl;
 				}
 				else {
-					(getJoueurs()[i]).poser_carte(carte_a_jouer, i, getPlateau()[id_tuile]);
-					cout << "Taille main : " << getJoueurs()[i].getCarteC().size() << endl;
+					getJoueurs()[i]->poser_carte(carte_a_jouer, i, getPlateau()[id_tuile]);
+					cout << "Taille main : " << getJoueurs()[i]->getCarteC().size() << endl;
 				}
 				for (int i = 0; i < 10; i++)
 					cout << endl;
 				displayBoard();
 				cout << "\nDefausse : " << defausse << endl;
-				getJoueurs()[i].afficherMain();
+				getJoueurs()[i]->afficherMain();
 
 				// Possible revendication
 				string choix;
@@ -157,7 +157,7 @@ _____           _   _
 
 				for (int i = 0; i < 100; i++)
 					cout << endl;
-				cout << getJoueurs()[i].getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
+				cout << getJoueurs()[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
 				string temp_prompt = "";
 				cin >> temp_prompt;
 				cout << endl;
@@ -183,9 +183,9 @@ _____           _   _
 
 	void piocher(int choix_pioche, int id_joueur) {
 		if (choix_pioche)
-			getJoueurs()[id_joueur].ajouter_Carte_t(piocher_t());
+			getJoueurs()[id_joueur]->ajouter_Carte_t(piocher_t());
 		else
-			getJoueurs()[id_joueur].ajouter_Carte_c(&piocher_c());
+			getJoueurs()[id_joueur]->ajouter_Carte_c(&piocher_c());
 	}
 
 	// Ajoute dans le vecteur de la carte Ruse
@@ -197,17 +197,17 @@ _____           _   _
 	}
 
 	Carte* choisirCarte(int id_joueur, vector<Carte*> vecteur) {
-		cout << " Choisis une carte [chiffre entre 0 et " << getJoueurs()[id_joueur].getNbCartes() - 1 << "] : ";
+		cout << " Choisis une carte [chiffre entre 0 et " << getJoueurs()[id_joueur]->getNbCartes() - 1 << "] : ";
 		int choix_carte = Jeu::getUserInput();
-		int taille_main_classique = getJoueurs()[id_joueur].getCarteC().size();
-		int taille_main_tactique = getJoueurs()[id_joueur].getCarteT().size();
+		int taille_main_classique = getJoueurs()[id_joueur]->getCarteC().size();
+		int taille_main_tactique = getJoueurs()[id_joueur]->getCarteT().size();
 		int taille_main = taille_main_classique + taille_main_tactique;
 		if (choix_carte < taille_main_classique) {
-			return (Carte*)getJoueurs()[id_joueur].getCarteC()[choix_carte];
+			return (Carte*)getJoueurs()[id_joueur]->getCarteC()[choix_carte];
 		}
 		else if (choix_carte < taille_main) {
 			choix_carte -= taille_main_classique;
-			return (Carte*)getJoueurs()[id_joueur].getCarteT()[choix_carte];
+			return (Carte*)getJoueurs()[id_joueur]->getCarteT()[choix_carte];
 		}
 		else {
 			choix_carte -= taille_main;
@@ -240,14 +240,14 @@ _____           _   _
 							break;
 						}
 					}
-					for (auto it = 0; it < getJoueurs()[id_joueur].getCarteC().size(); it++) {
-						if (getJoueurs()[id_joueur].getCarteC()[it] == carte_classique) {
-							getJoueurs()[id_joueur].getCarteC().erase(getJoueurs()[id_joueur].getCarteC().begin() + it);
+					for (auto it = 0; it < getJoueurs()[id_joueur]->getCarteC().size(); it++) {
+						if (getJoueurs()[id_joueur]->getCarteC()[it] == carte_classique) {
+							getJoueurs()[id_joueur]->getCarteC().erase(getJoueurs()[id_joueur]->getCarteC().begin() + it);
 							break;
 						}
 					}
 
-					getPioche_c().Pioche_c::push(carte_classique);
+					getPioche_c()->push(carte_classique);
 				}
 				else {
 					for (auto it = 0; it < carte->getAllCartes().size(); it++) {
@@ -256,9 +256,9 @@ _____           _   _
 							break;
 						}
 					}
-					for (auto it = 0; it < getJoueurs()[id_joueur].getCarteT().size(); it++) {
-						if (getJoueurs()[id_joueur].getCarteT()[it] == carte_tactique) {
-							getJoueurs()[id_joueur].getCarteT().erase(getJoueurs()[id_joueur].getCarteT().begin() + it);
+					for (auto it = 0; it < getJoueurs()[id_joueur]->getCarteT().size(); it++) {
+						if (getJoueurs()[id_joueur]->getCarteT()[it] == carte_tactique) {
+							getJoueurs()[id_joueur]->getCarteT().erase(getJoueurs()[id_joueur]->getCarteT().begin() + it);
 							break;
 						}
 					}
@@ -294,7 +294,7 @@ _____           _   _
 						displayBoard();
 						cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 						int id_tuile = getUserInput();
-						getJoueurs()[id_joueur].poser_carte((Carte*)carte_classique, id_joueur, getPlateau()[id_tuile]);
+						getJoueurs()[id_joueur]->poser_carte((Carte*)carte_classique, id_joueur, getPlateau()[id_tuile]);
 						cout << "C'est bon !" << endl;
 						displayBoard();
 						break;
@@ -329,7 +329,7 @@ _____           _   _
 				displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 				id_tuile = getUserInput();
-				getJoueurs()[id_joueur].poser_carte((Carte*)carte_classique, id_joueur, getPlateau()[id_tuile]);
+				getJoueurs()[id_joueur]->poser_carte((Carte*)carte_classique, id_joueur, getPlateau()[id_tuile]);
 				cout << "C'est bon !" << endl;
 				displayBoard();
 				break;
@@ -350,10 +350,10 @@ _____           _   _
 		for (unsigned int i = 0; i < carte->getAllCartes().size(); i++) {
 
 			if (typeid(*carte->getAllCartes()[i]) == typeid(Carte_t)) {
-				getJoueurs()[id_joueur].ajouter_Carte_t(dynamic_cast<Carte_t*>(carte->getAllCartes()[i]));
+				getJoueurs()[id_joueur]->ajouter_Carte_t(dynamic_cast<Carte_t*>(carte->getAllCartes()[i]));
 			}
 			else {
-				getJoueurs()[id_joueur].ajouter_Carte_c(dynamic_cast<Carte_c*>(carte->getAllCartes()[i]));
+				getJoueurs()[id_joueur]->ajouter_Carte_c(dynamic_cast<Carte_c*>(carte->getAllCartes()[i]));
 			}
 		}
 	}
