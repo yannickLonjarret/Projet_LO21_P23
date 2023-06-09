@@ -255,21 +255,19 @@ void Tuile::claimTuile(int idJoueur, vector<Tuile*> plateau) {
 }
 
 Carte_c* Tuile::defausseSoi(int idJoueur) {
-
-	vector<Carte_c*> soi = getCotes()[idJoueur]->getCartesC();
 	Carte_c* toDefausse = nullptr;
 	char valid;
 
 	cout << "Vous défaussez votre tuile" << endl;
 
 	while (true) {
-		for (size_t i = 0; i < soi.size(); i++) {
-			cout << "Voulez vous défaussez cette carte ?" << endl << *soi[i];
+		for (size_t i = 0; i < getCotes()[idJoueur]->getCartesC().size(); i++) {
+			cout << "Voulez vous défaussez cette carte ?" << endl << *getCotes()[idJoueur]->getCartesC()[i];
 			cin >> valid;
 
 			if (valid == 'o') {
-				toDefausse = soi[i];
-				soi.erase(soi.begin() + i);
+				toDefausse = getCotes()[idJoueur]->getCartesC()[i];
+				getCotes()[idJoueur]->getCartesC().erase(getCotes()[idJoueur]->getCartesC().begin() + i);
 
 				return toDefausse;
 			}
