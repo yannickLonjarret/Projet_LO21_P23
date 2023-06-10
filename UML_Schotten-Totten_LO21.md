@@ -3,16 +3,37 @@
 ```mermaid
 classDiagram
     class Joueur{
+    	-$ prochain_id : int
         - nom : string
+	- id_joueur : int
         - nb_cartes : int
         - score : int
-        - main : <Cartes>
+        - cartes_c : vector<Carte_c*>
+	- cartes_t : vector<Carte_t*>
         + Joueur()
-        + pioche()
-        + poser_carte()
-        + to_claim()
-        + surrender()
-        + look_graveyard()
+	+ Joueur(string const& nom)
+	+ setNb_cartes() : void
+	+ ajouter_Carte_c(Carte_c* c) : void
+	+ ajouter_Carte_t(Carte_t* c) : void
+	+ setScore(int s) : void
+	+ ~Joueur()
+	+ operator<<(ostream& os, const Joueur& j) : ostream&
+	+ operator==(const Joueur& j1, const Joueur& j2) : bool
+	+ getNom() : string
+	+ getId() : int
+	+ getNbCartes() : int
+	+ getScore() : int
+	+ eraseCarte(Carte* c) : void
+	+ getCarteC() : vector<Carte_c*>
+	+ getCarteT() : vector<Carte_t*>
+	+ push(const Carte_c& c) : void
+	+ piocher_c(Pioche_c& pc) : Carte_c*
+	+ piocher_t(Pioche_t& pt) : Carte_t*
+	+ poser_carte(Carte* c, int id, Tuile* t) : void
+	+ afficherMain() : void
+        + surrender() : void
+	+ to_claim() : void
+        + look_graveyard() : void
     }
     
     class IA{
@@ -23,34 +44,48 @@ classDiagram
         - score : int
         - nb_manches : int
         - joueurs : vector<Joueur*>
-        - Pioche_c : Pioche_classique
+        - pioche_c : Pioche_c*
         - plateau : vector<Tuiles*>
         - valMinCarte : int
         - valMaxCarte : int
-        + jouer()
-        + choixPioche()
-        + piocher_c()
-        + poserCarte()
-        + choixCarte()
-        + choixTuile()
-        + revendiquer()
+        + Jeu()
+	+ getPlateau() : vector<Tuile*>
+	+ getJoueur1() : Joueur*
+	+ getJoueur2() : Joueur*
+	+ getJoueurs() : vector<Joueur*>
+	+ getPioche_c() : Pioche_c*
+	+ virtual claim(int idJoueur) : void
+	+ setJoueur1(string& s) : void
+	+ setJoueur2(string& s) : void
+	+ displayBoard() : void
+	+ printTitles() : void
+	+ displayMenu() : void
+	+ getUserInput() : int
+	+ menu_selection() : void
+	+ playerSelection() : void
+	+ estGagnant(int id_joueur) : bool
+	+ virtual startGame() : void
+	+ distribuerCartes(int nb_a_distribuer) : void
         + checkVictoireManche()
-        + checkVictoire()
-    }
-    
-    class Schotten1_class{
-        + jouer() : void
     }
     
     class JeuTactique{
-        - Pioche_t: pioche_tact
-        - defausse: defausse
-        + jouer() : void 
-        + piocher_t() : void
-        + checkCarteT_joue()
-        + defausse()
-        + execRuse() : void
-        + choixCarteTuile() : Carte
+        - pioche_tact : Pioche_t
+        - defausse : Defausse
+	- nb_cartes_tactiques_jouees : vector<int>
+	+ JeuTactique()
+	+ piocher_t() : Carte_t*
+        + startGame() : void
+	+ claim(int idJoueur) : void
+	+ checkBornes(int b1, int b2, int input) : bool
+	+ tuileNonRevendiquee(Tuile* tuile) : bool
+	+ posePossible(Tuile* tuile, int id_joueur) : bool
+	+ choixPioche() : int
+	+ piocher(int choix_pioche, int id_joueur) : void
+	+ piocheRuse(int choix_pioche, Ruse* carte) : void
+	+ choisirCarte(int id_joueur, vector<Carte*> vecteur) : Carte*
+	+ execRuse(Ruse* carte, int id_joueur) : void
+	+ tactiqueJouable(int id_j1, int id_j2) : bool
     }
     
     class Tuile{
@@ -140,7 +175,7 @@ classDiagram
         - idJoueur: int
         - cartesC: vector<Carte_c *>
         - cartesT_: vector<Carte_T *>
-        -  nbCartesJoue: int
+        - nbCartesJoue: int
         + constructeurs (int id)
         + getNbCartes() : int
         + getIdJoueur() : int
@@ -151,38 +186,40 @@ classDiagram
     }
     
     class Pioche_c{
-        -cartes:vector<Carte_c> 
-        +Pioche_c(vector<Carte_c>& c)
-        +getSize():int
-        +getCartes():vector<Carte_c>
-        +push(const Carte_c& c):void
-        +pop():Carte_c
-        +~Pioche_c()
-        +getXFirstCard(int x):vector<Carte_c*>
-        +operator<<(ostream& c, const Pioche_c& c):ostream&
+        - cartes : vector<Carte_c*> 
+        + Pioche_c(vector<Carte_c>& c)
+        + getSize() : int
+        + getCartes() : vector<Carte_c*>
+        + push(Carte_c* c) : void
+        + pop() : Carte_c*
+        + ~Pioche_c()
+        + getXFirstCard(int x):vector<Carte_c*>
+	+ shuffle() : void
+        + operator<<(ostream& c, const Pioche_c& c) : ostream&
     }
     
     class Defausse{
-        - nb_cartesMax: static int
-        - nb_cartes: int 
-        - vector<Cartes>
-        + Defausse (const vector<Carte>& cartes)
-        +pop() : Carte
-        +push(const Carte& c) : void
-        +getXFirstCard(x:int) : vector<Carte*>
-        +getSize() : int
-        +getCartes() : vector<Carte>
-        +~Defausse()
-        +operator<<(ostream& os, const Defausse d) : ostream&
+        -$ nb_cartesMax : int
+        - nb_cartes : int 
+        - cartes : vector<Carte*>
+        + Defausse ()
+        + pop() : Carte*
+        + push(Carte* c) : void
+        + getXFirstCard(int x) : vector<Carte*>
+        + getSize() : int
+        + getCartes() : vector<Carte*>
+        + ~Defausse()
+	+ getNbCartesMax() : int
+        + operator<<(ostream& os, const Defausse d) : ostream&
     }
     
     class Pioche_t{
-        - cartes : vector<Carte_t>
-        + Pioche_t(vector<Carte_t>& c)
-        + getSize() : int
-        + getCartes() : vector<Carte_t>
-        + push(const Carte_t& c) : void
-        + pop() : Carte_t
+        - cartes : vector<Carte_t*>
+        + Pioche_t(vector<Carte_t*>& c)
+        + getSize() : size_t
+        + getCartes() : vector<Carte_t*>
+        + push(Carte_t* c) : void
+        + pop() : Carte_t*
         + ~Pioche_t()
         + getXFirstCard(int x) : vector<Carte_t*>
         + operator << (ostream& os, const Pioche_t& p) : ostream&
@@ -196,11 +233,12 @@ classDiagram
         - couleur : string
         + Carte_c(int val, const string& col)
         + setValeur(int val) : void
-        +setCouleur(string couleur) : void
-        +getValMax() : int
-        +getValMin() : int
-        +const getCouleur() : const string&
-        +getValeur() : int
+        + setCouleur(string couleur) : void
+        + getValMax() : int
+        + getValMin() : int
+        + const getCouleur() : const string&
+        + getValeur() : int
+	+ virtual setDefault() : void
     }
     
     class Cartes{
@@ -212,27 +250,30 @@ classDiagram
     class Carte_t{
         - type : enum
         - nom : string
-        - description : string
         + Carte_t(types t, string n, string d)
         + const getType() : types
         + const getNom() : string
         + const getDescription() : string
         + setType(types valeur) : void
         + setNom(string name) : void
-        + setDescription(string desc) : void
         + const print(ostream& os) : void
+	+ operator<<(ostream& os, const Carte_t& ct) : ostream&
+	+ operator==(const Carte_t& c1, const Carte_t& c2) : bool
     }
     
     class TroupeElite{
         - val_deb: int
         - val_fin: int
-        + TroupeElite(types t, string n, const string& d, int vd, int vf, )
+        + TroupeElite(types t, string n, const string& d, int vd, int vf)
         + const getDebut() : int
         + const getFin() : int
         + setDebut(int v) : void
         + setFin(int v) : void
         + setAll(int vd, int vf) : void
         + definirCarte(int v, const string& c) : Carte_c&
+	+ setDefault() : void
+	+ override print(ostream& os) : void
+	+ operator<<(ostream& os, const TroupeElite& te) : ostream&
     }
     
     class ModeCombat{
@@ -241,23 +282,30 @@ classDiagram
         + ModeCombat(types t, string n, string d, int nb, vector<Combinaison*> combi)
         + const getNbCartes() : int
         + const getCombinaison() : const vector<Combinaison*>&
+	+ override print(ostream& os) : void
+	+ operator<<(ostream& os, const ModeCombat& mc) : ostream&
     }
     
     class Ruse{
         - actions : vector<int>
+	- cartes : vector<Carte*>
         + Ruse(types t, string n, string d, vector<int> suite_actions)
         + const getActions() : const vector<int>&
         + addAction(int a) : void
+	+ addCartes(Carte* c) : void
+	+ const getAllCartes() : vector<Carte*>
+	+ eraseCarte(Carte* carte) : void
+	+ override print(ostream& os) : void
+	+ operator<<(ostream& os, const Ruse& r)
     }
     
     IA --|> Joueur
     Joueur "2..n" --* "1" Jeu
-    Schotten1_class --|> Jeu
     JeuTactique --|> Jeu
-    Tuiles "1..n" --* "1" Jeu
-    nodeHist_c --* Tuiles
-    Cote --* Tuiles
-    Combinaison --o Tuiles
+    Tuile "1..n" --* "1" Jeu
+    nodeHist_c --* Tuile
+    Cote --* Tuile
+    Combinaison --o Tuile
     Combinaison --o Jeu
     Jeu "1" *-- "1" Pioche_c
     Jeu *-- Carte_c
