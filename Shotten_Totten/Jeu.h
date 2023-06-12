@@ -2,6 +2,7 @@
 #ifndef JEU_H
 #define JEU_H
 
+#include "IA.h"
 #include "Joueur.h"
 #include "Pioche_c.h"
 #include "Pioche_t.h"
@@ -94,6 +95,10 @@ public:
 
 	void setJoueur2(string& s) {
 		joueurs.push_back(new Joueur(s));
+	}
+
+	void setIA() {
+		joueurs.push_back(new IA());
 	}
 
 

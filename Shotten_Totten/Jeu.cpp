@@ -250,6 +250,8 @@ void Jeu::playerSelection() {
 
 			std::cout << "## Entrez le nom du joueur 1 : ";
 			std::cin >> player1;
+			setJoueur1(player1);
+			setIA();
 			std::cout << "Le jeu commence ! " << player1 << " VERSUS IA" << std::endl;
 			quit = true;
 			break;
@@ -319,9 +321,43 @@ void Jeu::startGame() {
 	joueurs[1].ajouter_Carte_c(new Carte_c(9, "Bleu"));
 	*/
 	while (isOver == false) {
-		//cout << joueurs.size();
+		cout << joueurs.size();
 		for (unsigned int i = 0; i < joueurs.size(); i++) {
-			displayBoard();
+			if (joueurs[i]->estIA()) {
+				cout << joueurs[i]->getNom() << "joue" << endl;
+				joueurs[i]->afficherMain();
+				int id_tuile = joueurs[i]->choix_ia(0,getPlateau().size());
+				int id_carte = joueurs[i]->choix_ia(0,joueurs[i]->getNbCartes());
+				joueurs[i]->poser_carte((Carte*)joueurs[i]->getCarteC()[id_carte], i, plateau[id_tuile]);
+				for (int i = 0; i < 10; i++)
+					cout << endl;
+				displayBoard();
+				cout << joueurs[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
+			}else{
+				displayBoard();
+				joueurs[i]->afficherMain();
+
+				cout << " ## C'est au joueur " << joueurs[i]->getNom() << " de jouer ## " << endl;
+				cout << joueurs[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+				int id_tuile = getUserInput();
+				cout << joueurs[i]->getNom() << " choisis sa carte a poser [chiffre entre 0 et " << joueurs[i]->getNbCartes() - 1 << "] : ";
+				int choix_carte = getUserInput();
+				joueurs[i]->poser_carte((Carte*)joueurs[i]->getCarteC()[choix_carte], i, plateau[id_tuile]);
+				for (int i = 0; i < 10; i++)
+					cout << endl;
+				displayBoard();
+				joueurs[i]->afficherMain();
+				//joueurs[i]->piocher_c(this->pioche_c);
+				cout << "test claim" << endl;
+				claim(i);
+				for (int i = 0; i < 100; i++)
+					cout << endl;
+				cout << joueurs[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
+				string temp_prompt = "";
+				cin >> temp_prompt;
+				cout << endl;
+			}
+			/*displayBoard();
 			joueurs[i]->afficherMain();
 
 			cout << " ## C'est au joueur " << joueurs[i]->getNom() << " de jouer ## " << endl;
@@ -342,7 +378,7 @@ void Jeu::startGame() {
 			cout << joueurs[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
 			string temp_prompt = "";
 			cin >> temp_prompt;
-			cout << endl;
+			cout << endl;*/
 		}
 	}
 }
