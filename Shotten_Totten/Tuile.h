@@ -11,9 +11,12 @@
 
 using namespace std;
 
-
+/// <summary>
+/// Classe permettant d'enregistrer l'ordre et la position sur son côté respectif des cartes posées sur une tuile
+/// </summary>
 class nodeHist_c {
 private:
+
 	int idJoueur;
 	int positionCarte;
 public:
@@ -28,20 +31,46 @@ public:
 	}
 };
 
+/// <summary>
+/// Classe modélisant une borne sur un plateau. Cette classe se charge de la gestion de la pose des cartes et de la victoire d'un joueur sur une tuile
+/// </summary>
 class Tuile
 {
+
 private:
+	/// <summary>
+	/// Nombre maximum de carte posable sur une tuile.
+	/// </summary>
 	int nbCarteMax;
 
+	/// <summary>
+	/// Ensembles des joueurs sur une tuiles. Existe pour standardiser la gestion de pose/défausse des cartes
+	/// </summary>
 	vector<Cote*> joueurs;
 
+	/// <summary>
+	/// Historique de l'ordre des cartes posées. Permet de départager 2 joueurs dans le cas de combinaison égale.
+	/// </summary>
 	vector<nodeHist_c*> hist_c;
+
+	/// <summary>
+	/// Ensemble de combinaison permettant de gagner sur une tuile.
+	/// </summary>
 	vector<Combinaison*> victoirePossible;
 
+	/// <summary>
+	/// Id du joueur ayant remporté la tuile.
+	/// </summary>
 	int claim;
 
 public:
 
+	/// <summary>
+	/// Unique constructeur de la classe
+	/// </summary>
+	/// <param name="nb_cartes"> Nombre maximum de cartes jouable sur un côté d'une tuile</param>
+	/// <param name="vicPoss">Vecteur de combinaison gagnante sur une tuile</param>
+	/// <param name="nbJoueur"> Nombre de joueur sur une tuile, donne le nombre de côté</param>
 	Tuile(int nb_cartes, vector<Combinaison*> vicPoss, int nbJoueur) {
 		nbCarteMax = nb_cartes;
 
@@ -51,24 +80,56 @@ public:
 		for (int i = 0; i < nbJoueur; i++)
 			joueurs.push_back(new Cote(i));
 
-
+		//Absence de victoire, valeur de contrôle
 		claim = -1;
 
 	};
 
-
+	/// <summary>
+	/// La méthode identifie le type de la carte et l'ajoute en tant que carte classique, tactique ou les deux
+	/// </summary>
+	/// <param name="c">Carte à ajouter</param>
+	/// <param name="idJoueur">Joueur à qui ajouter la carte, représente son indice dans le vector de côté</param>
 	void ajout_carte(Carte* c, int idJoueur);
+
+	/// <summary>
+	/// La méthode permet d'ajouter une carte classique à un joueur s'il peut la poser
+	/// </summary>
+	/// <param name="c">Carte classique à ajouter sur la borne courante</param>
+	/// <param name="idJoueur">Joueur à qui ajouter la carte, représente son indice dans le vector de côté</param>
 	void ajout_c(Carte_c* c, int idJoueur);
+
+	/// <summary>
+	/// La méthode permet d'ajouter une carte tactique à un joueur, l'effet ayant déjà été appliqué
+	/// </summary>
+	/// <param name="c">Carte tactique à ajouter à un joueur sur la borne courante</param>
+	/// <param name="idJoueur">Joueur à qui ajouter la carte, représente son indice dans le vector de côté</param>
 	void ajout_t(Carte_t* c, int idJoueur);
+	
+	/// <summary>
+	/// La méthode permet d'ajouter correctement une troupe d'élite dans la tuile. 
+	/// </summary>
+	/// <param name="c">carte TroupeElite à ajouter sur la tuile</param>
+	/// <param name="idJoueur">Joueur à qui ajouter la carte, représente son indice dans le vector de côté</param>
 	void ajout_TroupeElite(TroupeElite* c, int idJoueur);
 
-
-	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité ou de revendication par preuve
+	/// <summary>
+	/// Méthode d'entrée dans la revendication, détermine la possibilité et le type de revendication.
+	/// </summary>
+	/// <param name="idJoueur"> Joueur demandant à revendiquer une tuile, représente son indice dans le vector de côté </param>
+	/// <param name="plateau"> Enesemble des tuiles du plateau, permet de calculer toutes las cartes non posées dans le cas de la revendication par preuve>
+	void claimTuile(int idJoueur, vector<Tuile*> plateau);
+	
+	/// <summary>
+	/// 
+	/// </summary>
 	void claimProof(int joueur, vector<Tuile*> plateau);
-
+	
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
 	bool proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated);
-
-
 
 	bool computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated);
 
@@ -85,8 +146,7 @@ public:
 	void proofCardGenerator(vector<Carte_c*>& gen);
 
 
-	//Implémentation pour 2 joueurs uniquement car aucune idées des règles à ajouter en cas d'égalité ou de revendication par preuve
-	void claimTuile(int idJoueur, vector<Tuile*> plateau);
+	
 	void claimClassic(int joueur);
 
 	void casEgalite();
@@ -141,6 +201,7 @@ public:
 		return joueurs;
 	}
 
+
 	vector<Combinaison*>& getVictoires() {
 		return victoirePossible;
 	}
@@ -157,6 +218,9 @@ public:
 
 };
 
+/// <summary>
+/// 
+/// </summary>
 ostream& operator<<(ostream& os, Tuile& t) {
 
 	for (int i = 0; i < t.getNbCartesMax() -  t.getCotes()[0]->getNbCartes() ; i++)

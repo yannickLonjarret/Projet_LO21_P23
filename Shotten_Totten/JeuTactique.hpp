@@ -47,10 +47,10 @@ public:
 		nb_cartes_tactiques_jouees = { 0, 0 };
 
 		// Création des cartes Troupe d'Elite
-		pioche_tact.push(new TroupeElite(elite, "Joker", -1, "Non couleur", 1, 9));
-		pioche_tact.push(new TroupeElite(elite, "Joker", -1, "Non couleur", 1, 9));
-		pioche_tact.push(new TroupeElite(elite, "Espion", -1, "Non couleur", 7, 7));
-		pioche_tact.push(new TroupeElite(elite, "Porte Bouclier", -1, "Non couleur", 1, 3));
+		pioche_tact.push(new TroupeElite(elite, "Joker", -1,Carte_c::getCouleurs()[0], 1, 9));
+		pioche_tact.push(new TroupeElite(elite, "Joker", -1, Carte_c::getCouleurs()[0], 1, 9));
+		pioche_tact.push(new TroupeElite(elite, "Espion", -1, Carte_c::getCouleurs()[0], 7, 7));
+		pioche_tact.push(new TroupeElite(elite, "Porte Bouclier", -1, Carte_c::getCouleurs()[0], 1, 3));
 
 		// Création des cartes Mode de Combat 
 		Combinaison* c1 = new Combinaison(false, false, false);

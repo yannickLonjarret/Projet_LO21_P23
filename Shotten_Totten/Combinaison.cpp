@@ -1,5 +1,10 @@
 #include "Combinaison.h"
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="combi"></param>
+/// <returns></returns>
 bool Combinaison::isSuite(vector<Carte_c*> combi) {
 	bool res = true;
 
@@ -16,6 +21,11 @@ bool Combinaison::isSuite(vector<Carte_c*> combi) {
 	return res;
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="combi"></param>
+/// <returns></returns>
 bool Combinaison::isBrelan(vector<Carte_c*> combi) {
 	bool res = true;
 
@@ -32,6 +42,11 @@ bool Combinaison::isBrelan(vector<Carte_c*> combi) {
 	return res;
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="combi"></param>
+/// <returns></returns>
 bool Combinaison::isCouleur(vector<Carte_c*> combi) {
 	bool res = true;
 
@@ -49,6 +64,11 @@ bool Combinaison::isCouleur(vector<Carte_c*> combi) {
 
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="combi"></param>
+/// <returns></returns>
 int Combinaison::calculSumCombi(vector<Carte_c*> combi) {
 	int s = 0;
 
@@ -58,6 +78,11 @@ int Combinaison::calculSumCombi(vector<Carte_c*> combi) {
 	return s;
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="c"></param>
+/// <returns></returns>
 int Combinaison::calculScoreCombi(Combinaison* c) {
 	if (c->getCouleur() && c->getSuite())
 		return 5;
@@ -74,6 +99,10 @@ int Combinaison::calculScoreCombi(Combinaison* c) {
 	return 1;
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="lstCombi"></param>
 void Combinaison::dropDown(vector<Combinaison*> lstCombi) {
 	switch (getScoreCombi())
 	{
@@ -126,7 +155,12 @@ void Combinaison::dropDown(vector<Combinaison*> lstCombi) {
 	return;
 }
 
-
+/// <summary>
+/// 
+/// </summary>
+/// <param name="scoreCombi"></param>
+/// <param name="lstCombi"></param>
+/// <returns></returns>
 bool Combinaison::isCombiInLst(int scoreCombi, vector<Combinaison*> lstCombi) {
 	for (int i = 0; i < lstCombi.size(); i++) {
 		if (lstCombi[i]->getScoreCombi() == scoreCombi)
