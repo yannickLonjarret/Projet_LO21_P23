@@ -79,6 +79,10 @@ public:
 		setNb_cartes();
 	}
 
+	virtual int choix_ia(int min, int max) {
+		return 0;
+	}
+	
 	/// <summary>
 	/// Set the value of score
 	/// </summary>
@@ -156,6 +160,11 @@ public:
 		}
 
 		setNb_cartes(); 
+	}
+
+	virtual bool estIA() const
+	{
+		return false;
 	}
 
 	/// <summary>
