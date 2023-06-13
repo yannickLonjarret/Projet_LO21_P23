@@ -56,7 +56,7 @@ public:
 
 	virtual ~Jeu() {
 		for (unsigned int i = 0; i < joueurs.size(); i++) delete joueurs[i]; 
-		delete Pioche_c;
+		delete pioche_c;
 		for (unsigned int i = 0; i < plateau.size(); i++) delete plateau[i];
 	}
 

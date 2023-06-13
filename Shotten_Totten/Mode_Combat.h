@@ -23,7 +23,6 @@ public:
 	/// @brief Default destructor
 	~ModeCombat() { 
 		for (unsigned int i = 0; i < victoirePossible.size(); i++) delete victoirePossible[i];
-		delete victoirePossible;
 	}
 
 	/// @brief Allows the user to get the number of cards
