@@ -117,6 +117,9 @@ bool Tuile::computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl
 void Tuile::claimProof(int joueur, vector<Tuile*> plateau) {
 	vector<Carte_c*> allCards;
 
+	if (getCotes()[joueur]->getCartesC()[0]->getValeur() == -1)
+		claimTroupeE_CardSetter(getCotes()[joueur]->getCartesC());
+
 	Combinaison* complete = new Combinaison(getCotes()[joueur]->getCartesC(), getNbCartesMax());
 
 	proofCardGenerator(allCards);
