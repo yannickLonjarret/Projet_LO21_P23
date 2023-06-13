@@ -29,9 +29,13 @@ private:
 	/// </summary>
 	Defausse defausse;
 	/// <summary>
-	/// nb_cartes_tactiques_jouees represents the number of tactical cards played by each player (each player id corresponds to each id of the vector
+	/// nb_cartes_tactiques_jouees represents the number of tactical cards played by each player (each player id corresponds to each id of the vector)
 	/// </summary>
 	vector<int> nb_cartes_tactiques_jouees;
+	/// <summary>
+	/// nb_jokers_joues represents the number of joker cards played by each player (each player id corresponds to each id of the vector)
+	/// </summary>
+	vector<int> nb_jokers_joues;
 public:
 	/// <summary>
 	/// Test
@@ -119,15 +123,6 @@ public:
 
 		// On distribue les cartes
 		distribuerCartes(7);
-		getPlateau()[0]->setClaim(0);
-		getPlateau()[1]->setClaim(1);
-		getPlateau()[2]->setClaim(0); 
-		getPlateau()[3]->setClaim(-1);
-		getPlateau()[4]->setClaim(-1);
-		getPlateau()[5]->setClaim(-1);
-		getPlateau()[6]->setClaim(1);
-		getPlateau()[7]->setClaim(1);
-		getPlateau()[8]->setClaim(1);
 
 		while (isOver == false) {
 
@@ -209,7 +204,7 @@ public:
 			}
 		}
 	}
-
+/*
 	void claim(int idJoueur) override {
 		char choice = 'o';
 		int choixTuile;
@@ -266,6 +261,7 @@ public:
 			cin >> choice;
 		}
 	}
+	*/
 
 	bool checkBornes(int b1, int b2, int input) {
 		return b1 <= input <= b2; 

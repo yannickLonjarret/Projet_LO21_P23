@@ -54,6 +54,12 @@ public:
 		pioche_c->shuffle(); 
 	}
 
+	virtual ~Jeu() {
+		for (unsigned int i = 0; i < joueurs.size(); i++) delete joueurs[i]; 
+		delete Pioche_c;
+		for (unsigned int i = 0; i < plateau.size(); i++) delete plateau[i];
+	}
+
 	vector<Tuile*> getPlateau() const {
 		return this->plateau;
 	}
@@ -74,7 +80,7 @@ public:
 		return pioche_c;
 	}
 
-	virtual void claim(int idJoueur);
+	void claim(int idJoueur);
 
 	/// <summary>
 	/// Allows the user to pick the first card of the classical pick

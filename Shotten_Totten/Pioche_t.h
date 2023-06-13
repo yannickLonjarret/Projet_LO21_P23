@@ -57,9 +57,9 @@ public:
 	} 
 
 	/// <summary>
-	/// Default destructor
+	/// Destructor
 	/// </summary>
-	~Pioche_t() = default;
+	~Pioche_t() { for (unsigned int i = 0; i < cartes.size(); i++) delete cartes[i]; }
 
 	/// <summary>
 	/// Allows the user to get the X first cards of the collection
