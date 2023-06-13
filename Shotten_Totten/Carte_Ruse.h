@@ -29,7 +29,7 @@ public:
 	Ruse(types t, string n, vector<int> suite_actions) : Carte_t(t, n), actions(suite_actions) {}
 
 	/// @brief Default destructor
-	~Ruse() = default;
+	~Ruse() { for (unsigned int i = 0; i < cartes.size(); i++) delete cartes[i]; }
 
 	/// @brief Allows the user to get the actions of the card
 	/// @return the vector of the different actions

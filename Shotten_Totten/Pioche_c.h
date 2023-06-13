@@ -27,7 +27,7 @@ public:
 	/// </summary>
 	/// <param name="c">the collection of cards to be set as the attribute</param>
 	Pioche_c(std::vector<Carte_c*> const& c) :cartes(c) {};
-	Pioche_c() = default;
+	Pioche_c() { for (unsigned int i = 0; i < cartes.size(); i++) delete cartes[i]; }
 
 
 	int getSize() const {

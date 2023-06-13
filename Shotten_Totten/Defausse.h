@@ -21,7 +21,7 @@ public:
 	/// <summary>
 	/// Constructor for the Defausse , initialy the defausse is empty, so is the number of cards.
 	///
-	Defausse() = default;
+	Defausse() { for (unsigned int i = 0; i < cartes.size(); i++) delete cartes[i]; }
 
 	//FUNCTIONS
 

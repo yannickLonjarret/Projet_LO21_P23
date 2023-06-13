@@ -41,8 +41,8 @@ public:
 	/// @param n : name of the card
 	Carte_t(types t, string n) :type(t), nom(n) {}
 
-	/// @brief Default destructor
-	~Carte_t() = default;
+	/// @brief Default destructor 
+	virtual ~Carte_t() = default; 
 
 	/// @brief Allows the user to get the type of the card
 	/// @return the type of the card

@@ -21,7 +21,9 @@ public:
 	ModeCombat(types t, string n, int nb, vector<Combinaison*> combi) : Carte_t(t, n), nb_cartes(nb), victoirePossible(combi) {}
 
 	/// @brief Default destructor
-	~ModeCombat() = default;
+	~ModeCombat() { 
+		for (unsigned int i = 0; i < victoirePossible.size(); i++) delete victoirePossible[i];
+	}
 
 	/// @brief Allows the user to get the number of cards
 	/// @return the number of card 
