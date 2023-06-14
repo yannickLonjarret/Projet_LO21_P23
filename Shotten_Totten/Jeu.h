@@ -43,11 +43,16 @@ public:
 		vector<Joueur> joueurs;
 
 		pioche_c = new Pioche_c();
-		vector<string> couleurs = { "Vert", "Bleu", "Rouge", "Jaune", "Violet", "Marron" };
+		Carte_c::getCouleurs().push_back("Vert");
+		Carte_c::getCouleurs().push_back("Bleu");
+		Carte_c::getCouleurs().push_back("Rouge");
+		Carte_c::getCouleurs().push_back("Jaune");
+		Carte_c::getCouleurs().push_back("Violet");
+		Carte_c::getCouleurs().push_back("Marron");
 		
 		for (unsigned int i = 1; i < 10; i++) {
-			for (unsigned int j = 0; j < couleurs.size(); j++) {
-				pioche_c->push(new Carte_c(i, couleurs[j]));
+			for (unsigned int j = 1; j < Carte_c::getCouleurs().size(); j++) {
+				pioche_c->push(new Carte_c(i, Carte_c::getCouleurs()[j]));
 			}
 		}
 

@@ -200,7 +200,7 @@ public:
 	/// </summary>
 	///<param name="jeu"> enables interaction and communication between "Joueur" and game functionality : Jeu& </param>
 
-	Carte_t* piocher_t(Pioche_t* pt); //pareil pour pioche_t
+	void piocher_t(Carte_t* pt); //pareil pour pioche_t
 
 	/// <summary>
 	/// Allows the user to retrieve a classic card of the hand
