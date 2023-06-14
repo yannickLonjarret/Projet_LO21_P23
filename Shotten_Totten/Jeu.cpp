@@ -242,9 +242,12 @@ void Jeu::startGame() {
 				cout << joueurs[i]->getNom() << "joue " << endl;
 				
 
-				id_tuile = joueurs[i]->choix_ia(0,getPlateau().size() - 1);
+				id_tuile = joueurs[i]->choix_ia(0, getPlateau().size() - 1);
 				choix_carte = joueurs[i]->choix_ia(0,joueurs[i]->getNbCartes() - 1);
 
+				while (getPlateau()[id_tuile]->isTuilePleine(i)) {
+					id_tuile = joueurs[i]->choix_ia(0,getPlateau().size() - 1);
+				}
 				
 				joueurs[i]->poser_carte((Carte*)joueurs[i]->getCarteC()[choix_carte], i, plateau[id_tuile]);
 				joueurs[i]->piocher_c(getPioche_c()->pop());
