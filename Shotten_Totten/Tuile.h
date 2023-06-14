@@ -145,7 +145,9 @@ public:
 
 	void proofCardGenerator(vector<Carte_c*>& gen);
 
-
+	bool isTuilePleine(int idJoueur) {
+		return getCotes()[idJoueur]->getNbCartes() == getNbCartesMax();
+	}
 	
 	void claimClassic(int joueur);
 
@@ -174,6 +176,7 @@ public:
 	void setClaim(int winner) {
 		claim = winner;
 	}
+
 
 	Carte_c* defausseSoi(int idJoueur);
 

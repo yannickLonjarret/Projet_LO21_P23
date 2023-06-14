@@ -24,14 +24,15 @@ void Tuile::ajout_carte(Carte* c, int idJoueur) {
 /// <param name="c"></param>
 /// <param name="idJoueur"></param>
 void Tuile::ajout_c(Carte_c* c, int idJoueur) {
+	cout << getCotes().size() << endl << endl;
 
 	Cote* coteJoueur = getCotes()[idJoueur];
 
-	if (coteJoueur->getNbCartes() <= getNbCartesMax()) {
+	if (coteJoueur->getNbCartes() < getNbCartesMax()) {
 
 		coteJoueur->getCartesC().push_back(c);
 		coteJoueur->setNbCartes(coteJoueur->getNbCartes() + 1);
-		cout << "## AJOUT_C";
+		//cout << "## AJOUT_C";
 
 		std::sort(coteJoueur->getCartesC().begin(), coteJoueur->getCartesC().end(), [](Carte_c* c1, Carte_c* c2) {
 			return c1->getValeur() < c2->getValeur();
