@@ -7,15 +7,9 @@ void Pioche_c::push(Carte_c* c)
 
 Carte_c* Pioche_c::pop()
 {
-	if (cartes.size() != 0) {
-		Carte_c* c = cartes.back();
-		cartes.erase(cartes.end() - 1);
-		return c;
-	}
-	else {
-		return nullptr;
-	}
-	
+	Carte_c* c = cartes.back();
+	cartes.erase(cartes.end() - 1);
+	return c; 
 }
 
 std::vector<Carte_c*> Pioche_c::getXFirstCard(int x)
