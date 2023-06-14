@@ -1,10 +1,10 @@
 #include "Combinaison.h"
 
 /// <summary>
-/// 
+/// Permet de déterminer si les valeurs d'un ensemble de carte forment une suite de valeur numérique
 /// </summary>
-/// <param name="combi"></param>
-/// <returns></returns>
+/// <param name="combi">Suite de carte à évaluer</param>
+/// <returns>Vrai si c'est une suite numérique, faux autrement</returns>
 bool Combinaison::isSuite(vector<Carte_c*> combi) {
 	bool res = true;
 
@@ -22,10 +22,10 @@ bool Combinaison::isSuite(vector<Carte_c*> combi) {
 }
 
 /// <summary>
-/// 
+/// Permet de déterminer si les valeurs d'un ensemble de carte sont toutes identiques
 /// </summary>
-/// <param name="combi"></param>
-/// <returns></returns>
+/// <param name="combi">Suite de carte à évaluer</param>
+/// <returns>Vrai si c'est un brelan, faux autrement</returns>
 bool Combinaison::isBrelan(vector<Carte_c*> combi) {
 	bool res = true;
 
@@ -43,10 +43,10 @@ bool Combinaison::isBrelan(vector<Carte_c*> combi) {
 }
 
 /// <summary>
-/// 
+/// Permet de déterminer si les couleurs d'un ensemble de carte sont toutes identiques
 /// </summary>
-/// <param name="combi"></param>
-/// <returns></returns>
+/// <param name="combi">Suite de carte à évaluer</param>
+/// <returns>Vrai si c'est une couleur, faux autrement</returns>
 bool Combinaison::isCouleur(vector<Carte_c*> combi) {
 	bool res = true;
 
@@ -65,10 +65,10 @@ bool Combinaison::isCouleur(vector<Carte_c*> combi) {
 }
 
 /// <summary>
-/// 
+/// Calcule la somme de la valeur des cartes d'une suite de carte
 /// </summary>
-/// <param name="combi"></param>
-/// <returns></returns>
+/// <param name="combi">Suite de carte dont on veux connaître la somme des valeurs des cartes</param>
+/// <returns>Somme des valeurs des cartes</returns>
 int Combinaison::calculSumCombi(vector<Carte_c*> combi) {
 	int s = 0;
 
@@ -79,7 +79,8 @@ int Combinaison::calculSumCombi(vector<Carte_c*> combi) {
 }
 
 /// <summary>
-/// 
+/// Détermine le score d'une combinaison en consultant ses caractéristiques.
+/// Le score est un entier arbitraire choisi en fonction des règles du jeu
 /// </summary>
 /// <param name="c"></param>
 /// <returns></returns>
@@ -100,13 +101,18 @@ int Combinaison::calculScoreCombi(Combinaison* c) {
 }
 
 /// <summary>
-/// 
+/// Permet de convertir une combinaison donnée en la première variante inférieure (ou égale) jouable.
+/// Existe pour gérer les cartes modes de combat de la variante tactique
 /// </summary>
-/// <param name="lstCombi"></param>
+/// <param name="lstCombi">Ensemble de combinaison pouvant être jouée sur une tuile donnée</param>
 void Combinaison::dropDown(vector<Combinaison*> lstCombi) {
 	switch (getScoreCombi())
 	{
 	case 5:
+		//Pas de dropdown si la combinaison existe
+		if (isCombiInLst(5, lstCombi))
+			return;
+
 		if (isCombiInLst(3, lstCombi)) {
 			setDefault();
 			convertToCouleur();
@@ -122,6 +128,11 @@ void Combinaison::dropDown(vector<Combinaison*> lstCombi) {
 		return;
 
 	case 4:
+		//Pas de dropdown si la combinaison existe
+		if (isCombiInLst(4, lstCombi))
+			return;
+
+		//Un brelan peut être une couleur dans la variante tactique
 		if (isCombiInLst(3, lstCombi) && getCouleur()) {
 			setDefault();
 			convertToCouleur();
@@ -133,12 +144,20 @@ void Combinaison::dropDown(vector<Combinaison*> lstCombi) {
 		return;
 
 	case 3:
+		//Pas de dropdown si la combinaison existe
+		if (isCombiInLst(3, lstCombi))
+			return;
+
 		setDefault();
 		convertToSomme();
 
 		return;
 
 	case 2:
+		//Pas de dropdown si la combinaison existe
+		if (isCombiInLst(2, lstCombi))
+			return;
+
 		setDefault();
 		convertToSomme();
 
@@ -156,11 +175,11 @@ void Combinaison::dropDown(vector<Combinaison*> lstCombi) {
 }
 
 /// <summary>
-/// 
+/// Permet de déterminer l'existence d'une combinaison dans une liste à partir du score de la combinaison
 /// </summary>
-/// <param name="scoreCombi"></param>
-/// <param name="lstCombi"></param>
-/// <returns></returns>
+/// <param name="scoreCombi">Score de la combinaison que l'on souhaite chercher</param>
+/// <param name="lstCombi">Ensemble de combinaison parmis lesquels chercher</param>
+/// <returns>Vrai si la combinaison existe, faux autrement</returns>
 bool Combinaison::isCombiInLst(int scoreCombi, vector<Combinaison*> lstCombi) {
 	for (int i = 0; i < lstCombi.size(); i++) {
 		if (lstCombi[i]->getScoreCombi() == scoreCombi)
