@@ -113,6 +113,7 @@ public:
 	}
 
 
+	bool estGagnant(int id_joueur);
 	void displayBoard() const;
 	void printTitles() const;
 	void displayMenu() const;
@@ -120,13 +121,12 @@ public:
 
 	void menu_selection();
 	void playerSelection();
-	bool estGagnant(int id_joueur); 
+	int victory(); 
 	virtual void startGame();
 	void distribuerCartes(int nb_a_distribuer);
 
 	//void play_card_c(int id_j, int id_tuile, Carte_c& c)
 };
-
 
 
 inline ostream& operator<< (ostream& os, const Jeu& j) {
