@@ -12,6 +12,7 @@
 #include "Joueur.h"
 #include <vector>
 #include <iostream>
+#include <cstdlib> 
 
 using namespace std;
 
@@ -65,11 +66,8 @@ public:
 		Combinaison* c5 = new Combinaison(true, true, false);
 		vector<Combinaison*> vecteur_combi;
 		vecteur_combi.push_back(c1);
-		pioche_tact.push(new ModeCombat(combat, "Colin Maillard", 3, vecteur_combi));
-		vecteur_combi.push_back(c2);
-		vecteur_combi.push_back(c3);
-		vecteur_combi.push_back(c4);
-		vecteur_combi.push_back(c5);
+		pioche_tact.push(new ModeCombat(combat, "Colin Maillard", -1, vecteur_combi));
+		vecteur_combi = {};
 		pioche_tact.push(new ModeCombat(combat, "Combat de boue", 4, vecteur_combi));
 		
 		// Création des cartes Ruse
@@ -79,7 +77,7 @@ public:
 		2 = choisir carte de notre main (et le vecteur de Ruse) 
 		3 = placer carte sur borne non revendiquée de notre côté ou defausser
 		4 = choisir carte du cote adverse non revendiquée
-		5 = défausser de la main
+		5 = défausser du cote adverse
 		6 = placer devant une tuile non revendiquée de notre cote
 		7 = choisir carte de notre cote
 		*/
@@ -134,7 +132,7 @@ public:
 					// Poser la carte choisie
 					cout << " ## C'est au joueur " << getJoueurs()[i]->getNom() << " de jouer ## " << endl;
 					vector<Carte*> vect;
-					int id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size());
+					int id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
 					cout << "Tuile ok" << endl;
 					int id_carte = getJoueurs()[i]->choix_ia(0, getJoueurs()[i]->getNbCartes());
 					cout << "Carte ok" << endl;
@@ -153,7 +151,7 @@ public:
 						carte_a_jouer = (Carte*)getJoueurs()[i]->getCarteC()[id_carte];
 						cout << "Carte à jouer ok" << endl;
 					}
-					while (typeid(*carte_a_jouer) == typeid(Carte_t) && (!tactique_jouable || typeid(*carte_a_jouer) == typeid(TroupeElite))){ 
+					while (typeid(*carte_a_jouer) == typeid(Carte_t) && (!tactique_jouable)){ 
 						id_carte = getJoueurs()[i]->choix_ia(0, getJoueurs()[i]->getNbCartes());
 						if (id_carte >= getJoueurs()[i]->getCarteC().size()) {
 							carte_a_jouer = (Carte*)getJoueurs()[i]->getCarteT()[id_carte - getJoueurs()[i]->getCarteC().size()];
@@ -176,14 +174,14 @@ public:
 						cout << "RUSE !" << endl;
 						getJoueurs()[i]->eraseCarte(carte_a_jouer);
 						defausse.push(carte_a_jouer);
-						execRuse(dynamic_cast<Ruse*>(carte_a_jouer), i);
+						execRuseIA(dynamic_cast<Ruse*>(carte_a_jouer), i);
 						cout << "Exécution terminée ! " << endl;
 						nb_cartes_tactiques_jouees[i]++;
 					}
 					else if (typeid(*carte_a_jouer) == typeid(ModeCombat)) {
-						id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size()); 
+						id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size()-1); 
 						while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {   
-							id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size());    
+							id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size()-1);    
 						}
 						getJoueurs()[i]->poser_carte(carte_a_jouer, i, getPlateau()[id_tuile]);
 						getPlateau()[id_tuile]->setNbCartesMax(dynamic_cast<ModeCombat*>(carte_a_jouer)->getNbCartes());
@@ -191,9 +189,9 @@ public:
 						nb_cartes_tactiques_jouees[i]++; 
 					}
 					else {
-						id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size()); 
+						id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size()-1); 
 						while (!posePossible(getPlateau()[id_tuile], i) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
-							id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size()); 
+							id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size()-1); 
 						}
 						getJoueurs()[i]->poser_carte(carte_a_jouer, i, getPlateau()[id_tuile]);
 						if (typeid(*carte_a_jouer) == typeid(TroupeElite)) {
@@ -207,15 +205,12 @@ public:
 					displayBoard();
 					cout << "\nDefausse : " << defausse << endl;
 
-					// Possible revendication
-					if (getJoueurs()[i]->choix_ia(0, 1)) {
-						claim(i);
-					}
+					// Pas de revendication pour l'IA
 
 					// Piocher (classique / tactique)
 					// while taillle_main < 7 -> s'adapte si une nouvelle carte Ruse
 					while (getJoueurs()[i]->getNbCartes() < 7)
-						piocher(getJoueurs()[i]->choix_ia(0, 1), i); 
+						piocher(choixPiocheIA(), i);  
 				}
 				else {
 					getJoueurs()[i]->afficherMain();
@@ -313,64 +308,6 @@ public:
 			}
 		}
 	}
-/*
-	void claim(int idJoueur) override {
-		char choice = 'o';
-		int choixTuile;
-
-		while (choice == 'o' || choice == 'O') {
-			do {
-				cout << "Veuillez saisir le numéro de tuile à revendiquer [valeur entre 0 et " << getPlateau().size() - 1 << "] : " << endl;
-				choixTuile = getUserInput();
-
-			} while (choixTuile < 0 || choixTuile >= getPlateau().size());
-
-			vector<Carte_t*> cartes_tactiques = getPlateau()[choixTuile]->getCotes()[idJoueur]->getCartesT();
-			 
-			for (auto i = 0; i < cartes_tactiques.size(); i++) {
-				if (typeid(*cartes_tactiques[i]) == typeid(TroupeElite)) {
-					if (cartes_tactiques[i]->getNom() == "Joker") {
-						int valeur; 
-						cout << "Quelle valeur doit-prendre la carte Joker ? [1 à 9] : " << endl; 
-						valeur = getUserInput();  
-						while (!checkBornes(0, 9, valeur)) {
-							cout << "Choix impossible, veuillez réessayer. [1 à 9]" << endl;
-							valeur = getUserInput(); 
-						}
-						string couleur; 
-						cout << "Quelle couleur doit-prendre la carte Joker ? : " << endl; 
-						cin >> couleur; 
-						dynamic_cast<TroupeElite*>(cartes_tactiques[i])->TroupeElite::definir_carte(valeur, couleur);
-					}
-					else if (cartes_tactiques[i]->getNom() == "Espion") {
-						string couleur;  
-						cout << "Quelle couleur doit-prendre la carte Espion ? : " << endl;
-						cin >> couleur; 
-						dynamic_cast<TroupeElite*>(cartes_tactiques[i])->TroupeElite::definir_carte(7, couleur);
-					}
-					else {
-						int valeur;
-						cout << "Quelle valeur doit-prendre la carte Porte Bouclier ? [1 à 3] : " << endl;
-						valeur = getUserInput();
-						while (!checkBornes(0, 3, valeur)) {
-							cout << "Choix impossible, veuillez réessayer. [1 à 3]" << endl;
-							valeur = getUserInput();
-						}
-						string couleur;
-						cout << "Quelle couleur doit-prendre la carte Joker ? : " << endl;
-						cin >> couleur;
-						dynamic_cast<TroupeElite*>(cartes_tactiques[i])->TroupeElite::definir_carte(valeur, couleur);
-					}
-				}
-			}
-
-			getPlateau()[choixTuile]->claimTuile(idJoueur, getPlateau());
-
-			cout << "Souhaitez vous revendiquer une autre tuile ? (O / N)" << endl;
-			cin >> choice;
-		}
-	}
-	*/
 
 	bool checkBornes(int b1, int b2, int input) {
 		return b1 <= input && input <= b2;  
@@ -387,24 +324,49 @@ public:
 	}
 
 	int choixPioche() const {
-		std::cout << "Voulez-vous piocher dans la pioche classique ou tactique (C/T) : " << std::endl;
-		string choix;
-		std::cin >> choix;
-		while (true) {
-			if (choix.front() == 'C' || choix.front() == 'c')
-				return 0;
-			else if (choix.front() == 'T' || choix.front() == 't')
-				return 1;
-			else
-				std::cout << "Choix invalide, recommencez (C/T) : " << std::endl;
-			choix = "";
+		if (getPioche_c()->getSize() == 0) {
+			cout << "Vous ne pouvez piocher que dans la pioche classique, la pioche tactique est vide." << endl;
+			return 0;
 		}
+		else if (pioche_tact.getSize() == 0) {
+			cout << "Vous ne pouvez piocher que dans la pioche tactique, la pioche classique est vide." << endl; 
+			return 1;
+		}
+		else if (getPioche_c()->getSize() == 0 && pioche_tact.getSize() == 0) {
+			cout << "Vous ne pouvez plus piocher, les pioches sont vides." << endl;
+			return -1;
+		}
+		else {
+			std::cout << "Voulez-vous piocher dans la pioche classique ou tactique (C/T) : " << std::endl;
+			string choix;
+			std::cin >> choix;
+			while (true) {
+				if (choix.front() == 'C' || choix.front() == 'c')
+					return 0;
+				else if (choix.front() == 'T' || choix.front() == 't')
+					return 1;
+				else
+					std::cout << "Choix invalide, recommencez (C/T) : " << std::endl;
+				choix = "";
+			}
+		}
+	}
+
+	int choixPiocheIA() {
+		if (getPioche_c()->getSize() == 0)
+			return 0;
+		else if (pioche_tact.getSize() == 0)
+			return 1;
+		else if (getPioche_c()->getSize() == 0 && pioche_tact.getSize() == 0)
+			return -1;
+		else
+			return rand() % 2;
 	}
 
 	void piocher(int choix_pioche, int id_joueur) {
 		if (choix_pioche)
 			getJoueurs()[id_joueur]->ajouter_Carte_t(piocher_t());
-		else
+		else if (choix_pioche == 0)
 			getJoueurs()[id_joueur]->ajouter_Carte_c(&piocher_c());
 	}
 
@@ -562,6 +524,11 @@ public:
 							id_tuile = getUserInput(); 
 						} 
 						getJoueurs()[id_joueur]->poser_carte((Carte*)carte_classique, id_joueur, getPlateau()[id_tuile]);
+						if (typeid(*carte_classique) == typeid(TroupeElite)) {
+							nb_cartes_tactiques_jouees[id_joueur] += 1;
+							if (dynamic_cast<Carte_t*>(carte_classique)->getNom() == "Joker") 
+								nb_jokers_joues[id_joueur] += 1;
+						}
 						cout << "C'est bon !" << endl;
 						displayBoard();
 						break;
@@ -583,6 +550,11 @@ public:
 					id_tuile = getUserInput(); 
 				} 
 				carte_classique = getPlateau()[id_tuile]->defausseAdverse(id_joueur); 
+				if (typeid(*carte_classique) == typeid(TroupeElite)) {
+					nb_cartes_tactiques_jouees[(id_joueur + 1) % 2] -= 1;  
+					if (dynamic_cast<Carte_t*>(carte_classique)->getNom() == "Joker")
+						nb_jokers_joues[(id_joueur + 1) % 2] -= 1;
+				}
 				cout << "Défausse faite" << endl; 
 				break;
 
@@ -590,7 +562,7 @@ public:
 				// 5 = défausser de la main
 				if (carte_classique != nullptr)
 					defausse.push((Carte*)carte_classique);
-				else
+				else 
 					defausse.push((Carte*)carte_tactique);
 				break;
 
@@ -605,6 +577,11 @@ public:
 					id_tuile = getUserInput();
 				} 
 				getJoueurs()[id_joueur]->poser_carte((Carte*)carte_classique, id_joueur, getPlateau()[id_tuile]);
+				if (typeid(*carte_classique) == typeid(TroupeElite)) {
+					nb_cartes_tactiques_jouees[id_joueur] += 1;
+					if (dynamic_cast<Carte_t*>(carte_classique)->getNom() == "Joker")
+						nb_jokers_joues[id_joueur] += 1;
+				}
 				cout << "C'est bon !" << endl;
 				displayBoard();
 				break;
@@ -651,7 +628,7 @@ public:
 			{
 			case 0:
 				// 0 = piocher
-				piocheRuse(getJoueurs()[i]->choix_ia(0, 1), carte);
+				piocheRuse(choixPiocheIA(), carte);
 				break;
 
 			case 1:
@@ -704,12 +681,16 @@ public:
 					}
 					else {
 						displayBoard();
-						cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 						int id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1); 
 						while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 							id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
 						}
 						getJoueurs()[id_joueur]->poser_carte((Carte*)carte_classique, id_joueur, getPlateau()[id_tuile]);
+						if (typeid(*carte_classique) == typeid(TroupeElite)) {
+							nb_cartes_tactiques_jouees[id_joueur] += 1;
+							if (dynamic_cast<Carte_t*>(carte_classique)->getNom() == "Joker")
+								nb_jokers_joues[id_joueur] += 1;
+						}
 						displayBoard();
 						break;
 					}
@@ -724,7 +705,12 @@ public:
 				while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 					id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
 				}
-				carte_classique = getPlateau()[id_tuile]->defausseAdverse(id_joueur);
+				carte_classique = getPlateau()[id_tuile]->defausseAdverseIA(id_joueur);
+				if (typeid(*carte_classique) == typeid(TroupeElite)) {
+					nb_cartes_tactiques_jouees[(id_joueur + 1) % 2] -= 1;
+					if (dynamic_cast<Carte_t*>(carte_classique)->getNom() == "Joker")
+						nb_jokers_joues[(id_joueur + 1) % 2] -= 1;
+				}
 				break;
 
 			case 5:
@@ -743,6 +729,11 @@ public:
 					id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);   
 				}
 				getJoueurs()[id_joueur]->poser_carte((Carte*)carte_classique, id_joueur, getPlateau()[id_tuile]);
+				if (typeid(*carte_classique) == typeid(TroupeElite)) {
+					nb_cartes_tactiques_jouees[id_joueur] += 1;
+					if (dynamic_cast<Carte_t*>(carte_classique)->getNom() == "Joker") 
+						nb_jokers_joues[id_joueur] += 1;
+				}
 				displayBoard();
 				break;
 
@@ -753,7 +744,7 @@ public:
 				while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 					id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
 				}
-				carte_classique = getPlateau()[id_tuile]->defausseSoi(id_joueur);
+				carte_classique = getPlateau()[id_tuile]->defausseSoiIA(id_joueur);
 				break;
 
 			default:
@@ -784,48 +775,6 @@ public:
 		cout << "joker ok" << endl;
 		return nb_jokers_joues[id_joueur] <= nb_jokers_joues[(id_joueur + 1) % 2];  
 	}
-
-	/*
-	/// <summary>
-	/// Allows the user to add the picked card (in the tactical or the classical deck) to the vector in a card Ruse
-	/// </summary>
-	/// <param name="choix_pioche">The deck where the user wants to pick a card (tactical or classical)</param>
-	/// <param name="carte">The Ruse card permitting the picking</param>
-	void piocheRuse(int choix_pioche, Ruse* carte);
-
-	/// <summary>
-	/// Executes the different actions of a Ruse card
-	/// </summary>
-	/// <param name="carte">The Ruse card to play</param>
-	/// <param name="id_joueur">The id of the player whose the Ruse card belongs to</param>
-	void execRuse(Ruse* carte, int id_joueur);
-
-	/// <summary>
-	/// Allows the user to choose in what deck to pick
-	/// </summary>
-	/// <returns>0 for the classical deck and 1 for the tactical one</returns>
-	int choixPioche() const;
-
-	/// <summary>
-	/// Allows the user to choose a card in the player hand or in the vector of a Ruse card which is playing
-	/// </summary>
-	/// <param name="id_joueur">The id of the player</param>
-	/// <param name="vecteur">The vector in the Ruse card</param>
-	/// <returns></returns>
-	Carte* choisirCarte(int id_joueur, vector<Carte*> vecteur);
-
-	/// <summary>
-	/// Returns the possibility of the player (id_j1) to play a tactical card
-	/// </summary>
-	/// <param name="id_j1">The id of the player 1</param>
-	/// <param name="id_j2">The id of the player 2</param>
-	/// <returns>A boolean : True if playable or False if not</returns>
-	bool tactiqueJouable(int id_j1, int id_j2) const;
-
-	void startGame(); 
-
-	void piocher(int choix_pioche, int id_joueur); 
-	*/
 };
 
 #endif // !JeuTactique_H

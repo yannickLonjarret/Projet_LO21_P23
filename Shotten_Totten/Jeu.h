@@ -87,6 +87,8 @@ public:
 
 	void claim(int idJoueur);
 
+	void claimIA(int idJoueur);
+
 	/// <summary>
 	/// Allows the user to pick the first card of the classical pick
 	/// </summary>

@@ -34,6 +34,7 @@ void displayGameBoard(const std::vector<std::string>& leftSide, const std::vecto
 
 int main() {
 
+
 	/*
 	vector<Combinaison*> vic; //vic
 
@@ -197,6 +198,7 @@ int main() {
 			break;
 		}
 	}
+
 	/*
 	if (choice) {
 		Jeu* jeu = new Jeu();

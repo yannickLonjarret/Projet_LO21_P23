@@ -98,6 +98,15 @@ void Jeu::claim(int idJoueur) {
 	}
 }
 
+void Jeu::claimIA(int idJoueur) {
+	bool revendication = 1;
+	int choixTuile;
+
+	while (revendication) {
+		getPlateau()[getJoueurs()[idJoueur]->choix_ia(0, getPlateau().size()-1)]->claimTuile(idJoueur, getPlateau());
+		revendication = getJoueurs()[idJoueur]->choix_ia(0, 1); 
+	}
+}
 
 
 void Jeu::menu_selection() {

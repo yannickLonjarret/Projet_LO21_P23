@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <ostream>
 #include <sstream>
+#include <cstdlib> 
 
 using namespace std;
 
@@ -180,7 +181,11 @@ public:
 
 	Carte_c* defausseSoi(int idJoueur);
 
+	Carte_c* defausseSoiIA(int idJoueur);
+
 	Carte_c* defausseAdverse(int idJoueur);
+
+	Carte_c* defausseAdverseIA(int idJoueur);
 
 	Carte_c* defausseTout(int idJoueur);
 

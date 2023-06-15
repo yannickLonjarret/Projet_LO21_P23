@@ -362,6 +362,15 @@ Carte_c* Tuile::defausseSoi(int idJoueur) {
 
 }
 
+Carte_c* Tuile::defausseSoiIA(int idJoueur) {
+	int i = rand() % (getCotes()[idJoueur]->getCartesC().size());
+	Carte_c* toDefausse = getCotes()[idJoueur]->getCartesC()[i];
+	int nb_cartes_precedent = getCotes()[idJoueur]->getNbCartes();
+	getCotes()[idJoueur]->getCartesC().erase(getCotes()[idJoueur]->getCartesC().begin() + i);
+	getCotes()[idJoueur]->setNbCartes(nb_cartes_precedent - 1);
+	return toDefausse; 
+}
+
 /// <summary>
 /// 
 /// </summary>
@@ -389,6 +398,15 @@ Carte_c* Tuile::defausseAdverse(int idJoueur) {
 		}
 	}
 
+}
+
+Carte_c* Tuile::defausseAdverseIA(int idJoueur) {
+	int i = rand() % (getCotes()[(idJoueur + 1) % 2]->getCartesC().size());
+	Carte_c* toDefausse = getCotes()[(idJoueur + 1) % 2]->getCartesC()[i];     
+	int nb_cartes_precedent = getCotes()[(idJoueur + 1) % 2]->getNbCartes();
+	getCotes()[(idJoueur + 1) % 2]->getCartesC().erase(getCotes()[(idJoueur + 1) % 2]->getCartesC().begin() + i);
+	getCotes()[(idJoueur + 1) % 2]->setNbCartes(nb_cartes_precedent - 1);
+	return toDefausse;
 }
 
 /// <summary>

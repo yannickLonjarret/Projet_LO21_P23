@@ -72,7 +72,7 @@ public:
 
 	//overriding the print function
 	void print(std::ostream& os) const override {
-		os << "[" << this->getNom() << "]" << std::endl;
+		os << "[" << this->getNom() << "]";
 	}
 };
 

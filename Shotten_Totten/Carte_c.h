@@ -54,7 +54,7 @@ public:
 
 	//overriding the print function
 	void print(std::ostream& os) const override {
-		os << "[" << this->getCouleur() << "," << this->getValeur() << "]" << std::endl;
+		os << "[" << this->getCouleur() << "," << this->getValeur() << "]";
 	}
 
 	//Vector qu'on peut modifier ailleur
