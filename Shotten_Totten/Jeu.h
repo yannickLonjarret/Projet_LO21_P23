@@ -17,19 +17,15 @@ private:
 
 	Pioche_c* pioche_c;
 	//Pioche_t pioche_t;
-
+	vector<Combinaison*> vic;
 	vector<Tuile*> plateau;
-	//je dois initialiser les tuiles
-	//pour chaque tuile itérer sur les joueurs du vecteur
-	//il faut 9 tuile puis pour chaque joueur créer un côté (selon l'odre du vecteur)
-
 
 
 
 public:
 	Jeu() {
 
-		vector<Combinaison*> vic;
+		
 		vic.push_back(new Combinaison(false, false, false));
 		vic.push_back(new Combinaison(true, false, false));
 		vic.push_back(new Combinaison(false, true, false));
@@ -40,9 +36,9 @@ public:
 			Tuile* t = new Tuile(3, vic, 2);
 			plateau.push_back(t);
 		}
-		vector<Joueur> joueurs;
 
 		pioche_c = new Pioche_c();
+
 		Carte_c::getCouleurs().push_back("Vert");
 		Carte_c::getCouleurs().push_back("Bleu");
 		Carte_c::getCouleurs().push_back("Rouge");
@@ -60,9 +56,20 @@ public:
 	}
 
 	virtual ~Jeu() {
-		for (unsigned int i = 0; i < joueurs.size(); i++) delete joueurs[i]; 
+		for (auto t : plateau)
+			delete t;
+		plateau.clear();
+
+		for (auto combi : vic)
+			delete combi;
+		vic.clear();
+
+		for (auto j : joueurs)
+			delete j;
+		joueurs.clear();
+
 		delete pioche_c;
-		for (unsigned int i = 0; i < plateau.size(); i++) delete plateau[i];
+		
 	}
 
 	vector<Tuile*> getPlateau() const {
