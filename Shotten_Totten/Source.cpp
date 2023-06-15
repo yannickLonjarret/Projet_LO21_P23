@@ -52,7 +52,7 @@ int main() {
 	TroupeElite* joker2 = new TroupeElite((types)0, "Joker", "Le putain de joker", -1, Carte_c::getCouleurs()[0], 1, 9);
 	TroupeElite* joker3 = new TroupeElite((types)0, "Joker", "Le putain de joker", -1, Carte_c::getCouleurs()[0], 1, 9);
 
-	
+
 
 	Carte_t* j1 = joker;
 	Carte_t* j2 = joker2;
@@ -144,7 +144,7 @@ int main() {
                                                 
                                                                             
 )" << '\n';
-	
+
 	int choice;
 	bool quit = false;
 	Jeu* jeu_classique;
@@ -165,19 +165,19 @@ int main() {
                      
 		)" << '\n';
 
-		std::string input; 
+		std::string input;
 		std::cout << "Choisissez une option : ";
-		std::cin >> input; 
+		std::cin >> input;
 		choice = std::stoi(input);
 		switch (choice)
 		{
 		case 1:
 			quit = true;
-			jeu_classique = new Jeu(); 
+			jeu_classique = &Jeu::donneInstance();
 			jeu_classique->printTitles();
 			jeu_classique->menu_selection();
 			jeu_classique->startGame();
-			delete jeu_classique;
+			Jeu::libereInstance();
 			break;
 		case 2:
 			quit = true;
@@ -185,7 +185,7 @@ int main() {
 			jeu_tactique->printTitles();
 			jeu_tactique->menu_selection();
 			jeu_tactique->startGame();
-			delete jeu_tactique; 
+			delete jeu_tactique;
 			break;
 		case 3:
 			quit = true;
@@ -200,11 +200,11 @@ int main() {
 	/*
 	if (choice) {
 		Jeu* jeu = new Jeu();
-		jeu->printTitles(); 
-		jeu->menu_selection(); 
+		jeu->printTitles();
+		jeu->menu_selection();
 	}
 	else {
-		JeuTactique* jeu = new JeuTactique(); 
+		JeuTactique* jeu = new JeuTactique();
 	}
 	*/
 	return 0;

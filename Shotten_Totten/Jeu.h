@@ -13,19 +13,28 @@
 class Jeu
 {
 private:
-	vector<Joueur*> joueurs; 
+	vector<Joueur*> joueurs;
 
 	Pioche_c* pioche_c;
 	//Pioche_t pioche_t;
 	vector<Combinaison*> vic;
 	vector<Tuile*> plateau;
 
+	//singleton
+	static Jeu* jeuUnique;
+
 
 
 public:
+
+	//méthodes pour le singleton
+	static Jeu& donneInstance();
+	static void libereInstance();
+
+
 	Jeu() {
 
-		
+
 		vic.push_back(new Combinaison(false, false, false));
 		vic.push_back(new Combinaison(true, false, false));
 		vic.push_back(new Combinaison(false, true, false));
@@ -45,14 +54,14 @@ public:
 		Carte_c::getCouleurs().push_back("Jaune");
 		Carte_c::getCouleurs().push_back("Violet");
 		Carte_c::getCouleurs().push_back("Marron");
-		
+
 		for (unsigned int i = 1; i < 10; i++) {
 			for (unsigned int j = 1; j < Carte_c::getCouleurs().size(); j++) {
 				pioche_c->push(new Carte_c(i, Carte_c::getCouleurs()[j]));
 			}
 		}
 
-		pioche_c->shuffle(); 
+		pioche_c->shuffle();
 	}
 
 	virtual ~Jeu() {
@@ -69,7 +78,7 @@ public:
 		joueurs.clear();
 
 		delete pioche_c;
-		
+
 	}
 
 	vector<Tuile*> getPlateau() const {
@@ -100,7 +109,7 @@ public:
 	/// <returns>The reference of the card</returns>
 	Carte_c& piocher_c() {
 		if (pioche_c->getSize() != 0)
-			return *pioche_c->pop(); 
+			return *pioche_c->pop();
 	}
 
 	//Pioche_t getPioche_t() const {
@@ -128,7 +137,7 @@ public:
 
 	void menu_selection();
 	void playerSelection();
-	int victory(); 
+	int victory();
 	virtual void startGame();
 	void distribuerCartes(int nb_a_distribuer);
 

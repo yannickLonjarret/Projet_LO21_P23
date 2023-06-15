@@ -4,9 +4,25 @@
 #include <stdlib.h>
 #include <iomanip>
 
+
+Jeu* Jeu::jeuUnique = nullptr;
+
+
+Jeu& Jeu::donneInstance() {
+	if (jeuUnique == nullptr) {
+		jeuUnique = new Jeu();
+	}
+	return *jeuUnique;
+}
+
+void Jeu::libereInstance() {
+	delete jeuUnique;
+	jeuUnique = nullptr;
+}
+
 void Jeu::displayBoard() const {
 	system("CLS");
-	cout << "\t\tJoueur 1: "<<getJoueur1()->getNom()<< "\t\t\t\t\tJoueur 2:  " << getJoueur2()->getNom() << "\n";
+	cout << "\t\tJoueur 1: " << getJoueur1()->getNom() << "\t\t\t\t\tJoueur 2:  " << getJoueur2()->getNom() << "\n";
 
 	for (int i = 0; i < getPlateau().size(); i++) {
 		cout << "Tuile :" << i + 1;
@@ -35,7 +51,7 @@ void Jeu::printTitles() const {
 void Jeu::distribuerCartes(int nb_a_distribuer) {
 	for (unsigned int i = 0; i < joueurs.size(); i++) {
 		for (unsigned int j = 0; j < nb_a_distribuer; j++) {
-			joueurs[i]->ajouter_Carte_c(pioche_c->pop()); 
+			joueurs[i]->ajouter_Carte_c(pioche_c->pop());
 		}
 	}
 }
@@ -80,7 +96,7 @@ void Jeu::claim(int idJoueur) {
 	char choice = 'o';
 	string empty;
 	int choixTuile;
-	
+
 	while (choice == 'o') {
 		do {
 			cout << "Veuillez choisir une tuilee. [chiffre entre 1 et " << getPlateau().size() << "]" << endl;
@@ -207,7 +223,7 @@ bool Jeu::estGagnant(int id_joueur) {
 }
 int Jeu::victory() {
 	int J1 = 0;
-	int J2= 1;
+	int J2 = 1;
 	int vict1 = 0;
 	int vict2 = 0;
 	int victConsec = 0;
@@ -241,12 +257,12 @@ int Jeu::victory() {
 
 		if (victConsec == 3)
 			return idGagnantPrec;
-	
+
 	}
 
-	if (vict1 == 5) 
+	if (vict1 == 5)
 		return J1;
-	else if (vict2 == 5) 
+	else if (vict2 == 5)
 		return J2;
 	else
 		return -1;
@@ -270,28 +286,28 @@ void Jeu::startGame() {
 	int winner = -1;
 	string empty;
 	int id_tuile;
-	int choix_carte; 
+	int choix_carte;
 	char choice;
 	bool confirm_card = false;
 
 	distribuerCartes(6);
 
-	
+
 	while (winner == -1) {
 		system("CLS");
-		
+
 		for (unsigned int i = 0; i < joueurs.size(); i++) {
 			if (joueurs[i]->estIA()) {
 				cout << joueurs[i]->getNom() << "joue " << endl;
-				
+
 
 				id_tuile = joueurs[i]->choix_ia(0, getPlateau().size() - 1);
-				choix_carte = joueurs[i]->choix_ia(0,joueurs[i]->getNbCartes() - 1);
+				choix_carte = joueurs[i]->choix_ia(0, joueurs[i]->getNbCartes() - 1);
 
 				while (getPlateau()[id_tuile]->isTuilePleine(i)) {
-					id_tuile = joueurs[i]->choix_ia(0,getPlateau().size() - 1);
+					id_tuile = joueurs[i]->choix_ia(0, getPlateau().size() - 1);
 				}
-				
+
 				joueurs[i]->poser_carte((Carte*)joueurs[i]->getCarteC()[choix_carte], i, plateau[id_tuile]);
 				joueurs[i]->piocher_c(getPioche_c()->pop());
 
@@ -301,7 +317,7 @@ void Jeu::startGame() {
 				cout << joueurs[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
 				cin >> empty;
 			}
-			else{
+			else {
 
 				displayBoard();
 				joueurs[i]->afficherMain();
@@ -356,28 +372,28 @@ void Jeu::startGame() {
 					displayBoard();
 
 				}
-				
+
 				joueurs[i]->piocher_c(getPioche_c()->pop());
 				joueurs[i]->afficherMain();
 
 				cout << "Souhaitez vous revendiquer une tuile ? (o pour oui)";
 				cin >> choice;
 
-				if(choice == 'o')
+				if (choice == 'o')
 					claim(i);
 
 				system("CLS");
 				displayBoard();
 				cout << joueurs[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
-				
+
 				cin >> empty;
-				
-				
+
+
 			}
 
 			winner = victory();
 			if (winner != -1) break;
-			
+
 		}
 	}
 
