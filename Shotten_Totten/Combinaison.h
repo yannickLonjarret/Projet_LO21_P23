@@ -165,4 +165,6 @@ public:
 		return (combi1->getScoreCombi() > combi2->getScoreCombi());
 	}
 
+	~Combinaison() = default;
+
 };

@@ -30,6 +30,8 @@ public:
 	int getPositionCarte() {
 		return positionCarte;
 	}
+
+	~nodeHist_c() = default;
 };
 
 /// <summary>
@@ -214,14 +216,23 @@ public:
 		return victoirePossible;
 	}
 
-	~Tuile() = default;
-
 	inline friend ostream& operator<<(ostream& os, Tuile& t);
 
 	string toString() {
 		stringstream ss;
 		ss << (*this);
 		return ss.str();
+	}
+
+	~Tuile() {
+		for (auto c : getCotes())
+			delete c;
+		getCotes().clear();
+
+		for (auto h : getHist_c())
+			delete h;
+		getHist_c().clear();
+
 	}
 
 };

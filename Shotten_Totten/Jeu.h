@@ -13,23 +13,28 @@
 class Jeu
 {
 private:
-	vector<Joueur*> joueurs; 
+	vector<Joueur*> joueurs;
 
 	Pioche_c* pioche_c;
 	//Pioche_t pioche_t;
-
+	vector<Combinaison*> vic;
 	vector<Tuile*> plateau;
-	//je dois initialiser les tuiles
-	//pour chaque tuile itérer sur les joueurs du vecteur
-	//il faut 9 tuile puis pour chaque joueur créer un côté (selon l'odre du vecteur)
 
+	//singleton
+	static Jeu* jeuUnique;
 
 
 
 public:
+
+	//méthodes pour le singleton
+	static Jeu& donneInstance();
+	static void libereInstance();
+
+
 	Jeu() {
 
-		vector<Combinaison*> vic;
+
 		vic.push_back(new Combinaison(false, false, false));
 		vic.push_back(new Combinaison(true, false, false));
 		vic.push_back(new Combinaison(false, true, false));
@@ -40,29 +45,40 @@ public:
 			Tuile* t = new Tuile(3, vic, 2);
 			plateau.push_back(t);
 		}
-		vector<Joueur> joueurs;
 
 		pioche_c = new Pioche_c();
+
 		Carte_c::getCouleurs().push_back("Vert");
 		Carte_c::getCouleurs().push_back("Bleu");
 		Carte_c::getCouleurs().push_back("Rouge");
 		Carte_c::getCouleurs().push_back("Jaune");
 		Carte_c::getCouleurs().push_back("Violet");
 		Carte_c::getCouleurs().push_back("Marron");
-		
+
 		for (unsigned int i = 1; i < 10; i++) {
 			for (unsigned int j = 1; j < Carte_c::getCouleurs().size(); j++) {
 				pioche_c->push(new Carte_c(i, Carte_c::getCouleurs()[j]));
 			}
 		}
 
-		pioche_c->shuffle(); 
+		pioche_c->shuffle();
 	}
 
 	virtual ~Jeu() {
-		for (unsigned int i = 0; i < joueurs.size(); i++) delete joueurs[i]; 
+		for (auto t : plateau)
+			delete t;
+		plateau.clear();
+
+		for (auto combi : vic)
+			delete combi;
+		vic.clear();
+
+		for (auto j : joueurs)
+			delete j;
+		joueurs.clear();
+
 		delete pioche_c;
-		for (unsigned int i = 0; i < plateau.size(); i++) delete plateau[i];
+
 	}
 
 	vector<Tuile*> getPlateau() const {
@@ -95,7 +111,7 @@ public:
 	/// <returns>The reference of the card</returns>
 	Carte_c& piocher_c() {
 		if (pioche_c->getSize() != 0)
-			return *pioche_c->pop(); 
+			return *pioche_c->pop();
 	}
 
 	//Pioche_t getPioche_t() const {
@@ -115,6 +131,7 @@ public:
 	}
 
 
+	bool estGagnant(int id_joueur);
 	void displayBoard() const;
 	void printTitles() const;
 	void displayMenu() const;
@@ -122,13 +139,12 @@ public:
 
 	void menu_selection();
 	void playerSelection();
-	bool estGagnant(int id_joueur); 
+	int victory();
 	virtual void startGame();
 	void distribuerCartes(int nb_a_distribuer);
 
 	//void play_card_c(int id_j, int id_tuile, Carte_c& c)
 };
-
 
 
 inline ostream& operator<< (ostream& os, const Jeu& j) {
