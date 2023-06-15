@@ -20,7 +20,7 @@ public:
 	/// @param combi : the vector of Combinaison objects accepted (in order to claim the Tuile object)
 	ModeCombat(types t, string n, int nb, vector<Combinaison*> combi) : Carte_t(t, n), nb_cartes(nb), victoirePossible(combi) {}
 
-	/// @brief Default destructor
+	/// @brief Destructor of a ModeCombat card
 	~ModeCombat() { 
 		for (unsigned int i = 0; i < victoirePossible.size(); i++) delete victoirePossible[i];
 	}

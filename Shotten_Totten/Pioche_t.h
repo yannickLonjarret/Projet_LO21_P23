@@ -22,17 +22,29 @@ private:
 	std::vector<Carte_t*> cartes;
 
 public:
+	/// <summary>
+	/// Default constructor of a Pioche_t
+	/// </summary>
 	Pioche_t() = default;
+
 	/// <summary>
 	/// Constructor initializes the card vector
 	/// </summary>
 	/// <param name="c">the collection of cards to be set as the attribute</param>
 	Pioche_t(std::vector<Carte_t*> const& c) : cartes(c) {};
 
+	/// <summary>
+	/// Allows the user to get the size of the Pioche_t object
+	/// </summary>
+	/// <returns>The number of card in the Pioche_t object</returns>
 	size_t getSize() const {
 		return this->cartes.size();
 	}
 
+	/// <summary>
+	/// Allows the user to get the vector of cards in the Pioche_t object
+	/// </summary>
+	/// <returns>The vector of the cards in the Pioche_t object</returns>
 	std::vector<Carte_t*> getCartes() const {
 		return this->cartes;
 	}

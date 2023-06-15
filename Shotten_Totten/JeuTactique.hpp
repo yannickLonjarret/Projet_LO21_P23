@@ -103,9 +103,22 @@ public:
 			return pioche_tact.pop();
 	}
 	
+	/// <summary>
+	/// Method which start a tactical game, turn by turn
+	/// </summary>
 	void startGame() {
 		system("CLS");
-		cout << R"(
+
+		string empty;
+		int winner = -1;
+
+		// On distribue les cartes
+		distribuerCartes(7);
+
+		while (winner == -1) {
+
+			for (unsigned int i = 0; i < getJoueurs().size(); i++) {
+				cout << R"(
  _____           _   _
 |  __ \         | | (_)
 | |__) |_ _ _ __| |_ _  ___    ___ _ __     ___ ___  _   _ _ __ ___
@@ -115,15 +128,6 @@ public:
 
 
 	   )" << endl;
-
-		bool isOver = false;
-
-		// On distribue les cartes
-		distribuerCartes(7);
-
-		while (isOver == false) {
-
-			for (unsigned int i = 0; i < getJoueurs().size(); i++) {
 
 				displayBoard();
 				cout << "\nDefausse : " << defausse << endl;
@@ -151,7 +155,7 @@ public:
 						carte_a_jouer = (Carte*)getJoueurs()[i]->getCarteC()[id_carte];
 						cout << "Carte à jouer ok" << endl;
 					}
-					while (typeid(*carte_a_jouer) == typeid(Carte_t) && (!tactique_jouable)){ 
+					while (dynamic_cast<Carte_t*>(carte_a_jouer) != nullptr && (!tactique_jouable || (!joker_jouable && dynamic_cast<Carte_t*>(carte_a_jouer)->getNom() == "Joker"))){
 						id_carte = getJoueurs()[i]->choix_ia(0, getJoueurs()[i]->getNbCartes());
 						if (id_carte >= getJoueurs()[i]->getCarteC().size()) {
 							carte_a_jouer = (Carte*)getJoueurs()[i]->getCarteT()[id_carte - getJoueurs()[i]->getCarteC().size()];
@@ -211,6 +215,9 @@ public:
 					// while taillle_main < 7 -> s'adapte si une nouvelle carte Ruse
 					while (getJoueurs()[i]->getNbCartes() < 7)
 						piocher(choixPiocheIA(), i);  
+
+					cout << getJoueurs()[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
+					cin >> empty; 
 				}
 				else {
 					getJoueurs()[i]->afficherMain();
@@ -220,7 +227,13 @@ public:
 					Carte* carte_a_jouer = choisirCarte(i, vect);
 					bool tactique_jouable = tactiqueJouable(i);
 					bool joker_jouable = jokerJouable(i);
-					while (typeid(*carte_a_jouer) == typeid(Carte_t) && (!tactique_jouable || (!joker_jouable && dynamic_cast<Carte_t*>(carte_a_jouer)->getNom() == "Joker"))) {
+					/*
+					bool r1 = dynamic_cast<Carte_t*>(carte_a_jouer) != nullptr;
+					bool r2 = !tactique_jouable || (!joker_jouable && dynamic_cast<Carte_t*>(carte_a_jouer)->getNom() == "Joker");
+					bool r3 = r1 && r2;
+					cout << r1 << r2 << r3 << endl;
+					*/
+					while (dynamic_cast<Carte_t*>(carte_a_jouer) != nullptr && (!tactique_jouable || (!joker_jouable && dynamic_cast<Carte_t*>(carte_a_jouer)->getNom() == "Joker"))) {
 						if (!joker_jouable)
 							cout << "Il est impossible de poser deux jokers" << endl;
 						else
@@ -289,40 +302,57 @@ public:
 					// while taillle_main < 7 -> s'adapte si une nouvelle carte Ruse
 					while (getJoueurs()[i]->getNbCartes() < 7)
 						piocher(choixPioche(), i);
+
+					cout << getJoueurs()[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
+					cin >> empty; 
 				}
 
 				for (int i = 0; i < 100; i++)
 					cout << endl;
-				if (estGagnant(i)) {
-					cout << "VICTOIRE !" << endl;
-					cout << "Bravo " << getJoueurs()[i]->getNom() << ", vous avez gagne !" << endl;
-					isOver = true;
-					break;
-				}
-				else {
-					cout << getJoueurs()[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
-					string temp_prompt = "";
-					cin >> temp_prompt;
-					cout << endl; 
-				}
+				winner = victory();
+				if (winner != -1) break; 
 			}
 		}
+		cout << "Partie terminée, le gagnant est " << getJoueurs()[winner]->getNom();
+		getJoueurs()[winner]->setScore(getJoueurs()[winner]->getScore() + 1);
 	}
 
+	/// <summary>
+	/// Allows the user to check if a number is within an interval [b1, b2] 
+	/// </summary>
+	/// <param name="b1">The inferior born of the interval</param>
+	/// <param name="b2">The superior born of the interval</param>
+	/// <param name="input">The number to check</param>
+	/// <returns>A boolean (true if it is within, false if not)</returns>
 	bool checkBornes(int b1, int b2, int input) {
 		return b1 <= input && input <= b2;  
 	}
 
+	/// <summary>
+	/// Allows the user to check if a Tuile object is not already claimed
+	/// </summary>
+	/// <param name="tuile">The Tuile object to check</param>
+	/// <returns>A boolean (true if not already claimed, false if it is)</returns>
 	bool tuileNonRevendiquee(Tuile* tuile) {
 		return tuile->getClaim() == -1; 
 	}
 
+	/// <summary>
+	/// Allows the user to check if a card can be placed on a tile
+	/// </summary>
+	/// <param name="tuile">The tile where the card should be placed</param>
+	/// <param name="id_joueur">The id of the user who wants to place the card</param>
+	/// <returns>A boolean (true if it can be placed, false if not)</returns>
 	bool posePossible(Tuile* tuile, int id_joueur) {
 		int nb_cartes_posees = tuile->getCotes()[id_joueur]->getNbCartes(); 
 		int nb_cartes_posables = tuile->getNbCartesMax();
 		return (nb_cartes_posees != nb_cartes_posables); 
 	}
 
+	/// <summary>
+	/// Allows the user to ask the player in which deck they want to pick
+	/// </summary>
+	/// <returns>0 for the classical one, 1 for the tactical one, -1 for non (both empty)</returns>
 	int choixPioche() const {
 		if (getPioche_c()->getSize() == 0) {
 			cout << "Vous ne pouvez piocher que dans la pioche classique, la pioche tactique est vide." << endl;
@@ -352,6 +382,10 @@ public:
 		}
 	}
 
+	/// <summary>
+	/// Allows the user to ask the IA in which deck they want to pick
+	/// </summary>
+	/// <returns>0 for the classical one, 1 for the tactical one, -1 for non (both empty)</returns>
 	int choixPiocheIA() {
 		if (getPioche_c()->getSize() == 0)
 			return 0;
@@ -363,6 +397,11 @@ public:
 			return rand() % 2;
 	}
 
+	/// <summary>
+	/// Allows the user to pick in a deck
+	/// </summary>
+	/// <param name="choix_pioche">The id of the deck (0 = classical, 1 = tactical, -1 = none)</param>
+	/// <param name="id_joueur">The id of the player picking a card</param>
 	void piocher(int choix_pioche, int id_joueur) {
 		if (choix_pioche)
 			getJoueurs()[id_joueur]->ajouter_Carte_t(piocher_t());
@@ -370,7 +409,11 @@ public:
 			getJoueurs()[id_joueur]->ajouter_Carte_c(&piocher_c());
 	}
 
-	// Ajoute dans le vecteur de la carte Ruse
+	/// <summary>
+	/// Allows the user to add a card from a deck to the cards vector in a Ruse card
+	/// </summary>
+	/// <param name="choix_pioche">The id of a deck (0 = classical, 1 = tactical)</param>
+	/// <param name="carte">The Ruse card where the picked card has to be added</param>
 	void piocheRuse(int choix_pioche, Ruse* carte) {
 		if (choix_pioche)
 			carte->addCartes(piocher_t());
@@ -378,6 +421,12 @@ public:
 			carte->addCartes((Carte*)&Jeu::piocher_c());
 	}
 
+	/// <summary>
+	/// Allows the user to ask the player which card they want to play
+	/// </summary>
+	/// <param name="id_joueur">The id of the player</param>
+	/// <param name="vecteur">The possible vector of a Ruse card to take into account</param>
+	/// <returns>A pointer of the chosen card</returns>
 	Carte* choisirCarte(int id_joueur, vector<Carte*> vecteur) {
 		int nb_cartes;
 		if (vecteur.size() == 0) {
@@ -419,6 +468,12 @@ public:
 		}
 	}
 
+	/// <summary>
+	/// Allows the user to ask the IA which card they want to play
+	/// </summary>
+	/// <param name="id_joueur">The id of the player</param>
+	/// <param name="vecteur">The possible vector of a Ruse card to take into account</param>
+	/// <returns>A pointer of the chosen card</returns>
 	Carte* choisirCarteIA(int id_joueur, vector<Carte*> vecteur) {
 		int nb_cartes;
 		if (vecteur.size() == 0)
@@ -442,6 +497,11 @@ public:
 		}
 	}
 
+	/// <summary>
+	/// Allows the user to execute a Ruse card for a player
+	/// </summary>
+	/// <param name="carte">The Ruse card</param>
+	/// <param name="id_joueur">The player who has played the card</param>
 	void execRuse(Ruse* carte, int id_joueur) {
 		vector<int> actions = carte->getActions();
 		Carte_c* carte_classique = nullptr;
@@ -606,7 +666,7 @@ public:
 		}
 		for (unsigned int i = 0; i < carte->getAllCartes().size(); i++) {
 
-			if (typeid(*carte->getAllCartes()[i]) == typeid(Carte_t)) {
+			if (dynamic_cast<Carte_t*>(carte->getAllCartes()[i]) != nullptr) {
 				getJoueurs()[id_joueur]->ajouter_Carte_t((Carte_t*)carte->getAllCartes()[i]);
 			}
 			else {
@@ -615,6 +675,11 @@ public:
 		}
 	}
 
+	/// <summary>
+	/// Allows the user to execute a Ruse card for an IA
+	/// </summary>
+	/// <param name="carte">The Ruse card</param>
+	/// <param name="id_joueur">The IA who has played the card</param>
 	void execRuseIA(Ruse* carte, int id_joueur) {
 		vector<int> actions = carte->getActions();
 		Carte_c* carte_classique = nullptr;
@@ -763,14 +828,23 @@ public:
 		}
 	}
 
+	/// <summary>
+	/// Allows the user to check if a tactical card is playable for a player
+	/// </summary>
+	/// <param name="id_joueur">The player to check</param>
+	/// <returns>A boolean (true if playable, false if not)</returns>
 	bool tactiqueJouable(int id_joueur) const {
 		cout << "tactique jouable ok" << endl;
-		cout << "Nb carte" << id_joueur << nb_cartes_tactiques_jouees[id_joueur] << endl;
-		cout << "Nb carte" << (id_joueur + 1) % 2 << endl;
-		cout << nb_cartes_tactiques_jouees[(id_joueur + 1) % 2] << endl;
+		bool result = nb_cartes_tactiques_jouees[id_joueur] <= nb_cartes_tactiques_jouees[(id_joueur + 1) % 2];
+		cout << result << endl;
 		return nb_cartes_tactiques_jouees[id_joueur] <= nb_cartes_tactiques_jouees[(id_joueur + 1) % 2]; 
 	}
 
+	/// <summary>
+	/// Allows the user to check if a "Joker" card is playable for a player
+	/// </summary>
+	/// <param name="id_joueur">The player to check</param>
+	/// <returns>A boolean (true if playable, false if not)</returns>
 	bool jokerJouable(int id_joueur) const { 
 		cout << "joker ok" << endl;
 		return nb_jokers_joues[id_joueur] <= nb_jokers_joues[(id_joueur + 1) % 2];  
