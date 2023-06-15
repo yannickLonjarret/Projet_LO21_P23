@@ -34,8 +34,6 @@ void displayGameBoard(const std::vector<std::string>& leftSide, const std::vecto
 
 int main() {
 
-
-
 	/*
 	vector<Combinaison*> vic; //vic
 
@@ -184,8 +182,6 @@ int main() {
 		case 2:
 			quit = true;
 			jeu_tactique = new JeuTactique();
-
-
 			jeu_tactique->printTitles();
 			jeu_tactique->menu_selection();
 			jeu_tactique->startGame();
