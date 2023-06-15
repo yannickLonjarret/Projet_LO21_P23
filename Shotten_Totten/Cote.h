@@ -74,6 +74,16 @@ public:
 		return cartesT;
 	}
 
+	~Cote() {
+		for (auto cc : getCartesC())
+			delete cc;
+		getCartesC().clear();
+
+		for (auto ct : getCartesT())
+			delete ct;
+
+	}
+
 };
 
 
