@@ -5,7 +5,7 @@
 #include <iomanip>
 
 void Jeu::displayBoard() const {
-	
+	system("CLS");
 	cout << "\t\tJoueur 1: "<<getJoueur1()->getNom()<< "\t\t\t\t\tJoueur 2:  " << getJoueur2()->getNom() << "\n";
 
 	for (int i = 0; i < getPlateau().size(); i++) {
@@ -15,6 +15,7 @@ void Jeu::displayBoard() const {
 }
 
 void Jeu::printTitles() const {
+	system("CLS");
 	std::cout << R"(
 
    _____      _           _   _                _______    _   _             
@@ -40,6 +41,7 @@ void Jeu::distribuerCartes(int nb_a_distribuer) {
 }
 
 void Jeu::displayMenu() const {
+	system("CLS");
 	std::cout << R"(
   __  __                  
  |  \/  |                 
@@ -76,19 +78,21 @@ int Jeu::getUserInput() const {
 
 void Jeu::claim(int idJoueur) {
 	char choice = 'o';
+	string empty;
 	int choixTuile;
 	
 	while (choice == 'o') {
 		do {
-			cout << "Veuillez saisir le numéro de tuile. (valeur entre 1 et " << getPlateau().size() << ")" << endl;
+			cout << "Veuillez choisir une tuilee. [chiffre entre 1 et " << getPlateau().size() << "]" << endl;
 			cin >> choixTuile;
 			choixTuile--;
 
 		} while (choixTuile < 0 || choixTuile > getPlateau().size() - 1);
 
 		getPlateau()[choixTuile]->claimTuile(idJoueur, getPlateau());
+
 		cout << "Veuillez saisir un caractère pour poursuivre" << endl;
-		cin >> choice;
+		cin >> empty;
 		system("CLS");
 		displayBoard();
 		getJoueurs()[idJoueur]->afficherMain();
@@ -102,7 +106,7 @@ void Jeu::claim(int idJoueur) {
 
 void Jeu::menu_selection() {
 	bool quit = false;
-
+	system("CLS");
 	while (!quit) {
 		displayMenu();
 		int choice = getUserInput();
@@ -129,6 +133,7 @@ void Jeu::menu_selection() {
 
 
 void Jeu::playerSelection() {
+	system("CLS");
 	std::cout << R"(
 
    _____      _           _   _                    _                             
@@ -225,13 +230,13 @@ void Jeu::startGame() {
 )" << endl;
 
 	bool isOver = false;
-	char empty;
+	string empty;
 	int id_tuile;
 	int choix_carte; 
+	char choice;
+	bool confirm_card = false;
+
 	distribuerCartes(6);
-
-
-
 
 	
 	while (isOver == false) {
@@ -265,27 +270,61 @@ void Jeu::startGame() {
 
 				cout << " ## C'est au joueur " << joueurs[i]->getNom() << " de jouer ## " << endl;
 
-				//cout << joueurs[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+
+				while(!confirm_card){
+					cout << joueurs[i]->getNom() << " choisis sa carte a poser [chiffre entre 1 et " << joueurs[i]->getNbCartes() << "] : ";
+					choix_carte = getUserInput();
+					choix_carte--;
+
+					while (choix_carte < 0 || choix_carte > joueurs[i]->getNbCartes() - 1) {
+						cout << "Carte inexistante, veuillez choisir un chiffre entre [1 et " << joueurs[i]->getNbCartes() << "] ";
+						choix_carte = getUserInput();
+						choix_carte--;
+					}
+
+					cout << "Vous avez choisi la carte: " << *joueurs[i]->getCarteC()[choix_carte] << endl;
+					cout << "Est-ce la bonne carte ? (o pour oui)";
+					cin >> choice;
+
+					confirm_card = choice == 'o';
+				}
+
+				cout << joueurs[i]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
+				id_tuile = getUserInput();
+				id_tuile--;
+				
+				while ((id_tuile < 0 || id_tuile > 8) || getPlateau()[id_tuile]->isTuilePleine(i)) {
+					
+					if ((id_tuile < 0 || id_tuile > 8)) {
+						
+						cout << "Tuile inexistante, veuillez choisir un chiffre entre [1 et 9] ";
+						id_tuile = getUserInput();
+						id_tuile--;
+					}
+					else if(getPlateau()[id_tuile]->isTuilePleine(i)) {
+						cout << "Tuile pleine, veuillez choisir une autre tuile" << endl;
+						id_tuile = getUserInput();
+						id_tuile--;
+						
+					}
+
+				}
 
 				
-				//cout << joueurs[i]->getNom() << " choisis sa carte a poser [chiffre entre 0 et " << joueurs[i]->getNbCartes() - 1 << "] : ";
-				choix_carte = getUserInput();
-
-				id_tuile = getUserInput();
-				while (getPlateau()[id_tuile]->isTuilePleine(i)) {
-					cout << "Tuile pleine, veuillez choisir une autre tuile" << endl;
-					id_tuile = getUserInput();
-				}
 				joueurs[i]->poser_carte((Carte*)joueurs[i]->getCarteC()[choix_carte], i, plateau[id_tuile]);
 				system("CLS");
 				displayBoard();
-				joueurs[i]->afficherMain();
-				joueurs[i]->piocher_c(getPioche_c()->pop());
 				
-				//claim(i);
+				joueurs[i]->piocher_c(getPioche_c()->pop());
+				joueurs[i]->afficherMain();
 
+				cout << "Souhaitez vous revendiquer une tuile ? (o pour oui)";
+				cin >> choice;
 
-				//system("CLS");
+				if(choice == 'o')
+					claim(i);
+
+				system("CLS");
 				cout << joueurs[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
 				
 				cin >> empty;
