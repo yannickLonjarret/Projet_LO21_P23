@@ -321,9 +321,9 @@ void Tuile::claimTuile(int idJoueur, vector<Tuile*> plateau) {
 	}
 
 	if (isClaimProof()) {
-		std::cout << "ca marche" << std::endl;
+		
 		claimProof(idJoueur, plateau);
-		std::cout << "ca marche toujour" << std::endl;
+		
 	}
 	else {
 		claimClassic(idJoueur);
@@ -500,7 +500,7 @@ void Tuile::claimTroupeE_CardSetter(vector<Carte_c*> v) {
 /// <param name="joueur"></param>
 void Tuile::claimClassic(int joueur) {
 	vector<Carte_c*> jCourant, jAdv;
-
+	
 	jCourant = getCotes()[joueur]->getCartesC();
 	jAdv = getCotes()[(joueur + 1) % 2]->getCartesC();
 
@@ -515,14 +515,14 @@ void Tuile::claimClassic(int joueur) {
 	}
 
 	//Implémentation pour 2 joueurs uniquement car aucune idées des rčgles ŕ ajouter en cas d'égalité
-	Combinaison combiJ1(getCotes()[0]->getCartesC(), getNbCartesMax()), combiJ2(getCotes()[1]->getCartesC(), getNbCartesMax());
-	combiJ1.dropDown(getVictoires());
-	combiJ2.dropDown(getVictoires());
-
-	if (combiJ1 > combiJ2)
+	Combinaison combiJCourant(jCourant, getNbCartesMax()), combiJAdv(jAdv, getNbCartesMax());
+	
+	combiJCourant.dropDown(getVictoires());
+	combiJAdv.dropDown(getVictoires());
+	
+	if (combiJCourant > combiJAdv)
 		setClaim(joueur);
-
-	else if (combiJ2 > combiJ1)
+	else if (combiJAdv > combiJCourant)
 		setClaim((joueur + 1) % 2);
 	else
 		casEgalite();
