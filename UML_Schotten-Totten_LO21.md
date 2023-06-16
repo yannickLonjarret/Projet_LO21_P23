@@ -306,7 +306,7 @@ classDiagram
     nodeHist_c --* Tuile
     Cote --* Tuile
     Combinaison --o Tuile
-    Combinaison --o Jeu
+    Combinaison --* Jeu
     Jeu "1" *-- "1" Pioche_c
     Jeu *-- Carte_c
     Jeu "1" *-- "1" Defausse
