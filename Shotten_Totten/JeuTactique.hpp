@@ -137,23 +137,15 @@ public:
 					cout << " ## C'est au joueur " << getJoueurs()[i]->getNom() << " de jouer ## " << endl;
 					vector<Carte*> vect;
 					int id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
-					cout << "Tuile ok" << endl;
 					int id_carte = getJoueurs()[i]->choix_ia(0, getJoueurs()[i]->getNbCartes());
-					cout << "Carte ok" << endl;
 					bool tactique_jouable = tactiqueJouable(i);
-					cout << "Tactique ok" << i << endl;
 					bool joker_jouable = jokerJouable(i);
-					cout << "Joker ok" << endl;
 					Carte* carte_a_jouer;
-					cout << "if non ok" << endl;
 					if (id_carte >= getJoueurs()[i]->getCarteC().size()) {
-						cout << "if ok" << endl;
 						carte_a_jouer = (Carte*)getJoueurs()[i]->getCarteT()[id_carte - getJoueurs()[i]->getCarteC().size()];
-						cout << "Carte à jouer ok" << endl;
 					}
 					else {
 						carte_a_jouer = (Carte*)getJoueurs()[i]->getCarteC()[id_carte];
-						cout << "Carte à jouer ok" << endl;
 					}
 					while (dynamic_cast<Carte_t*>(carte_a_jouer) != nullptr && (!tactique_jouable || (!joker_jouable && dynamic_cast<Carte_t*>(carte_a_jouer)->getNom() == "Joker"))){
 						id_carte = getJoueurs()[i]->choix_ia(0, getJoueurs()[i]->getNbCartes());
@@ -173,13 +165,10 @@ public:
 					else {
 						carte_a_jouer = (Carte*)getJoueurs()[i]->getCarteC()[id_carte];
 					}
-					cout << "Choix carte fait !" << endl;
 					if (typeid(*carte_a_jouer) == typeid(Ruse)) {
-						cout << "RUSE !" << endl;
 						getJoueurs()[i]->eraseCarte(carte_a_jouer);
 						defausse.push(carte_a_jouer);
 						execRuseIA(dynamic_cast<Ruse*>(carte_a_jouer), i);
-						cout << "Exécution terminée ! " << endl;
 						nb_cartes_tactiques_jouees[i]++;
 					}
 					else if (typeid(*carte_a_jouer) == typeid(ModeCombat)) {
@@ -204,12 +193,10 @@ public:
 								nb_jokers_joues[i]++;
 						}
 					}
-					for (int i = 0; i < 10; i++)
-						cout << endl;
 					displayBoard();
 					cout << "\nDefausse : " << defausse << endl;
 
-					// Pas de revendication pour l'IA
+					// Pas de revendication pour l'IA (choix arbitraire)
 
 					// Piocher (classique / tactique)
 					// while taillle_main < 7 -> s'adapte si une nouvelle carte Ruse
@@ -227,12 +214,6 @@ public:
 					Carte* carte_a_jouer = choisirCarte(i, vect);
 					bool tactique_jouable = tactiqueJouable(i);
 					bool joker_jouable = jokerJouable(i);
-					/*
-					bool r1 = dynamic_cast<Carte_t*>(carte_a_jouer) != nullptr;
-					bool r2 = !tactique_jouable || (!joker_jouable && dynamic_cast<Carte_t*>(carte_a_jouer)->getNom() == "Joker");
-					bool r3 = r1 && r2;
-					cout << r1 << r2 << r3 << endl;
-					*/
 					while (dynamic_cast<Carte_t*>(carte_a_jouer) != nullptr && (!tactique_jouable || (!joker_jouable && dynamic_cast<Carte_t*>(carte_a_jouer)->getNom() == "Joker"))) {
 						if (!joker_jouable)
 							cout << "Il est impossible de poser deux jokers" << endl;
@@ -245,7 +226,6 @@ public:
 						if (dynamic_cast<Carte_t*>(carte_a_jouer)->getNom() == "Joker")
 							nb_jokers_joues[i]++;
 					}
-					cout << "Choix carte fait !" << endl;
 					if (typeid(*carte_a_jouer) == typeid(Ruse)) {
 						cout << "RUSE !" << endl;
 						getJoueurs()[i]->eraseCarte(carte_a_jouer);
@@ -271,7 +251,6 @@ public:
 					else {
 						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
 						int id_tuile = getUserInput();
-						cout << "je suis dans le else" << endl;
 						while (!posePossible(getPlateau()[id_tuile], i) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 							cout << "Choix impossible, la borne est pleine, déjà revendiquée ou inexistante, veuillez réessayer." << endl;
 							cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
@@ -284,8 +263,6 @@ public:
 								nb_jokers_joues[i]++;
 						}
 					}
-					for (int i = 0; i < 10; i++)
-						cout << endl;
 					displayBoard();
 					cout << "\nDefausse : " << defausse << endl;
 					getJoueurs()[i]->afficherMain();
@@ -446,22 +423,15 @@ public:
 		int taille_main_classique = getJoueurs()[id_joueur]->getCarteC().size();
 		int taille_main_tactique = getJoueurs()[id_joueur]->getCarteT().size();
 		int taille_main = taille_main_classique + taille_main_tactique;
-		cout << "Taille classique : " << taille_main_classique << endl;
-		cout << "Taille tactique : " << taille_main_tactique << endl;
-		cout << "Taille totale : " << taille_main << endl;
 		if (choix_carte < taille_main_classique) {
-			cout << "CLASSIQUE !" << endl;
 			return (Carte*)getJoueurs()[id_joueur]->getCarteC()[choix_carte];
 		}
 		else if (choix_carte < taille_main) {
-			cout << "TACTIQUE !" << endl;
 			choix_carte -= taille_main_classique;
-			cout << "MAJ choix : " << choix_carte << endl;
 			cout << *getJoueurs()[id_joueur]->getCarteT()[choix_carte] << endl;    
 			return (Carte*)getJoueurs()[id_joueur]->getCarteT()[choix_carte];
 		}
 		else {
-			cout << "VECTEUR" << endl;
 			choix_carte -= taille_main;
 			vecteur[choix_carte]->print(cout);
 			return vecteur[choix_carte];
@@ -515,47 +485,38 @@ public:
 			{
 			case 0:
 				// 0 = piocher
-				cout << "PIOCHE ! " << endl;
 				choix_pioche = choixPioche();
 				cout << choix_pioche << endl;
 				piocheRuse(choix_pioche, carte); 
-				cout << "Fin pioche ! " << endl;
 				break;
 
 			case 1:
 				// 1 = placer carte sous pioche
-				cout << "PLACEMENT SOUS PIOCHE" << endl;
 				if (carte_classique != nullptr) {
-					cout << "AVANT LE ERASE CLASSIQUE" << endl; 
 					carte->eraseCarte((Carte*)carte_classique); 
 					getJoueurs()[id_joueur]->eraseCarte((Carte*)carte_classique);
-					cout << "APRES LE ERASE " << endl; 
 					getPioche_c()->push(carte_classique);
 				}
 				else {
-					cout << "AVANT LE ERASE TACTIQUE" << endl;
-					cout << *carte_tactique << endl;
 					carte->eraseCarte((Carte*)carte_tactique);
 					getJoueurs()[id_joueur]->eraseCarte((Carte*)carte_tactique);
 					pioche_tact.push(carte_tactique); 
 				}
-				cout << "PLACEMENT TERMINE" << endl;
+				cout << "Carte placée sous la pioche." << endl;
 				break;
 
 			case 2:
 				// 2 = choisir carte de notre main (et le vecteur de Ruse)
-				cout << "CHOIX CARTE" << endl;
+				cout << "Choisir une carte" << endl;
 				getJoueurs()[id_joueur]->afficherMain();
 				for (unsigned int i = 0; i < carte->getAllCartes().size(); i++)
 					carte->getAllCartes()[i]->print(cout);
-				c = choisirCarte(id_joueur, carte->getAllCartes()); // fonction à définir dans joueur ?
+				c = choisirCarte(id_joueur, carte->getAllCartes()); 
 				if (typeid(*c) == typeid(Carte_t)) {
-					cout << "CAST TACTIQUE" << endl;
 					carte_tactique = (Carte_t*)(c);
 					carte_classique = nullptr;
 				}
 				else {
-					cout << "CAST CLASSIQUE" << endl;
 					carte_classique = (Carte_c*)(c);
 					cout << *carte_classique << endl;
 					carte_tactique = nullptr;
@@ -569,13 +530,12 @@ public:
 				std::cin >> choix;
 				while (true) {
 					if (choix.front() == 'd' || choix.front() == 'D') {
-						displayBoard();
+						//displayBoard();
 						defausse.push((Carte*)carte_classique);
-						cout << "C'est tout bon ! " << endl;
 						break;
 					}
 					else if (choix.front() == 'p' || choix.front() == 'P') {
-						displayBoard();
+						//displayBoard();
 						cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 						int id_tuile = getUserInput();
 						while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
@@ -589,8 +549,7 @@ public:
 							if (dynamic_cast<Carte_t*>(carte_classique)->getNom() == "Joker") 
 								nb_jokers_joues[id_joueur] += 1;
 						}
-						cout << "C'est bon !" << endl;
-						displayBoard();
+						//displayBoard();
 						break;
 					}
 					else
@@ -601,7 +560,7 @@ public:
 
 			case 4:
 				// 4 = choisir carte du cote adverse non revendiquée
-				displayBoard();
+				//displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 				id_tuile = getUserInput();
 				while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
@@ -615,7 +574,6 @@ public:
 					if (dynamic_cast<Carte_t*>(carte_classique)->getNom() == "Joker")
 						nb_jokers_joues[(id_joueur + 1) % 2] -= 1;
 				}
-				cout << "Défausse faite" << endl; 
 				break;
 
 			case 5:
@@ -628,7 +586,7 @@ public:
 
 			case 6:
 				// 6 = placer devant une tuile non revendiquée de notre cote
-				displayBoard();
+				//displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 				id_tuile = getUserInput();
 				while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
@@ -642,13 +600,12 @@ public:
 					if (dynamic_cast<Carte_t*>(carte_classique)->getNom() == "Joker")
 						nb_jokers_joues[id_joueur] += 1;
 				}
-				cout << "C'est bon !" << endl;
-				displayBoard();
+				//displayBoard();
 				break;
 
 			case 7:
 				// 7 = choisir carte de notre cote
-				displayBoard();
+				//displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
 				id_tuile = getUserInput();
 				while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
@@ -698,40 +655,30 @@ public:
 
 			case 1:
 				// 1 = placer carte sous pioche
-				cout << "PLACEMENT SOUS PIOCHE" << endl;
 				if (carte_classique != nullptr) {
-					cout << "AVANT LE ERASE CLASSIQUE" << endl;
 					carte->eraseCarte((Carte*)carte_classique);
 					getJoueurs()[id_joueur]->eraseCarte((Carte*)carte_classique);
-					cout << "APRES LE ERASE " << endl;
 					getPioche_c()->push(carte_classique);
 				}
 				else {
-					cout << "AVANT LE ERASE TACTIQUE" << endl;
-					cout << *carte_tactique << endl;
 					carte->eraseCarte((Carte*)carte_tactique);
 					getJoueurs()[id_joueur]->eraseCarte((Carte*)carte_tactique);
 					pioche_tact.push(carte_tactique);
 				}
-				cout << "PLACEMENT TERMINE" << endl;
 				break;
 
 			case 2:
 				// 2 = choisir carte de notre main (et le vecteur de Ruse)
-				cout << "CHOIX CARTE" << endl;
 				getJoueurs()[id_joueur]->afficherMain();
 				for (unsigned int i = 0; i < carte->getAllCartes().size(); i++)
 					carte->getAllCartes()[i]->print(cout);
 				c = choisirCarteIA(id_joueur, carte->getAllCartes());
 				if (typeid(*c) == typeid(Carte_t)) {
-					cout << "CAST TACTIQUE" << endl;
 					carte_tactique = (Carte_t*)(c);
 					carte_classique = nullptr;
 				}
 				else {
-					cout << "CAST CLASSIQUE" << endl;
 					carte_classique = (Carte_c*)(c);
-					cout << *carte_classique << endl;
 					carte_tactique = nullptr;
 				}
 				break;
@@ -740,12 +687,10 @@ public:
 				// 3 = placer carte sur borne non revendiquée de notre côté ou defausser
 				while (true) {
 					if (getJoueurs()[i]->choix_ia(0, 1)) {
-						displayBoard();
 						defausse.push((Carte*)carte_classique);
 						break;
 					}
 					else {
-						displayBoard();
 						int id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1); 
 						while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 							id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
@@ -756,7 +701,6 @@ public:
 							if (dynamic_cast<Carte_t*>(carte_classique)->getNom() == "Joker")
 								nb_jokers_joues[id_joueur] += 1;
 						}
-						displayBoard();
 						break;
 					}
 					choix = "";
@@ -765,7 +709,6 @@ public:
 
 			case 4:
 				// 4 = choisir carte du cote adverse non revendiquée
-				displayBoard();
 				id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
 				while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 					id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
@@ -788,7 +731,6 @@ public:
 
 			case 6:
 				// 6 = placer devant une tuile non revendiquée de notre cote
-				displayBoard();
 				id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);    
 				while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 					id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);   
@@ -799,12 +741,10 @@ public:
 					if (dynamic_cast<Carte_t*>(carte_classique)->getNom() == "Joker") 
 						nb_jokers_joues[id_joueur] += 1;
 				}
-				displayBoard();
 				break;
 
 			case 7:
 				// 7 = choisir carte de notre cote
-				displayBoard();
 				id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
 				while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 					id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
@@ -834,9 +774,6 @@ public:
 	/// <param name="id_joueur">The player to check</param>
 	/// <returns>A boolean (true if playable, false if not)</returns>
 	bool tactiqueJouable(int id_joueur) const {
-		cout << "tactique jouable ok" << endl;
-		bool result = nb_cartes_tactiques_jouees[id_joueur] <= nb_cartes_tactiques_jouees[(id_joueur + 1) % 2];
-		cout << result << endl;
 		return nb_cartes_tactiques_jouees[id_joueur] <= nb_cartes_tactiques_jouees[(id_joueur + 1) % 2]; 
 	}
 
@@ -846,7 +783,6 @@ public:
 	/// <param name="id_joueur">The player to check</param>
 	/// <returns>A boolean (true if playable, false if not)</returns>
 	bool jokerJouable(int id_joueur) const { 
-		cout << "joker ok" << endl;
 		return nb_jokers_joues[id_joueur] <= nb_jokers_joues[(id_joueur + 1) % 2];  
 	}
 };

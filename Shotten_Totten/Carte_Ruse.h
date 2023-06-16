@@ -61,9 +61,7 @@ public:
 
 	void eraseCarte(Carte* carte) {
 		for (auto it = 0; it < cartes.size(); it++) {
-			cout << "BOUCLE" << endl;
 			if (cartes[it] == carte) {
-				cout << "Suppression du vecteur" << endl;
 				cartes.erase(cartes.begin() + it);  
 				break;
 			}
