@@ -81,7 +81,7 @@ public:
 
 		for (auto ct : getCartesT())
 			delete ct;
-
+		getCartesT().clear();
 	}
 
 };

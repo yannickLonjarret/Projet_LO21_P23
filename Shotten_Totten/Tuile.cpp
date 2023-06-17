@@ -1,10 +1,11 @@
 #include "Tuile.h"
 
 /// <summary>
-/// 
+/// Identifie le type d'une carte et l'ajoute sur la tuile 
+/// dans le vector correspondant
 /// </summary>
-/// <param name="c"></param>
-/// <param name="idJoueur"></param>
+/// <param name="c">Carte à poser</param>
+/// <param name="idJoueur">Joueur souhaitant poser une caret</param>
 void Tuile::ajout_carte(Carte* c, int idJoueur) {
 
 	if (typeid(*c) == typeid(TroupeElite)) {
@@ -19,12 +20,11 @@ void Tuile::ajout_carte(Carte* c, int idJoueur) {
 }
 
 /// <summary>
-/// 
+/// Ajoute une carte classique du côté du joueur sur une tuile
 /// </summary>
-/// <param name="c"></param>
-/// <param name="idJoueur"></param>
+/// <param name="c">Pointeur de la carte à poser</param>
+/// <param name="idJoueur">Id du joueur souhaitant poser une carte</param>
 void Tuile::ajout_c(Carte_c* c, int idJoueur) {
-	cout << getCotes().size() << endl << endl;
 
 	Cote* coteJoueur = getCotes()[idJoueur];
 
@@ -32,7 +32,6 @@ void Tuile::ajout_c(Carte_c* c, int idJoueur) {
 
 		coteJoueur->getCartesC().push_back(c);
 		coteJoueur->setNbCartes(coteJoueur->getNbCartes() + 1);
-		//cout << "## AJOUT_C";
 
 		std::sort(coteJoueur->getCartesC().begin(), coteJoueur->getCartesC().end(), [](Carte_c* c1, Carte_c* c2) {
 			return c1->getValeur() < c2->getValeur();
@@ -47,10 +46,10 @@ void Tuile::ajout_c(Carte_c* c, int idJoueur) {
 }
 
 /// <summary>
-/// 
+/// Ajoute une carte tactique du côté du joueur sur une tuile
 /// </summary>
-/// <param name="c"></param>
-/// <param name="idJoueur"></param>
+/// <param name="c">Pointeur de la carte à poser</param>
+/// <param name="idJoueur">Id du joueur souhaitant poser une carte</param>
 void Tuile::ajout_t(Carte_t* c, int idJoueur) {
 
 	Cote* coteJoueur = getCotes()[idJoueur];
@@ -60,10 +59,10 @@ void Tuile::ajout_t(Carte_t* c, int idJoueur) {
 }
 
 /// <summary>
-/// 
+/// Ajoute une carte TroupeElite sur une tuile
 /// </summary>
-/// <param name="c"></param>
-/// <param name="idJoueur"></param>
+/// <param name="c">Pointeur de la carte à poser</param>
+/// <param name="idJoueur">Id du joueur souhaitant poser une carte</param>
 void Tuile::ajout_TroupeElite(TroupeElite* c, int idJoueur) {
 	int insertCtrl = getCotes()[idJoueur]->getCartesC().size();
 
@@ -75,14 +74,17 @@ void Tuile::ajout_TroupeElite(TroupeElite* c, int idJoueur) {
 }
 
 /// <summary>
-/// 
+/// Méthode composante du calcul de preuve
+/// Partie Tactique:
+/// Itère sur toutes les valeurs et toutes les couleurs d'une carte TroupeElite.
+/// A chaque itération, appelle la porte de contrôle
 /// </summary>
-/// <param name="toSet"></param>
-/// <param name="combiIncompl"></param>
-/// <param name="cardsToTest"></param>
-/// <param name="complete"></param>
-/// <param name="prevEvaluated"></param>
-/// <returns></returns>
+/// <param name="toSet">Carte sur laquelle on va itérer</param>
+/// <param name="combiIncompl">Combinaison incomplète de l'adversaire</param>
+/// <param name="cardsToTest">Ensemble de cartes classique non posées à tester</param>
+/// <param name="complete">Pointeur de la combinaison déjà complète</param>
+/// <param name="prevEvaluated">Ensemble des cartes classiques déjà testé</param>
+/// <returns>Vrai si une meilleur combinaison a été trouvée, faux sinon</returns>
 bool Tuile::computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated) {
 	int lowB, hiB;
 
@@ -111,13 +113,15 @@ bool Tuile::computeProofCarteT(TroupeElite* toSet, vector<Carte_c*> combiIncompl
 }
 
 /// <summary>
-/// 
+/// Méthode d'entrée du calcul de preuve
+/// Accorde la tuile au joueur uniquement si aucune combinaison strictement supérieur n'a été trouvée
 /// </summary>
-/// <param name="joueur"></param>
-/// <param name="plateau"></param>
+/// <param name="joueur">Id du joueur voulant revendiquer</param>
+/// <param name="plateau">Plateau de jeu, détermine les cartes déjà posées</param>
 void Tuile::claimProof(int joueur, vector<Tuile*> plateau) {
 	vector<Carte_c*> allCards;
 
+	//Determine les valeurs des TroupeElite au joueur
 	if (getCotes()[joueur]->getCartesC()[0]->getValeur() == -1)
 		claimTroupeE_CardSetter(getCotes()[joueur]->getCartesC());
 
@@ -131,7 +135,7 @@ void Tuile::claimProof(int joueur, vector<Tuile*> plateau) {
 	if (!proofComputer(getCotes()[(joueur + 1) % 2]->getCartesC(), allCards, complete, mem))
 		setClaim(joueur);
 
-	//Remise ŕ défaut de toutes les cartes TroupeElite
+	//Remise à défaut de toutes les cartes TroupeElite
 	for (int i = 0; i < getCotes().size(); i++) {
 		for (int j = 0; j < getCotes()[i]->getCartesC().size(); j++)
 			getCotes()[i]->getCartesC()[j]->setDefault();
@@ -144,13 +148,15 @@ void Tuile::claimProof(int joueur, vector<Tuile*> plateau) {
 }
 
 /// <summary>
-/// 
+/// Méthode de calcul de la preuve
+/// Cherche une combinaison strictement supérieur à celle existante parmi toutes les cartes
+/// classiques non posées
 /// </summary>
-/// <param name="combiIncompl"></param>
-/// <param name="cardsToTest"></param>
-/// <param name="complete"></param>
-/// <param name="prevEvaluated"></param>
-/// <returns></returns>
+/// <param name="combiIncompl">Combinaison de cartes à compléter</param>
+/// <param name="cardsToTest">Cartes non posées non testées</param>
+/// <param name="complete">Combinaison complète</param>
+/// <param name="prevEvaluated">Carte non posées testées</param>
+/// <returns>Vrai si une meilleur combinaison a été trouvée, faux sinon</returns>
 bool Tuile::proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated) {
 
 	if (combiIncompl.size() < complete->getTailleCombi()) {
@@ -185,20 +191,22 @@ bool Tuile::proofComputer(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsT
 }
 
 /// <summary>
-/// 
+/// Méthode composante du calcul de preuve
+/// Partie Classique:
+/// Test toute les cartes non posées en les ajoutant à la combinaison incomplète
 /// </summary>
-/// <param name="combiIncompl"></param>
-/// <param name="cardsToTest"></param>
-/// <param name="complete"></param>
-/// <param name="prevEvaluated"></param>
-/// <returns></returns>
+/// <param name="combiIncompl">Combinaison de cartes à compléter</param>
+/// <param name="cardsToTest">Cartes non posées non testées</param>
+/// <param name="complete">Combinaison complète</param>
+/// <param name="prevEvaluated">Carte non posées testées</param>
+/// <returns>Vrai si une meilleur combinaison a été trouvée, faux sinon</returns>
 bool Tuile::computeProofCarteC(vector<Carte_c*> combiIncompl, vector<Carte_c*> cardsToTest, Combinaison* complete, vector<Carte_c*> prevEvaluated) {
 
 	bool combiGagne = false;
 
 	for (int i = 0; i < cardsToTest.size(); i++) {
 
-		//Evaluation sans répétition des cartes par consultation d'un hist
+		//Evaluation sans répétition des cartes par consultation d'un historique
 		for (int j = 0; j < prevEvaluated.size(); j++) {
 			if (cardsToTest[i] == prevEvaluated[j])
 				i++;
@@ -209,7 +217,7 @@ bool Tuile::computeProofCarteC(vector<Carte_c*> combiIncompl, vector<Carte_c*> c
 
 			combiIncompl.push_back(cardsToTest[i]);
 
-			//Maj de l'hist
+			//Maj de l'historique
 			prevEvaluated.push_back(cardsToTest[i]);
 
 			combiGagne = proofComputer(combiIncompl, cardsToTest, complete, prevEvaluated);
@@ -230,27 +238,30 @@ bool Tuile::computeProofCarteC(vector<Carte_c*> combiIncompl, vector<Carte_c*> c
 }
 
 /// <summary>
-/// 
+/// Retire toutes les cartes déjà posée sur le plateau d'un vecteur contenant toute les cartes classique du jeu
 /// </summary>
-/// <param name="toSub"></param>
-/// <param name="plateau"></param>
+/// <param name="toSub">Vecteur de carte à modifier</param>
+/// <param name="plateau">Plateau sur lequel on doit chercher l'existence de la carte</param>
 void Tuile::cardSubstractor(vector<Carte_c*>& toSub, vector<Tuile*> plateau) {
 	int i = 0;
-
+	Carte_c* c;
 	while (i < toSub.size()) {
-		if (isCardOnBoard(toSub[i], plateau))
+		if (isCardOnBoard(toSub[i], plateau)) {
+			c = toSub[i];
 			toSub.erase(toSub.begin() + i);
+			delete c;
+		}
 		else
 			i++;
 	}
 }
 
 /// <summary>
-/// 
+/// Cherche si une carte est sur le plateau
 /// </summary>
-/// <param name="c"></param>
-/// <param name="plateau"></param>
-/// <returns></returns>
+/// <param name="c">Carte que l'on cherche</param>
+/// <param name="plateau">Plateau sur lequel on cherche la carte</param>
+/// <returns>Vrai si trouvé, faux sinon</returns>
 bool Tuile::isCardOnBoard(Carte_c* c, vector<Tuile*> plateau) {
 
 	for (auto i = 0; i < plateau.size(); i++) {
@@ -262,10 +273,10 @@ bool Tuile::isCardOnBoard(Carte_c* c, vector<Tuile*> plateau) {
 }
 
 /// <summary>
-/// 
+/// Recherche si une carte est présente sur une tuile
 /// </summary>
-/// <param name="c"></param>
-/// <returns></returns>
+/// <param name="c">Carte à chercher</param>
+/// <returns>Vrai si la carte est présente, faux sinon</returns>
 bool Tuile::isCardOnTuile(Carte_c* c) {
 	vector<Carte_c*> vect;
 
@@ -285,9 +296,10 @@ bool Tuile::isCardOnTuile(Carte_c* c) {
 }
 
 /// <summary>
-/// 
+/// Génère toutes les cartes du jeu pour le calcul de preuve
+/// Doit être utilisé avec le cardSubtractor
 /// </summary>
-/// <param name="gen"></param>
+/// <param name="gen">Vecteur de carte dans lequel ajouter les cartes</param>
 void Tuile::proofCardGenerator(vector<Carte_c*>& gen) {
 	int min, max;
 	min = Carte_c::getValMin();
@@ -304,10 +316,11 @@ void Tuile::proofCardGenerator(vector<Carte_c*>& gen) {
 
 
 /// <summary>
+/// Permet à un joueur de revendiquer une tuile spécifique
 /// Implémentation pour 2 joueurs uniquement car aucune idées des rčgles ŕ ajouter en cas d'égalité ou de revendication par preuve
 /// </summary>
-/// <param name="idJoueur"></param>
-/// <param name="plateau"></param>
+/// <param name="idJoueur">Id du joueur voulant revendiquer</param>
+/// <param name="plateau">Ensemble des tuiles du jeu, nécessaire pour calcul de la preuve</param>
 void Tuile::claimTuile(int idJoueur, vector<Tuile*> plateau) {
 	if (!isClaimable()) {
 		std::cout << "Tuile non revendicable" << std::endl;
@@ -334,10 +347,10 @@ void Tuile::claimTuile(int idJoueur, vector<Tuile*> plateau) {
 }
 
 /// <summary>
-/// 
+/// Defausse une carte du côté du joueur sur une tuile
 /// </summary>
-/// <param name="idJoueur"></param>
-/// <returns></returns>
+/// <param name="idJoueur">Id du joueur souhaitant défausser une carte</param>
+/// <returns>Pointeur sur la carte à défausser</returns>
 Carte_c* Tuile::defausseSoi(int idJoueur) {
 	Carte_c* toDefausse = nullptr;
 	char valid;
@@ -362,6 +375,11 @@ Carte_c* Tuile::defausseSoi(int idJoueur) {
 
 }
 
+/// <summary>
+/// Permet à une IA de défausser une carte de son côté
+/// </summary>
+/// <param name="idJoueur">Id de l'IA</param>
+/// <returns>Pointeur sur la carte défaussée</returns>
 Carte_c* Tuile::defausseSoiIA(int idJoueur) {
 	int i = rand() % (getCotes()[idJoueur]->getCartesC().size());
 	Carte_c* toDefausse = getCotes()[idJoueur]->getCartesC()[i];
@@ -372,10 +390,10 @@ Carte_c* Tuile::defausseSoiIA(int idJoueur) {
 }
 
 /// <summary>
-/// 
+/// Permet à un joueur de défausser une carte du côté adverse sur une tuile
 /// </summary>
-/// <param name="idJoueur"></param>
-/// <returns></returns>
+/// <param name="idJoueur">Id du joueur faisant le choix de défausse</param>
+/// <returns>Pointeur sur la carte défaussée</returns>
 Carte_c* Tuile::defausseAdverse(int idJoueur) {
 
 	Carte_c* toDefausse = nullptr;
@@ -400,8 +418,15 @@ Carte_c* Tuile::defausseAdverse(int idJoueur) {
 
 }
 
+/// <summary>
+/// Permet à une IA de défausser une carte de l'adversaire 
+/// </summary>
+/// <param name="idJoueur">Id de l'IA</param>
+/// <returns>Pointeur sur la carte défaussée</returns>
 Carte_c* Tuile::defausseAdverseIA(int idJoueur) {
+
 	int i = rand() % (getCotes()[(idJoueur + 1) % 2]->getCartesC().size());
+
 	Carte_c* toDefausse = getCotes()[(idJoueur + 1) % 2]->getCartesC()[i];     
 	int nb_cartes_precedent = getCotes()[(idJoueur + 1) % 2]->getNbCartes();
 	getCotes()[(idJoueur + 1) % 2]->getCartesC().erase(getCotes()[(idJoueur + 1) % 2]->getCartesC().begin() + i);
@@ -410,10 +435,11 @@ Carte_c* Tuile::defausseAdverseIA(int idJoueur) {
 }
 
 /// <summary>
-/// 
+/// Permet de défausser une carte classique d'une tuile
+/// Le choix est fait par le joueur dont l'id est idJoueur
 /// </summary>
-/// <param name="idJoueur"></param>
-/// <returns></returns>
+/// <param name="idJoueur">Id du joueur faisant le choix de défausse</param>
+/// <returns>Pointeur sur la carte défaussée</returns>
 Carte_c* Tuile::defausseTout(int idJoueur) {
 	vector<Carte_c*> soi = getCotes()[idJoueur]->getCartesC();
 	vector<Carte_c*> adv = getCotes()[(idJoueur + 1) % 2]->getCartesC();
@@ -451,9 +477,9 @@ Carte_c* Tuile::defausseTout(int idJoueur) {
 }
 
 /// <summary>
-/// 
+/// Demande les valeurs et les couleurs que devront prendre les cartes TroupeElite
 /// </summary>
-/// <param name="v"></param>
+/// <param name="v">Vector de carte dans lequel se trouve les cartes</param>
 void Tuile::claimTroupeE_CardSetter(vector<Carte_c*> v) {
 	int id_col, value;
 	TroupeElite* cast;
@@ -495,9 +521,9 @@ void Tuile::claimTroupeE_CardSetter(vector<Carte_c*> v) {
 }
 
 /// <summary>
-/// 
+/// Determine le vainqueur d'une tuile lorsque les deux joueurs ont posés toutes les cartes
 /// </summary>
-/// <param name="joueur"></param>
+/// <param name="joueur">Id du joueur souhaitant revendiquer</param>
 void Tuile::claimClassic(int joueur) {
 	vector<Carte_c*> jCourant, jAdv;
 	
@@ -530,7 +556,8 @@ void Tuile::claimClassic(int joueur) {
 }
 
 /// <summary>
-/// 
+/// Permet de déterminer le vainqueur d'une tuile
+/// lorsque les deux combinaisons sont de même valeur et de même score
 /// </summary>
 void Tuile::casEgalite() {
 
@@ -546,7 +573,7 @@ void Tuile::casEgalite() {
 		i++;
 	}
 
-	if (idJoueur == -1) cout << "Problčme cas Egalité" << endl;
+	if (idJoueur == -1) cout << "Probleme cas Egalite" << endl;
 
 	setClaim(idJoueur);
 
@@ -554,9 +581,9 @@ void Tuile::casEgalite() {
 }
 
 /// <summary>
-/// 
+/// Determine si une tuile peut être revendiquée
 /// </summary>
-/// <returns></returns>
+/// <returns>Vrai si la tuile est revendiquable, faux sinon</returns>
 bool Tuile::isClaimable() {
 
 	if (getClaim() != -1) {
@@ -575,30 +602,14 @@ bool Tuile::isClaimable() {
 }
 
 /// <summary>
-/// 
+/// Met à jour les combinaisons possibles de victoire
 /// </summary>
-void Tuile::clearVictoires() {
-	vector<Combinaison*> toClr = getVictoires();
-	Combinaison* tmp;
-
-	while (toClr.size() != 0) {
-		tmp = toClr[0];
-		toClr.erase(toClr.begin());
-		delete tmp;
-	}
-
-}
-
-/// <summary>
-/// 
-/// </summary>
-/// <param name="newVict"></param>
+/// <param name="newVict">Nouvelles combinaisons de victoires</param>
 void Tuile::setVictoires(vector<Combinaison*> newVict) {
 	if (newVict.size() == 0) return;
 	
 	vector<Combinaison*> toChng = getVictoires();
 
-	clearVictoires();
 
 	for (auto i = 0; i < newVict.size(); i++)
 		toChng.push_back(newVict[i]);
