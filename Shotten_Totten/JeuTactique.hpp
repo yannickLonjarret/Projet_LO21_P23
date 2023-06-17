@@ -40,13 +40,13 @@ private:
 	/// </summary>
 	vector<int> nb_jokers_joues;
 public:
-	//méthodes pour le singleton
+	//methodes pour le singleton
 	static JeuTactique* donneInstance() {
 		if (jeuTactiqueUnique == nullptr && Jeu::possibleInstance()) {
 			jeuTactiqueUnique = new JeuTactique();
 		}
 		else if (!Jeu::possibleInstance()) {
-			cout << "Erreur : un jeu classique est déjà en cours" << endl;
+			cout << "Erreur : un jeu classique est deja en cours" << endl;
 		}
 		return jeuTactiqueUnique;
 	}
@@ -65,13 +65,13 @@ public:
 		nb_cartes_tactiques_jouees = { 0, 0 };
 		nb_jokers_joues = { 0, 0 };
 
-		// Création des cartes Troupe d'Elite
+		// Creation des cartes Troupe d'Elite
 		pioche_tact.push(new TroupeElite(elite, "Joker", -1,Carte_c::getCouleurs()[0], 1, 9));
 		pioche_tact.push(new TroupeElite(elite, "Joker", -1, Carte_c::getCouleurs()[0], 1, 9));
 		pioche_tact.push(new TroupeElite(elite, "Espion", -1, Carte_c::getCouleurs()[0], 7, 7));
 		pioche_tact.push(new TroupeElite(elite, "Porte Bouclier", -1, Carte_c::getCouleurs()[0], 1, 3));
 
-		// Création des cartes Mode de Combat 
+		// Creation des cartes Mode de Combat 
 		/*Combinaison* c1 = ;
 		Combinaison* c2 = new Combinaison(true, false, false);
 		Combinaison* c3 = new Combinaison(false, true, false);
@@ -83,15 +83,15 @@ public:
 		vecteur_combi = {};
 		pioche_tact.push(new ModeCombat(combat, "Combat de boue", 4, vecteur_combi)); 
 		
-		// Création des cartes Ruse
+		// Creation des cartes Ruse
 		/*
 		0 = piocher 
 		1 = placer carte sous pioche 
 		2 = choisir carte de notre main (et le vecteur de Ruse) 
-		3 = placer carte sur borne non revendiquée de notre côté ou defausser
-		4 = choisir carte du cote adverse non revendiquée
-		5 = défausser du cote adverse
-		6 = placer devant une tuile non revendiquée de notre cote
+		3 = placer carte sur borne non revendiquee de notre côte ou defausser
+		4 = choisir carte du cote adverse non revendiquee
+		5 = defausser du cote adverse
+		6 = placer devant une tuile non revendiquee de notre cote
 		7 = choisir carte de notre cote
 		*/
 		
@@ -218,7 +218,7 @@ public:
 					while (getJoueurs()[i]->getNbCartes() < 7)
 						piocher(choixPiocheIA(), i);  
 
-					cout << getJoueurs()[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
+					cout << getJoueurs()[i]->getNom() << " a termine son tour. \n## Entrez un caractere pour confirmer que vous avez change de place..." << endl;
 					cin >> empty; 
 				}
 				else {
@@ -246,15 +246,15 @@ public:
 						getJoueurs()[i]->eraseCarte(carte_a_jouer);
 						defausse.push(carte_a_jouer);
 						execRuse(dynamic_cast<Ruse*>(carte_a_jouer), i);
-						cout << "Exécution terminée ! " << endl;
+						cout << "Execution terminee ! " << endl;
 						nb_cartes_tactiques_jouees[i]++;     
 					}
 					else if (typeid(*carte_a_jouer) == typeid(ModeCombat)) {
 						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 						int id_tuile = getUserInput();
 						id_tuile--;
-						while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
-							cout << "Choix impossible, la borne est déjà revendiquée ou inexistante, veuillez réessayer." << endl;
+						while (!checkBornes(0, 8, id_tuile) || !tuileNonRevendiquee(getPlateau()[id_tuile])) {
+							cout << "Choix impossible, la borne est deja revendiquee ou inexistante, veuillez reessayer." << endl;
 							cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 							id_tuile = getUserInput();
 							id_tuile--;
@@ -269,8 +269,9 @@ public:
 						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 						int id_tuile = getUserInput();
 						id_tuile--;
-						while (!posePossible(getPlateau()[id_tuile], i) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
-							cout << "Choix impossible, la borne est pleine, déjà revendiquée ou inexistante, veuillez réessayer." << endl;
+						cout << checkBornes(0, 8, id_tuile) << endl;
+						while (!checkBornes(0, 8, id_tuile) || !posePossible(getPlateau()[id_tuile], i) || !tuileNonRevendiquee(getPlateau()[id_tuile])) {
+							cout << "Choix impossible, la borne est pleine, deja revendiquee ou inexistante, veuillez reessayer." << endl;
 							cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 							id_tuile = getUserInput();
 							id_tuile--;
@@ -299,7 +300,7 @@ public:
 					while (getJoueurs()[i]->getNbCartes() < 7)
 						piocher(choixPioche(), i);
 
-					cout << getJoueurs()[i]->getNom() << " a termine son tour. \n## Entrez un caractère pour confirmer que vous avez change de place..." << endl;
+					cout << getJoueurs()[i]->getNom() << " a termine son tour. \n## Entrez un caractere pour confirmer que vous avez change de place..." << endl;
 					cin >> empty; 
 				}
 
@@ -309,7 +310,7 @@ public:
 				if (winner != -1) break; 
 			}
 		}
-		cout << "Partie terminée, le gagnant est " << getJoueurs()[winner]->getNom();
+		cout << "Partie terminee, le gagnant est " << getJoueurs()[winner]->getNom();
 		getJoueurs()[winner]->setScore(getJoueurs()[winner]->getScore() + 1);
 	}
 
@@ -523,7 +524,7 @@ public:
 					getJoueurs()[id_joueur]->eraseCarte((Carte*)carte_tactique);
 					pioche_tact.push(carte_tactique); 
 				}
-				cout << "Carte placée sous la pioche." << endl;
+				cout << "Carte placee sous la pioche." << endl;
 				break;
 
 			case 2:
@@ -545,8 +546,8 @@ public:
 				break;
 
 			case 3:
-				// 3 = placer carte sur borne non revendiquée de notre côté ou defausser
-				cout << "Voulez-vous défausser la carte ou la placer sur une autre borne de votre cote ? (d = defausser / p = placer) " << endl;
+				// 3 = placer carte sur borne non revendiquee de notre côte ou defausser
+				cout << "Voulez-vous defausser la carte ou la placer sur une autre borne de votre cote ? (d = defausser / p = placer) " << endl;
 
 				std::cin >> choix;
 				while (true) {
@@ -561,7 +562,7 @@ public:
 						int id_tuile = getUserInput();
 						id_tuile--;
 						while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
-							cout << "Choix impossible, la borne est pleine, déjà revendiquée ou inexistante, veuillez réessayer." << endl;
+							cout << "Choix impossible, la borne est pleine, deja revendiquee ou inexistante, veuillez reessayer." << endl;
 							cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 							id_tuile = getUserInput(); 
 							id_tuile--;
@@ -582,13 +583,13 @@ public:
 				break;
 
 			case 4:
-				// 4 = choisir carte du cote adverse non revendiquée
+				// 4 = choisir carte du cote adverse non revendiquee
 				//displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 1 et 9] : ";
 				id_tuile = getUserInput();
 				id_tuile--;
-				while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
-					cout << "Choix impossible, la borne est déjà revendiquée ou inexistante, veuillez réessayer." << endl;
+				while (!checkBornes(0, 8, id_tuile) || !tuileNonRevendiquee(getPlateau()[id_tuile])) {
+					cout << "Choix impossible, la borne est deja revendiquee ou inexistante, veuillez reessayer." << endl;
 					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 					id_tuile = getUserInput(); 
 					id_tuile--;
@@ -602,7 +603,7 @@ public:
 				break;
 
 			case 5:
-				// 5 = défausser de la main
+				// 5 = defausser de la main
 				if (carte_classique != nullptr)
 					defausse.push((Carte*)carte_classique);
 				else 
@@ -610,13 +611,13 @@ public:
 				break;
 
 			case 6:
-				// 6 = placer devant une tuile non revendiquée de notre cote
+				// 6 = placer devant une tuile non revendiquee de notre cote
 				//displayBoard();
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 1 et 9] : ";
 				id_tuile = getUserInput();
 				id_tuile--;
-				while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
-					cout << "Choix impossible, la borne est pleine, déjà revendiquée ou inexistante, veuillez réessayer." << endl;
+				while (!checkBornes(0, 8, id_tuile) || !posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile])) {
+					cout << "Choix impossible, la borne est pleine, deja revendiquee ou inexistante, veuillez reessayer." << endl;
 					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 					id_tuile = getUserInput();
 					id_tuile--;
@@ -636,8 +637,8 @@ public:
 				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 1 et 9] : ";
 				id_tuile = getUserInput();
 				id_tuile--;
-				while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
-					cout << "Choix impossible, la borne est déjà revendiquée ou inexistante, veuillez réessayer." << endl;
+				while (!checkBornes(0, 8, id_tuile) || !tuileNonRevendiquee(getPlateau()[id_tuile])) {
+					cout << "Choix impossible, la borne est deja revendiquee ou inexistante, veuillez reessayer." << endl;
 					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 					id_tuile = getUserInput();
 					id_tuile--;
@@ -713,7 +714,7 @@ public:
 				break;
 
 			case 3:
-				// 3 = placer carte sur borne non revendiquée de notre côté ou defausser
+				// 3 = placer carte sur borne non revendiquee de notre côte ou defausser
 				while (true) {
 					if (getJoueurs()[i]->choix_ia(0, 1)) {
 						defausse.push((Carte*)carte_classique);
@@ -737,7 +738,7 @@ public:
 				break;
 
 			case 4:
-				// 4 = choisir carte du cote adverse non revendiquée
+				// 4 = choisir carte du cote adverse non revendiquee
 				id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
 				while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 					id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
@@ -751,7 +752,7 @@ public:
 				break;
 
 			case 5:
-				// 5 = défausser de la main
+				// 5 = defausser de la main
 				if (carte_classique != nullptr)
 					defausse.push((Carte*)carte_classique);
 				else
@@ -759,7 +760,7 @@ public:
 				break;
 
 			case 6:
-				// 6 = placer devant une tuile non revendiquée de notre cote
+				// 6 = placer devant une tuile non revendiquee de notre cote
 				id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);    
 				while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 					id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);   
