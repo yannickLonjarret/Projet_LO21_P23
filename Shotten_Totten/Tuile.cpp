@@ -602,6 +602,17 @@ bool Tuile::isClaimable() {
 }
 
 /// <summary>
+/// Vide le vecteur de victoire
+/// </summary>
+void Tuile::clearVictoires() {
+	vector<Combinaison*> toClr = getVictoires();
+
+	while (toClr.size() != 0)
+		toClr.erase(toClr.begin());
+
+}
+
+/// <summary>
 /// Met à jour les combinaisons possibles de victoire
 /// </summary>
 /// <param name="newVict">Nouvelles combinaisons de victoires</param>
@@ -609,7 +620,7 @@ void Tuile::setVictoires(vector<Combinaison*> newVict) {
 	if (newVict.size() == 0) return;
 	
 	vector<Combinaison*> toChng = getVictoires();
-
+	clearVictoires();
 
 	for (auto i = 0; i < newVict.size(); i++)
 		toChng.push_back(newVict[i]);

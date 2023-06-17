@@ -168,6 +168,8 @@ public:
 
 	bool isClaimable();
 
+	void clearVictoires();
+
 	void setVictoires(vector<Combinaison*> newVict);
 
 	void setNbCartesMax(int nb) {
