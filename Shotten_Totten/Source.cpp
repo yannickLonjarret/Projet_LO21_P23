@@ -182,11 +182,13 @@ int main() {
 			break;
 		case 2:
 			quit = true;
-			jeu_tactique = new JeuTactique();
-			jeu_tactique->printTitles();
-			jeu_tactique->menu_selection();
-			jeu_tactique->startGame();
-			delete jeu_tactique;
+			jeu_tactique = JeuTactique::donneInstance();
+			if (jeu_tactique != nullptr) {
+				jeu_tactique->printTitles(); 
+				jeu_tactique->menu_selection();
+				jeu_tactique->startGame(); 
+				JeuTactique::libereInstance();
+			}
 			break;
 		case 3:
 			quit = true;
@@ -199,15 +201,5 @@ int main() {
 		}
 	}
 
-	/*
-	if (choice) {
-		Jeu* jeu = new Jeu();
-		jeu->printTitles();
-		jeu->menu_selection();
-	}
-	else {
-		JeuTactique* jeu = new JeuTactique();
-	}
-	*/
 	return 0;
 }
