@@ -39,8 +39,11 @@ private:
 	/// nb_jokers_joues represents the number of joker cards played by each player (each player id corresponds to each id of the vector)
 	/// </summary>
 	vector<int> nb_jokers_joues;
-public:
-	//methodes pour le singleton
+public:	
+	/// <summary>
+	/// Allows the user to create a new JeuTactique, if one has been already created, it will return this one.
+	/// A JeuTactique cannot be created if a classical Jeu has already be created neither, it will return nullptr in this case.
+	/// </summary>
 	static JeuTactique* donneInstance() {
 		if (jeuTactiqueUnique == nullptr && Jeu::possibleInstance()) {
 			jeuTactiqueUnique = new JeuTactique();
@@ -51,6 +54,9 @@ public:
 		return jeuTactiqueUnique;
 	}
 
+	/// <summary>
+	/// Allows the user to free a JeuTactique instance object
+	/// </summary>
 	static void libereInstance() {
 		delete jeuTactiqueUnique;
 		jeuTactiqueUnique = nullptr;
@@ -66,19 +72,13 @@ public:
 		nb_jokers_joues = { 0, 0 };
 
 		// Creation des cartes Troupe d'Elite
-		pioche_tact.push(new TroupeElite(elite, "Joker", -1,Carte_c::getCouleurs()[0], 1, 9));
+		pioche_tact.push(new TroupeElite(elite, "Joker", -1, Carte_c::getCouleurs()[0], 1, 9));
 		pioche_tact.push(new TroupeElite(elite, "Joker", -1, Carte_c::getCouleurs()[0], 1, 9));
 		pioche_tact.push(new TroupeElite(elite, "Espion", -1, Carte_c::getCouleurs()[0], 7, 7));
 		pioche_tact.push(new TroupeElite(elite, "Porte Bouclier", -1, Carte_c::getCouleurs()[0], 1, 3));
 
 		// Creation des cartes Mode de Combat 
-		/*Combinaison* c1 = ;
-		Combinaison* c2 = new Combinaison(true, false, false);
-		Combinaison* c3 = new Combinaison(false, true, false);
-		Combinaison* c4 = new Combinaison(false, false, true);
-		Combinaison* c5 = new Combinaison(true, true, false);*/
 		vector<Combinaison*> vecteur_combi = { new Combinaison(false, false, false) }; 
-		//vecteur_combi.push_back(new Combinaison(false, false, false));
 		pioche_tact.push(new ModeCombat(combat, "Colin Maillard", -1, vecteur_combi)); 
 		vecteur_combi = {};
 		pioche_tact.push(new ModeCombat(combat, "Combat de boue", 4, vecteur_combi)); 
@@ -94,7 +94,7 @@ public:
 		6 = placer devant une tuile non revendiquee de notre cote
 		7 = choisir carte de notre cote
 		*/
-		
+		/*
 		vector<int> suite = { 0, 0, 0, 2, 1, 2, 1 };
 		pioche_tact.push(new Ruse(ruse, "Chasseur de Tete", suite));
 		suite = { 7, 3 };
@@ -104,7 +104,7 @@ public:
 		suite = {4, 6};
 		pioche_tact.push(new Ruse(ruse, "Traitre", suite));
 		
-		pioche_tact.shuffle();
+		pioche_tact.shuffle();*/
 	}
 
 	~JeuTactique() {}
@@ -352,12 +352,12 @@ public:
 	/// <returns>0 for the classical one, 1 for the tactical one, -1 for non (both empty)</returns>
 	int choixPioche() const {
 		if (getPioche_c()->getSize() == 0) {
-			cout << "Vous ne pouvez piocher que dans la pioche classique, la pioche tactique est vide." << endl;
-			return 0;
+			cout << "Vous ne pouvez piocher que dans la pioche tactique, la pioche classique est vide." << endl;
+			return 1;
 		}
 		else if (pioche_tact.getSize() == 0) {
-			cout << "Vous ne pouvez piocher que dans la pioche tactique, la pioche classique est vide." << endl; 
-			return 1;
+			cout << "Vous ne pouvez piocher que dans la pioche classique, la pioche tactique est vide." << endl; 
+			return 0;
 		}
 		else if (getPioche_c()->getSize() == 0 && pioche_tact.getSize() == 0) {
 			cout << "Vous ne pouvez plus piocher, les pioches sont vides." << endl;
@@ -385,9 +385,9 @@ public:
 	/// <returns>0 for the classical one, 1 for the tactical one, -1 for non (both empty)</returns>
 	int choixPiocheIA() {
 		if (getPioche_c()->getSize() == 0)
-			return 0;
-		else if (pioche_tact.getSize() == 0)
 			return 1;
+		else if (pioche_tact.getSize() == 0)
+			return 0;
 		else if (getPioche_c()->getSize() == 0 && pioche_tact.getSize() == 0)
 			return -1;
 		else
