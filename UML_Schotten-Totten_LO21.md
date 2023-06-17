@@ -116,6 +116,8 @@ classDiagram
         + isClaimable() : bool
         + defausseSoi(int idJoueur) : Carte_c*
 	    + defausseAdverse(int idJoueur) : Carte_c*
+        + defausseSoiIA(int idJoueur) : Carte_c*
+        + defausseAdverseIA(int idJoueur) : Carte_c* 
 	    + defausseTout(int idJoueur) : Carte_c*
         + clearVictoires(): void
 	    + setVictoires(vector<Combinaison*> newVict) : void
@@ -134,6 +136,7 @@ classDiagram
         + constructeurs (nb_cartes, vicPoss)
         + getJoueur() : int
         + getPositionCarteT() : int
+        + ~nodeHist_c() : void
     }
     
     class Combinaison{
@@ -166,9 +169,9 @@ classDiagram
         + setSuite(bool s) : void
         + setCouleur(bool s) : void
         + setScoreCombi(int v) : void
-        + setSumCombi(int v) : void
+        + setSumCombi(int s) : void
         + setDefault() : void
-        + operator>>(Combinaison& other) : bool
+        + operator>(Combinaison& other) : bool
     }
     
     class Cote{
@@ -176,12 +179,13 @@ classDiagram
         - cartesC: vector<Carte_c *>
         - cartesT_: vector<Carte_T *>
         - nbCartesJoue: int
-        + constructeurs (int id)
+        + Cote(int id)
         + getNbCartes() : int
         + getIdJoueur() : int
         + getCartesC() : vector<Carte_c*>&
         + getCartesT() : vector<Carte_t*>&
-        + setNbCartes(intNewVal) : void
+        + setNbCartes(int NewVal) : void
+        + ~Cote() : void
        
     }
     

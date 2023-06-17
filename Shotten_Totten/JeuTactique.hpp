@@ -123,17 +123,7 @@ public:
 	/// </summary>
 	void startGame() {
 		system("CLS");
-
-		string empty;
-		int winner = -1;
-
-		// On distribue les cartes
-		distribuerCartes(7);
-
-		while (winner == -1) {
-
-			for (unsigned int i = 0; i < getJoueurs().size(); i++) {
-				cout << R"(
+		cout << R"(
  _____           _   _
 |  __ \         | | (_)
 | |__) |_ _ _ __| |_ _  ___    ___ _ __     ___ ___  _   _ _ __ ___
@@ -143,19 +133,35 @@ public:
 
 
 	   )" << endl;
+		string empty;
+		int winner = -1;
+		int id_tuile;
+		int id_carte;
+		bool tactique_jouable;
+		bool joker_jouable;
 
+		Carte* carte_a_jouer;
+		vector<Carte*> vect;
+
+		string choix;
+		// On distribue les cartes
+		distribuerCartes(7);
+
+		while (winner == -1) {
+			vect.clear();
+			for (unsigned int i = 0; i < getJoueurs().size(); i++) {
+				system("CLS");
 				displayBoard();
 				cout << "\nDefausse : " << defausse << endl;
 
 				if (getJoueurs()[i]->estIA()) {
 					// Poser la carte choisie
 					cout << " ## C'est au joueur " << getJoueurs()[i]->getNom() << " de jouer ## " << endl;
-					vector<Carte*> vect;
-					int id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
-					int id_carte = getJoueurs()[i]->choix_ia(0, getJoueurs()[i]->getNbCartes() - 1);
-					bool tactique_jouable = tactiqueJouable(i);
-					bool joker_jouable = jokerJouable(i);
-					Carte* carte_a_jouer;
+					id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
+					id_carte = getJoueurs()[i]->choix_ia(0, getJoueurs()[i]->getNbCartes() - 1);
+					tactique_jouable = tactiqueJouable(i);
+					joker_jouable = jokerJouable(i);
+					carte_a_jouer;
 					if (id_carte >= getJoueurs()[i]->getCarteC().size()) {
 						carte_a_jouer = (Carte*)getJoueurs()[i]->getCarteT()[id_carte - getJoueurs()[i]->getCarteC().size()];
 					}
@@ -225,10 +231,9 @@ public:
 					getJoueurs()[i]->afficherMain();
 					// Poser la carte choisie
 					cout << " ## C'est au joueur " << getJoueurs()[i]->getNom() << " de jouer ## " << endl;
-					vector<Carte*> vect = {}; 
-					Carte* carte_a_jouer = choisirCarte(i, vect);
-					bool tactique_jouable = tactiqueJouable(i);
-					bool joker_jouable = jokerJouable(i);
+					carte_a_jouer = choisirCarte(i, vect);
+					tactique_jouable = tactiqueJouable(i);
+					joker_jouable = jokerJouable(i);
 					while (dynamic_cast<Carte_t*>(carte_a_jouer) != nullptr && (!tactique_jouable || (!joker_jouable && dynamic_cast<Carte_t*>(carte_a_jouer)->getNom() == "Joker"))) {
 						if (!joker_jouable)
 							cout << "Il est impossible de poser deux jokers" << endl;
@@ -251,7 +256,7 @@ public:
 					}
 					else if (typeid(*carte_a_jouer) == typeid(ModeCombat)) {
 						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
-						int id_tuile = getUserInput();
+						id_tuile = getUserInput();
 						id_tuile--;
 						while (!checkBornes(0, 8, id_tuile) || !tuileNonRevendiquee(getPlateau()[id_tuile])) {
 							cout << "Choix impossible, la borne est deja revendiquee ou inexistante, veuillez reessayer." << endl;
@@ -267,7 +272,7 @@ public:
 					}
 					else {
 						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
-						int id_tuile = getUserInput();
+						id_tuile = getUserInput();
 						id_tuile--;
 						cout << checkBornes(0, 8, id_tuile) << endl;
 						while (!checkBornes(0, 8, id_tuile) || !posePossible(getPlateau()[id_tuile], i) || !tuileNonRevendiquee(getPlateau()[id_tuile])) {
@@ -288,7 +293,7 @@ public:
 					getJoueurs()[i]->afficherMain();
 
 					// Possible revendication
-					string choix;
+
 					cout << "Voulez-vous revendiquer une borne ? (O / N) ";
 					cin >> choix;
 					if (choix.front() == 'O' || choix.front() == 'o') {
@@ -300,12 +305,13 @@ public:
 					while (getJoueurs()[i]->getNbCartes() < 7)
 						piocher(choixPioche(), i);
 
+					system("CLS");
+					displayBoard();
 					cout << getJoueurs()[i]->getNom() << " a termine son tour. \n## Entrez un caractere pour confirmer que vous avez change de place..." << endl;
 					cin >> empty; 
 				}
 
-				for (int i = 0; i < 100; i++)
-					cout << endl;
+				
 				winner = victory();
 				if (winner != -1) break; 
 			}
