@@ -72,16 +72,16 @@ public:
 		pioche_tact.push(new TroupeElite(elite, "Porte Bouclier", -1, Carte_c::getCouleurs()[0], 1, 3));
 
 		// Création des cartes Mode de Combat 
-		Combinaison* c1 = new Combinaison(false, false, false);
+		/*Combinaison* c1 = ;
 		Combinaison* c2 = new Combinaison(true, false, false);
 		Combinaison* c3 = new Combinaison(false, true, false);
 		Combinaison* c4 = new Combinaison(false, false, true);
-		Combinaison* c5 = new Combinaison(true, true, false);
-		vector<Combinaison*> vecteur_combi;
-		vecteur_combi.push_back(c1);
-		pioche_tact.push(new ModeCombat(combat, "Colin Maillard", -1, vecteur_combi));
+		Combinaison* c5 = new Combinaison(true, true, false);*/
+		vector<Combinaison*> vecteur_combi = { new Combinaison(false, false, false) }; 
+		//vecteur_combi.push_back(new Combinaison(false, false, false));
+		pioche_tact.push(new ModeCombat(combat, "Colin Maillard", -1, vecteur_combi)); 
 		vecteur_combi = {};
-		pioche_tact.push(new ModeCombat(combat, "Combat de boue", 4, vecteur_combi));
+		pioche_tact.push(new ModeCombat(combat, "Combat de boue", 4, vecteur_combi)); 
 		
 		// Création des cartes Ruse
 		/*
@@ -250,12 +250,14 @@ public:
 						nb_cartes_tactiques_jouees[i]++;     
 					}
 					else if (typeid(*carte_a_jouer) == typeid(ModeCombat)) {
-						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 						int id_tuile = getUserInput();
+						id_tuile--;
 						while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 							cout << "Choix impossible, la borne est déjà revendiquée ou inexistante, veuillez réessayer." << endl;
-							cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+							cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 							id_tuile = getUserInput();
+							id_tuile--;
 						}
 						getJoueurs()[i]->poser_carte(carte_a_jouer, i, getPlateau()[id_tuile]);
 						getPlateau()[id_tuile]->setNbCartesMax(dynamic_cast<ModeCombat*>(carte_a_jouer)->getNbCartes());
@@ -264,12 +266,14 @@ public:
 						nb_cartes_tactiques_jouees[i]++;   
 					}
 					else {
-						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+						cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 						int id_tuile = getUserInput();
+						id_tuile--;
 						while (!posePossible(getPlateau()[id_tuile], i) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 							cout << "Choix impossible, la borne est pleine, déjà revendiquée ou inexistante, veuillez réessayer." << endl;
-							cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+							cout << getJoueurs()[i]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 							id_tuile = getUserInput();
+							id_tuile--;
 						}
 						getJoueurs()[i]->poser_carte(carte_a_jouer, i, getPlateau()[id_tuile]);
 						if (typeid(*carte_a_jouer) == typeid(TroupeElite)) {
@@ -422,18 +426,20 @@ public:
 	Carte* choisirCarte(int id_joueur, vector<Carte*> vecteur) {
 		int nb_cartes;
 		if (vecteur.size() == 0) {
-			cout << " Choisis une carte [chiffre entre 0 et " << getJoueurs()[id_joueur]->getNbCartes() - 1 << "] : ";
+			cout << " Choisis une carte [chiffre entre 1 et " << getJoueurs()[id_joueur]->getNbCartes() << "] : ";
 			nb_cartes = getJoueurs()[id_joueur]->getNbCartes() - 1;
 		}
 		else {
-			cout << " Choisis une carte [chiffre entre 0 et " << getJoueurs()[id_joueur]->getNbCartes() - 1 + vecteur.size() << "] : ";
+			cout << " Choisis une carte [chiffre entre 1 et " << getJoueurs()[id_joueur]->getNbCartes() + vecteur.size() << "] : ";
 			nb_cartes = getJoueurs()[id_joueur]->getNbCartes() - 1 + vecteur.size(); 
 		}
 		int choix_carte = Jeu::getUserInput();
+		choix_carte--; 
 
 		while (!checkBornes(0, nb_cartes, choix_carte)) { 
 			cout << "Carte inexistante, veuillez reessayer." << endl;
 			choix_carte = Jeu::getUserInput();
+			choix_carte--;
 		}
 		int taille_main_classique = getJoueurs()[id_joueur]->getCarteC().size();
 		int taille_main_tactique = getJoueurs()[id_joueur]->getCarteT().size();
@@ -551,12 +557,14 @@ public:
 					}
 					else if (choix.front() == 'p' || choix.front() == 'P') {
 						//displayBoard();
-						cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
+						cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 1 et 9] : ";
 						int id_tuile = getUserInput();
+						id_tuile--;
 						while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 							cout << "Choix impossible, la borne est pleine, déjà revendiquée ou inexistante, veuillez réessayer." << endl;
-							cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+							cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 							id_tuile = getUserInput(); 
+							id_tuile--;
 						} 
 						getJoueurs()[id_joueur]->poser_carte((Carte*)carte_classique, id_joueur, getPlateau()[id_tuile]);
 						if (typeid(*carte_classique) == typeid(TroupeElite)) {
@@ -576,12 +584,14 @@ public:
 			case 4:
 				// 4 = choisir carte du cote adverse non revendiquée
 				//displayBoard();
-				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
+				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 1 et 9] : ";
 				id_tuile = getUserInput();
+				id_tuile--;
 				while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 					cout << "Choix impossible, la borne est déjà revendiquée ou inexistante, veuillez réessayer." << endl;
-					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 					id_tuile = getUserInput(); 
+					id_tuile--;
 				} 
 				carte_classique = getPlateau()[id_tuile]->defausseAdverse(id_joueur); 
 				if (typeid(*carte_classique) == typeid(TroupeElite)) {
@@ -602,12 +612,14 @@ public:
 			case 6:
 				// 6 = placer devant une tuile non revendiquée de notre cote
 				//displayBoard();
-				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
+				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 1 et 9] : ";
 				id_tuile = getUserInput();
+				id_tuile--;
 				while (!posePossible(getPlateau()[id_tuile], id_joueur) || !tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 					cout << "Choix impossible, la borne est pleine, déjà revendiquée ou inexistante, veuillez réessayer." << endl;
-					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 					id_tuile = getUserInput();
+					id_tuile--;
 				} 
 				getJoueurs()[id_joueur]->poser_carte((Carte*)carte_classique, id_joueur, getPlateau()[id_tuile]);
 				if (typeid(*carte_classique) == typeid(TroupeElite)) {
@@ -621,12 +633,14 @@ public:
 			case 7:
 				// 7 = choisir carte de notre cote
 				//displayBoard();
-				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 0 et 8] : ";
+				cout << " J" << id_joueur + 1 << " choisis une borne[chiffre entre 1 et 9] : ";
 				id_tuile = getUserInput();
+				id_tuile--;
 				while (!tuileNonRevendiquee(getPlateau()[id_tuile]) || !checkBornes(0, 8, id_tuile)) {
 					cout << "Choix impossible, la borne est déjà revendiquée ou inexistante, veuillez réessayer." << endl;
-					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 0 et 8] : ";
+					cout << getJoueurs()[id_joueur]->getNom() << " choisis une borne[chiffre entre 1 et 9] : ";
 					id_tuile = getUserInput();
+					id_tuile--;
 				}
 				carte_classique = getPlateau()[id_tuile]->defausseSoi(id_joueur);
 				break;
