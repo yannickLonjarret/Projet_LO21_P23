@@ -21,6 +21,8 @@ using namespace std;
 /// </summary>
 class JeuTactique : public Jeu {
 private:
+	//singleton
+	static JeuTactique* jeuTactiqueUnique;
 	/// <summary>
 	/// pioche_tact represents the tactical deck
 	/// </summary>
@@ -38,10 +40,21 @@ private:
 	/// </summary>
 	vector<int> nb_jokers_joues;
 public:
-	/// <summary>
-	/// Test
-	/// </summary>
-	//void jouer();
+	//méthodes pour le singleton
+	static JeuTactique* donneInstance() {
+		if (jeuTactiqueUnique == nullptr && Jeu::possibleInstance()) {
+			jeuTactiqueUnique = new JeuTactique();
+		}
+		else if (!Jeu::possibleInstance()) {
+			cout << "Erreur : un jeu classique est déjà en cours" << endl;
+		}
+		return jeuTactiqueUnique;
+	}
+
+	static void libereInstance() {
+		delete jeuTactiqueUnique;
+		jeuTactiqueUnique = nullptr;
+	}
 
 	/// <summary>
 	/// Constructor which creates the deck with all the specific tactical cards required, and initializes the discard defausse
@@ -93,6 +106,8 @@ public:
 		
 		pioche_tact.shuffle();
 	}
+
+	~JeuTactique() {}
 
 	/// <summary>
 	/// Allows the user to pick the first card of the tactical deck
@@ -786,5 +801,7 @@ public:
 		return nb_jokers_joues[id_joueur] <= nb_jokers_joues[(id_joueur + 1) % 2];  
 	}
 };
+
+JeuTactique* JeuTactique::jeuTactiqueUnique = nullptr; 
 
 #endif // !JeuTactique_H

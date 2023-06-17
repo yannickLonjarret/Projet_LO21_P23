@@ -30,6 +30,11 @@ public:
 	//méthodes pour le singleton
 	static Jeu& donneInstance();
 	static void libereInstance();
+	static int possibleInstance() {
+		if (jeuUnique == nullptr)
+			return 1;
+		return 0;
+	}
 
 
 	Jeu() {
