@@ -94,7 +94,7 @@ public:
 		6 = placer devant une tuile non revendiquee de notre cote
 		7 = choisir carte de notre cote
 		*/
-		/*
+		
 		vector<int> suite = { 0, 0, 0, 2, 1, 2, 1 };
 		pioche_tact.push(new Ruse(ruse, "Chasseur de Tete", suite));
 		suite = { 7, 3 };
@@ -104,7 +104,7 @@ public:
 		suite = {4, 6};
 		pioche_tact.push(new Ruse(ruse, "Traitre", suite));
 		
-		pioche_tact.shuffle();*/
+		pioche_tact.shuffle();
 	}
 
 	~JeuTactique() {}
