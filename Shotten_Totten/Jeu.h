@@ -84,6 +84,9 @@ public:
 
 		delete pioche_c;
 
+		while (Carte_c::getCouleurs().size() > 2)
+			Carte_c::getCouleurs().erase(Carte_c::getCouleurs().end());
+
 	}
 
 	vector<Tuile*> getPlateau() const {
