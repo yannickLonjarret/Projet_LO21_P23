@@ -20,17 +20,9 @@ private:
 	vector<Combinaison*> vic;
 	vector<Tuile*> plateau;
 
+protected:
 	//singleton
 	static Jeu* jeuUnique;
-
-
-
-public:
-
-	//méthodes pour le singleton
-	static Jeu& donneInstance();
-	static void libereInstance();
-
 
 	Jeu() {
 
@@ -63,6 +55,14 @@ public:
 
 		pioche_c->shuffle();
 	}
+
+
+public:
+
+	//méthodes pour le singleton
+	static Jeu& donneInstance();
+	static void libereInstance();
+
 
 	virtual ~Jeu() {
 		for (auto t : plateau)

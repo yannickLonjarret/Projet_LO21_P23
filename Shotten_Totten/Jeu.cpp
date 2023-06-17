@@ -121,8 +121,8 @@ void Jeu::claim(int idJoueur) {
 void Jeu::claimIA(int idJoueur) {
 	bool revendication = 1;
 	while (revendication) {
-		getPlateau()[getJoueurs()[idJoueur]->choix_ia(0, getPlateau().size()-1)]->claimTuile(idJoueur, getPlateau());
-		revendication = getJoueurs()[idJoueur]->choix_ia(0, 1); 
+		getPlateau()[getJoueurs()[idJoueur]->choix_ia(0, getPlateau().size() - 1)]->claimTuile(idJoueur, getPlateau());
+		revendication = getJoueurs()[idJoueur]->choix_ia(0, 1);
 	}
 }
 
@@ -406,5 +406,6 @@ void Jeu::startGame() {
 
 	cout << "Partie terminée, le gagnant est " << joueurs[winner]->getNom();
 	joueurs[winner]->setScore(joueurs[winner]->getScore() + 1);
+	displayMenu();
 }
 
