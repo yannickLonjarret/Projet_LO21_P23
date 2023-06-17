@@ -152,7 +152,7 @@ public:
 					cout << " ## C'est au joueur " << getJoueurs()[i]->getNom() << " de jouer ## " << endl;
 					vector<Carte*> vect;
 					int id_tuile = getJoueurs()[i]->choix_ia(0, getPlateau().size() - 1);
-					int id_carte = getJoueurs()[i]->choix_ia(0, getJoueurs()[i]->getNbCartes());
+					int id_carte = getJoueurs()[i]->choix_ia(0, getJoueurs()[i]->getNbCartes() - 1);
 					bool tactique_jouable = tactiqueJouable(i);
 					bool joker_jouable = jokerJouable(i);
 					Carte* carte_a_jouer;
@@ -163,7 +163,7 @@ public:
 						carte_a_jouer = (Carte*)getJoueurs()[i]->getCarteC()[id_carte];
 					}
 					while (dynamic_cast<Carte_t*>(carte_a_jouer) != nullptr && (!tactique_jouable || (!joker_jouable && dynamic_cast<Carte_t*>(carte_a_jouer)->getNom() == "Joker"))){
-						id_carte = getJoueurs()[i]->choix_ia(0, getJoueurs()[i]->getNbCartes());
+						id_carte = getJoueurs()[i]->choix_ia(0, getJoueurs()[i]->getNbCartes() - 1);
 						if (id_carte >= getJoueurs()[i]->getCarteC().size()) {
 							carte_a_jouer = (Carte*)getJoueurs()[i]->getCarteT()[id_carte - getJoueurs()[i]->getCarteC().size()];
 						}
