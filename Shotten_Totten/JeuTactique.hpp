@@ -368,13 +368,15 @@ public:
 			string choix;
 			std::cin >> choix;
 			while (true) {
-				if (choix.front() == 'C' || choix.front() == 'c')
+				if (!choix.empty() && (choix.front() == 'C' || choix.front() == 'c'))
 					return 0;
-				else if (choix.front() == 'T' || choix.front() == 't')
+				else if (!choix.empty() && (choix.front() == 'T' || choix.front() == 't'))
 					return 1;
-				else
+				else {
+					choix = "";
 					std::cout << "Choix invalide, recommencez (C/T) : " << std::endl;
-				choix = "";
+					std::cin >> choix;
+				}
 			}
 		}
 	}
@@ -576,9 +578,11 @@ public:
 						//displayBoard();
 						break;
 					}
-					else
+					else {
+						choix = "";
 						std::cout << "Choix invalide, recommencez (d/p) : " << std::endl;
-					choix = "";
+						std::cin >> choix;
+					}
 				}
 				break;
 
