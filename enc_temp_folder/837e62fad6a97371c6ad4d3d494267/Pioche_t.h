@@ -65,7 +65,6 @@ public:
 	/// Allows the user to randomly shuffle the deck
 	/// </summary>
 	void shuffle() {
-		srand(time(NULL));
 		random_shuffle(cartes.begin(), cartes.end());
 	} 
 
