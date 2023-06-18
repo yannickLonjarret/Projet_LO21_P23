@@ -21,8 +21,6 @@ using namespace std;
 /// </summary>
 class JeuTactique : public Jeu {
 private:
-	//singleton
-	static JeuTactique* jeuTactiqueUnique;
 	/// <summary>
 	/// pioche_tact represents the tactical deck
 	/// </summary>
@@ -39,6 +37,57 @@ private:
 	/// nb_jokers_joues represents the number of joker cards played by each player (each player id corresponds to each id of the vector)
 	/// </summary>
 	vector<int> nb_jokers_joues;
+
+protected:
+	/// <summary>
+	/// jeuTactiqueUnique represents the single instance of JeuTactique possible (singleton)
+	/// </summary>
+	static JeuTactique* jeuTactiqueUnique;
+
+	/// <summary>
+	/// Constructor which creates the deck with all the specific tactical cards required, and initializes the discard defausse
+	/// </summary>
+	JeuTactique() : Jeu() {
+		defausse = Defausse();
+		pioche_tact = Pioche_t();
+		nb_cartes_tactiques_jouees = { 0, 0 };
+		nb_jokers_joues = { 0, 0 };
+
+		// Creation des cartes Troupe d'Elite
+		pioche_tact.push(new TroupeElite(elite, "Joker", -1, Carte_c::getCouleurs()[0], 1, 9));
+		pioche_tact.push(new TroupeElite(elite, "Joker", -1, Carte_c::getCouleurs()[0], 1, 9));
+		pioche_tact.push(new TroupeElite(elite, "Espion", -1, Carte_c::getCouleurs()[0], 7, 7));
+		pioche_tact.push(new TroupeElite(elite, "Porte Bouclier", -1, Carte_c::getCouleurs()[0], 1, 3));
+
+		// Creation des cartes Mode de Combat 
+		vector<Combinaison*> vecteur_combi = { new Combinaison(false, false, false) };
+		pioche_tact.push(new ModeCombat(combat, "Colin Maillard", -1, vecteur_combi));
+		vecteur_combi = {};
+		pioche_tact.push(new ModeCombat(combat, "Combat de boue", 4, vecteur_combi));
+
+		// Creation des cartes Ruse
+		/*
+		0 = piocher
+		1 = placer carte sous pioche
+		2 = choisir carte de notre main (et le vecteur de Ruse)
+		3 = placer carte sur borne non revendiquee de notre côte ou defausser
+		4 = choisir carte du cote adverse non revendiquee
+		5 = defausser du cote adverse
+		6 = placer devant une tuile non revendiquee de notre cote
+		7 = choisir carte de notre cote
+		*/
+
+		vector<int> suite = { 0, 0, 0, 2, 1, 2, 1 };
+		pioche_tact.push(new Ruse(ruse, "Chasseur de Tete", suite));
+		suite = { 7, 3 };
+		pioche_tact.push(new Ruse(ruse, "Stratège", suite));
+		suite = { 4, 5 };
+		pioche_tact.push(new Ruse(ruse, "Banshee", suite));
+		suite = { 4, 6 };
+		pioche_tact.push(new Ruse(ruse, "Traitre", suite));
+
+		pioche_tact.shuffle();
+	}
 public:	
 	/// <summary>
 	/// Allows the user to create a new JeuTactique, if one has been already created, it will return this one.
@@ -60,51 +109,6 @@ public:
 	static void libereInstance() {
 		delete jeuTactiqueUnique;
 		jeuTactiqueUnique = nullptr;
-	}
-
-	/// <summary>
-	/// Constructor which creates the deck with all the specific tactical cards required, and initializes the discard defausse
-	/// </summary>
-	JeuTactique() : Jeu() {
-		defausse = Defausse();
-		pioche_tact = Pioche_t();
-		nb_cartes_tactiques_jouees = { 0, 0 };
-		nb_jokers_joues = { 0, 0 };
-
-		// Creation des cartes Troupe d'Elite
-		pioche_tact.push(new TroupeElite(elite, "Joker", -1, Carte_c::getCouleurs()[0], 1, 9));
-		pioche_tact.push(new TroupeElite(elite, "Joker", -1, Carte_c::getCouleurs()[0], 1, 9));
-		pioche_tact.push(new TroupeElite(elite, "Espion", -1, Carte_c::getCouleurs()[0], 7, 7));
-		pioche_tact.push(new TroupeElite(elite, "Porte Bouclier", -1, Carte_c::getCouleurs()[0], 1, 3));
-
-		// Creation des cartes Mode de Combat 
-		vector<Combinaison*> vecteur_combi = { new Combinaison(false, false, false) }; 
-		pioche_tact.push(new ModeCombat(combat, "Colin Maillard", -1, vecteur_combi)); 
-		vecteur_combi = {};
-		pioche_tact.push(new ModeCombat(combat, "Combat de boue", 4, vecteur_combi)); 
-		
-		// Creation des cartes Ruse
-		/*
-		0 = piocher 
-		1 = placer carte sous pioche 
-		2 = choisir carte de notre main (et le vecteur de Ruse) 
-		3 = placer carte sur borne non revendiquee de notre côte ou defausser
-		4 = choisir carte du cote adverse non revendiquee
-		5 = defausser du cote adverse
-		6 = placer devant une tuile non revendiquee de notre cote
-		7 = choisir carte de notre cote
-		*/
-		
-		vector<int> suite = { 0, 0, 0, 2, 1, 2, 1 };
-		pioche_tact.push(new Ruse(ruse, "Chasseur de Tete", suite));
-		suite = { 7, 3 };
-		pioche_tact.push(new Ruse(ruse, "Stratège", suite));
-		suite = {4, 5};
-		pioche_tact.push(new Ruse(ruse, "Banshee", suite));
-		suite = {4, 6};
-		pioche_tact.push(new Ruse(ruse, "Traitre", suite));
-		
-		pioche_tact.shuffle();
 	}
 
 	~JeuTactique() {}
