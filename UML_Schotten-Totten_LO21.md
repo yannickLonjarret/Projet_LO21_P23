@@ -73,19 +73,26 @@ classDiagram
         - pioche_tact : Pioche_t
         - defausse : Defausse
 	- nb_cartes_tactiques_jouees : vector<int>
-	+ JeuTactique()
+	- nb_jokers_joues : vector<int>
+	#$ jeuTactiqueUnique : JeuTactique*
+	# JeuTactique()
+	+$ donneInstance() : JeuTactique*
+	+$ libereInstance() : void
 	+ piocher_t() : Carte_t*
         + startGame() : void
-	+ claim(int idJoueur) : void
 	+ checkBornes(int b1, int b2, int input) : bool
 	+ tuileNonRevendiquee(Tuile* tuile) : bool
 	+ posePossible(Tuile* tuile, int id_joueur) : bool
 	+ choixPioche() : int
+	+ choixPiocheIA() : int
 	+ piocher(int choix_pioche, int id_joueur) : void
 	+ piocheRuse(int choix_pioche, Ruse* carte) : void
 	+ choisirCarte(int id_joueur, vector<Carte*> vecteur) : Carte*
+	+ choisirCarteIA(int id_joueur, vector<Carte*> vecteur) : Carte*
 	+ execRuse(Ruse* carte, int id_joueur) : void
+	+ execRuseIA(Ruse* carte, int id_joueur) : void
 	+ tactiqueJouable(int id_j1, int id_j2) : bool
+	+ jokerJouable(int id_joueur) : bool
     }
     
     class Tuile{
