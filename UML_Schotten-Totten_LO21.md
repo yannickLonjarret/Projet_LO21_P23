@@ -63,7 +63,6 @@ classDiagram
 	+ getUserInput() : int
 	+ menu_selection() : void
 	+ playerSelection() : void
-	+ estGagnant(int id_joueur) : bool
 	+ virtual startGame() : void
 	+ distribuerCartes(int nb_a_distribuer) : void
         + checkVictoireManche()
