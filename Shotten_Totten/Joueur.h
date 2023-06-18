@@ -79,7 +79,9 @@ public:
 		setNb_cartes();
 	}
 
-	virtual int choix_ia(int min, int max) = 0;
+	virtual int choix_ia(int min, int max) {
+		return 0;
+	}
 	
 	/// <summary>
 	/// Set the value of score
