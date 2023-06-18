@@ -191,14 +191,6 @@ public:
 		return this->cartes_t;
 	}
 
-
-
-	/// <summary>
-	/// Allows the user to insert a card at the end of the hand
-	/// </summary>
-	/// <param name="c">the card to insert</param>
-	void push(const Carte_c& c);
-
 	void piocher_c(Carte_c* pc); //mettre pioche_c à la place de jeu et reafctor dans .cpp
 
 	/// <summary>
@@ -217,11 +209,6 @@ public:
 
 	void poser_carte(Carte* c, int id, Tuile* t); // ######### juste poser carte Tuile gère cc ou ct
 
-	/// <summary>
-	/// Allows the user to retrieve a tactical card of the hand
-	/// </summary>
-	/// <param name="c">the card to retrieve</param>
-	void pop(const Carte_t& c);
 
 
 	void afficherMain() const {
@@ -237,9 +224,6 @@ public:
 		cout << endl;
 	}
 
-	void surrender();
-	void to_claim();
-	void look_graveyard(); // joueur->defausse->lookXfirstCard()
 };
 
 /// <summary>
