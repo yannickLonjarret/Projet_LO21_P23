@@ -233,6 +233,9 @@ public:
 			delete h;
 		getHist_c().clear();
 
+		//Pas de memory leaks, Combinaison compo de Jeu
+		getVictoires().clear();
+
 	}
 
 };
