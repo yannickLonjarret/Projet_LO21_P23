@@ -26,14 +26,11 @@ classDiagram
 	+ eraseCarte(Carte* c) : void
 	+ getCarteC() : vector<Carte_c*>
 	+ getCarteT() : vector<Carte_t*>
-	+ push(const Carte_c& c) : void
 	+ piocher_c(Pioche_c& pc) : Carte_c*
 	+ piocher_t(Pioche_t& pt) : Carte_t*
 	+ poser_carte(Carte* c, int id, Tuile* t) : void
 	+ afficherMain() : void
-        + surrender() : void
-	+ to_claim() : void
-        + look_graveyard() : void
+
     }
     
     class IA{
