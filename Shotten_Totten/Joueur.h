@@ -95,7 +95,15 @@ public:
 	/// Default Destructor
 	/// </summary>
 
-	~Joueur() = default;
+	~Joueur() {
+		for (auto cc : cartes_c)
+			delete cc;
+		cartes_c.clear();
+
+		for (auto ct : cartes_t)
+			delete ct;
+		cartes_t.clear();
+	}
 
 	friend std::ostream& operator<<(std::ostream& os, const Joueur& j);
 	friend bool operator==(const Joueur& j1, const Joueur& j2);
