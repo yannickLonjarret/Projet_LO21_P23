@@ -61,7 +61,11 @@ public:
 	/// <summary>
 	/// Default destructor
 	/// </summary>
-	~Pioche_c() = default;
+	~Pioche_c() {
+		for (auto cc : cartes)
+			delete cc;
+		cartes.clear();
+	}
 
 	/// <summary>
 	/// Allows the user to get the X first cards of the collection

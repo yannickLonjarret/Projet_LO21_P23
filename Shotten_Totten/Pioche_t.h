@@ -72,7 +72,10 @@ public:
 	/// <summary>
 	/// Destructor
 	/// </summary>
-	~Pioche_t() { for (unsigned int i = 0; i < cartes.size(); i++) delete cartes[i]; }
+	~Pioche_t() { 
+		for (auto i : cartes) delete i; 
+		cartes.clear();
+	}
 
 	/// <summary>
 	/// Allows the user to get the X first cards of the collection
