@@ -84,7 +84,7 @@ public:
 
 		delete pioche_c;
 
-		while (Carte_c::getCouleurs().size() > 2)
+		while (Carte_c::getCouleurs().size() > 1)
 			Carte_c::getCouleurs().erase(Carte_c::getCouleurs().end());
 
 	}
@@ -138,8 +138,6 @@ public:
 		joueurs.push_back(new IA());
 	}
 
-
-	bool estGagnant(int id_joueur);
 	void displayBoard() const;
 	void printTitles() const;
 	void displayMenu() const;

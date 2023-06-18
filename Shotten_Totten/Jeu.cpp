@@ -218,16 +218,7 @@ void Jeu::playerSelection() {
 	}
 }
 
-bool Jeu::estGagnant(int id_joueur) {
-	int score = 0;
-	for (unsigned i = 1; i <= plateau.size() - 2; i++) {
-		if (plateau[i - 1]->getClaim() == id_joueur && plateau[i]->getClaim() == id_joueur && plateau[i + 1]->getClaim() == id_joueur)
-			return true;
-		if (plateau[i]->getClaim() == id_joueur)
-			score++;
-		cout << "score : " << score << endl;
-	}
-}
+
 int Jeu::victory() {
 	int J1 = 0;
 	int J2 = 1;
